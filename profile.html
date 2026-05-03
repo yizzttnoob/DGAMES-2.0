@@ -1,0 +1,725 @@
+<!-- profile.html -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>My Profile | D'GAMES · Kelompok 5</title>
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        body {
+            background-color: #0a0c10;
+            scroll-behavior: smooth;
+        }
+        .btn-epic {
+            background: linear-gradient(95deg, #0078f0 0%, #00b2ff 100%);
+            transition: all 0.2s;
+        }
+        .btn-epic:hover {
+            filter: brightness(1.08);
+            transform: scale(0.98);
+            box-shadow: 0 8px 20px rgba(0, 120, 240, 0.4);
+        }
+        .btn-outline-epic {
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(20, 20, 30, 0.6);
+            backdrop-filter: blur(4px);
+        }
+        .btn-outline-epic:hover {
+            background: rgba(0, 120, 240, 0.25);
+            border-color: #0078f0;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1c23;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2f3e4e;
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0078f0;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        #searchModal > div { animation: slideDown 0.2s ease; }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        #notifDropdown:not(.hidden) { animation: fadeInDown 0.2s ease; }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .cart-badge {
+            transition: all 0.2s ease;
+        }
+        .cart-badge.pop {
+            animation: badgePop 0.3s ease;
+        }
+        @keyframes badgePop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Profile Page Styles */
+        .profile-card {
+            background: linear-gradient(135deg, rgba(15, 25, 35, 0.8) 0%, rgba(10, 15, 25, 0.9) 100%);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 1.5rem;
+        }
+        .profile-avatar-large {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 48px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            border: 3px solid rgba(59,130,246,0.3);
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover {
+            background: rgba(255,255,255,0.06);
+            transform: translateY(-2px);
+        }
+        .info-row {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .edit-input {
+            background: #0f1119;
+            border: 1px solid #2a2e3a;
+            border-radius: 12px;
+            padding: 10px 16px;
+            color: white;
+            width: 100%;
+            transition: all 0.2s;
+        }
+        .edit-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59,130,246,0.2);
+        }
+        .edit-input:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        .toast-notify {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #1e293b;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            border-left: 3px solid #3b82f6;
+            z-index: 9999;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px);
+            animation: slideInToast 0.25s ease;
+        }
+        @keyframes slideInToast {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-[#121417] text-gray-300">
+
+    <!-- SEARCH MODAL -->
+    <div id="searchModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[999] flex items-start justify-center pt-24 px-4">
+        <div class="w-full max-w-2xl bg-gray-900 rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
+            <div class="flex items-center gap-3 px-4 py-4 border-b border-white/10">
+                <i class="bi bi-search text-gray-400 text-xl"></i>
+                <input id="searchInput" type="text" placeholder="Search games, genres, publishers..." class="flex-1 bg-transparent text-white placeholder-gray-500 text-lg outline-none">
+                <button id="closeSearch" class="text-gray-400 hover:text-white transition"><i class="bi bi-x-lg text-xl"></i></button>
+            </div>
+            <div class="px-4 py-4">
+                <p class="text-gray-500 text-xs mb-3">Popular Searches</p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">Valorant</span>
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">GTA V</span>
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">Minecraft</span>
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">Fortnite</span>
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">Free Games</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION DROPDOWN -->
+    <div id="notifDropdown" class="hidden fixed right-6 top-20 z-50 w-80 bg-gray-900 border border-gray-700 rounded-xl shadow-2xl backdrop-blur-sm">
+        <div class="flex justify-between items-center px-4 py-3 border-b border-gray-800">
+            <span class="font-bold text-white">Notifications</span>
+            <button id="markAllRead" class="text-xs text-blue-400 hover:underline">Mark all as read</button>
+        </div>
+        <div class="max-h-80 overflow-y-auto">
+            <div class="notif-item px-4 py-3 hover:bg-white/5 border-b border-gray-800/60 flex items-start gap-3">
+                <i class="bi bi-gift-fill text-purple-400 mt-0.5"></i>
+                <div><p class="text-sm text-gray-200">Free game of the week: <span class="font-semibold">Valorant</span> available!</p><p class="text-[10px] text-gray-500">2 hours ago</p></div>
+            </div>
+            <div class="notif-item px-4 py-3 hover:bg-white/5 border-b border-gray-800/60 flex items-start gap-3">
+                <i class="bi bi-tag-fill text-green-400 mt-0.5"></i>
+                <div><p class="text-sm text-gray-200">Summer Sale 2026: up to 75% off!</p><p class="text-[10px] text-gray-500">Yesterday</p></div>
+            </div>
+            <div class="notif-item px-4 py-3 hover:bg-white/5 flex items-start gap-3">
+                <i class="bi bi-controller text-cyan-400 mt-0.5"></i>
+                <div><p class="text-sm text-gray-200">Your library has new updates!</p><p class="text-[10px] text-gray-500">2 days ago</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="sticky top-0 z-50 bg-black/95 backdrop-blur-md border-b border-white/10 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-6">
+                    <a href="index.html" class="shrink-0">
+                        <img src="image/LOGO.png" alt="D'GAMES" class="h-8 w-auto">
+                    </a>
+                    <div class="hidden md:flex items-center space-x-1">
+                        <a href="index.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Home</a>
+                        <a href="games.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Games</a>
+                        <a href="promo.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Promo</a>
+                        <a href="library.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Library</a>
+                        <a href="community.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Community</a>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-3">
+                    <button id="searchBtn" class="p-2 rounded-full text-gray-300 hover:bg-white/10 transition" aria-label="Search">
+                        <i class="bi bi-search text-xl"></i>
+                    </button>
+                    <button id="notifBtn" class="p-2 rounded-full text-gray-300 hover:bg-white/10 transition relative" aria-label="Notifications">
+                        <i class="bi bi-bell text-xl"></i>
+                        <span id="notifDot" class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full ring-2 ring-black"></span>
+                    </button>
+                    <button class="p-2 rounded-full text-gray-300 hover:bg-white/10 transition relative cart-button" aria-label="Cart">
+                        <i class="bi bi-cart text-xl"></i>
+                        <span class="cart-badge absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold ring-2 ring-black">0</span>
+                    </button>
+                    <div id="loginButton" class="hidden md:block text-xs px-3 py-1.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 cursor-pointer transition hover:bg-blue-500/30">
+                        <i class="bi bi-person-check-fill mr-1"></i> Login
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="md:hidden px-4 pb-2">
+            <button id="mobile-menu-button" class="text-gray-300 hover:text-white focus:outline-none">
+                <i class="bi bi-list text-2xl"></i>
+            </button>
+            <div id="mobile-nav-links" class="hidden mt-2 pb-3 space-y-1 border-t border-white/10 pt-3">
+                <a href="index.html" class="block px-3 py-2 rounded-lg bg-white/5 text-white font-medium">Home</a>
+                <a href="games.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Games</a>
+                <a href="promo.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Promo</a>
+                <a href="library.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Library</a>
+                <a href="community.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Community</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT: PROFILE PAGE -->
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+        <!-- Header -->
+        <div class="mb-8">
+            <div class="flex items-center gap-3 mb-2">
+                <i class="bi bi-person-circle text-4xl text-blue-400"></i>
+                <h1 class="text-3xl md:text-4xl font-extrabold text-white">My Profile</h1>
+            </div>
+            <p class="text-gray-400">Manage your account information and preferences</p>
+            <div class="w-20 h-1 bg-blue-500 mt-4 rounded-full"></div>
+        </div>
+
+        <!-- Profile Content - Will be populated by JavaScript -->
+        <div id="profileContent" class="space-y-6">
+            <!-- Loading State -->
+            <div class="text-center py-12">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                <p class="text-gray-400 mt-3">Loading profile...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-white/10 mt-12 bg-black/40 pt-12 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
+                <div class="col-span-2">
+                    <div class="flex items-center gap-2">
+                        <img src="image/LOGO.png" alt="D'GAMES" class="h-8 w-auto"/>
+                    </div>
+                    <p class="text-gray-400 text-sm mt-3">The ultimate destination for PC & console gamers. Next-level entertainment.</p>
+                    <div class="flex gap-4 mt-5">
+                        <a href="#"><i class="bi bi-twitter-x text-gray-400 hover:text-white text-xl cursor-pointer"></i></a>
+                        <a href="#"><i class="bi bi-discord text-gray-400 hover:text-white text-xl cursor-pointer"></i></a>
+                        <a href="https://www.instagram.com/denn_2307/"><i class="bi bi-instagram text-gray-400 hover:text-white text-xl cursor-pointer"></i></a>
+                        <a href="#"><i class="bi bi-youtube text-gray-400 hover:text-white text-xl cursor-pointer"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white">Discover</h4>
+                    <ul class="mt-3 space-y-2 text-gray-400 text-sm">
+                        <li>Browse Store</li>
+                        <li>Free Games</li>
+                        <li>DENZ Originals</li>
+                        <li>Coming Soon</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white">Support</h4>
+                    <ul class="mt-3 space-y-2 text-gray-400 text-sm">
+                        <li>Help Center</li>
+                        <li>Refund Policy</li>
+                        <li>Account</li>
+                        <li>Parental Guide</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white">Legal</h4>
+                    <ul class="mt-3 space-y-2 text-gray-400 text-sm">
+                        <li>Terms of Service</li>
+                        <li>Privacy Policy</li>
+                        <li>Store Agreement</li>
+                        <li>Cookies Settings</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-white/5 mt-10 pt-6 text-center text-gray-500 text-xs">
+                © 2026 D'GAMES — Built for gamers, supported by Denis Ganteng.
+            </div>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script>
+        // ==================== PROFILE PAGE SCRIPT ====================
+        
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = 'toast-notify';
+            let icon = '🔔';
+            if (type === 'success') icon = '✅';
+            if (type === 'warning') icon = '⚠️';
+            if (type === 'info') icon = 'ℹ️';
+            toast.innerHTML = `${icon} ${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+        
+        function updateCartBadgeFromStorage() {
+            let cartCount = 0;
+            try {
+                const savedCart = localStorage.getItem('shopping_cart') || localStorage.getItem('keranjang');
+                if (savedCart) {
+                    let cart = JSON.parse(savedCart);
+                    if (Array.isArray(cart)) {
+                        cartCount = cart.reduce((total, item) => total + (item.quantity || item.jumlah || 1), 0);
+                    }
+                }
+            } catch(e) {}
+            const badges = document.querySelectorAll('.cart-badge');
+            badges.forEach(badge => {
+                if (cartCount > 0) {
+                    badge.textContent = cartCount;
+                    badge.style.display = 'flex';
+                    badge.classList.add('pop');
+                    setTimeout(() => badge.classList.remove('pop'), 300);
+                } else {
+                    badge.style.display = 'none';
+                }
+            });
+        }
+        
+        function renderProfile() {
+            const user = window.getCurrentUser ? window.getCurrentUser() : null;
+            const container = document.getElementById('profileContent');
+            
+            if (!container) return;
+            
+            if (!user || !user.isLoggedIn) {
+                // Not logged in - show redirect message
+                container.innerHTML = `
+                    <div class="profile-card p-8 text-center">
+                        <div class="flex flex-col items-center gap-4">
+                            <i class="bi bi-shield-lock text-6xl text-gray-500"></i>
+                            <h2 class="text-2xl font-bold text-white">Login Required</h2>
+                            <p class="text-gray-400 max-w-md">Please login to view your profile information.</p>
+                            <div class="flex gap-4 mt-4">
+                                <a href="login.html" class="btn-epic px-6 py-2.5 rounded-xl font-bold text-white shadow-xl inline-flex items-center gap-2">
+                                    <i class="bi bi-box-arrow-in-right"></i> Login Now
+                                </a>
+                                <a href="register.html" class="btn-outline-epic px-6 py-2.5 rounded-xl font-semibold text-white inline-flex items-center gap-2">
+                                    <i class="bi bi-person-plus"></i> Create Account
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Get user stats from localStorage
+            let libraryCount = 0;
+            try {
+                const library = localStorage.getItem('dgames_user_library');
+                if (library) {
+                    const libData = JSON.parse(library);
+                    libraryCount = libData.length;
+                }
+            } catch(e) {}
+            
+            let purchaseCount = 0;
+            try {
+                const pendingPurchase = localStorage.getItem('pending_purchased_games');
+                if (pendingPurchase) {
+                    const purchaseData = JSON.parse(pendingPurchase);
+                    purchaseCount = purchaseData.length;
+                }
+            } catch(e) {}
+            
+            const avatarText = user.avatar || user.name.charAt(0).toUpperCase();
+            const memberSince = user.loginTime ? new Date(user.loginTime).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : 'March 2026';
+            
+            container.innerHTML = `
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Left Column - Profile Info -->
+                    <div class="lg:col-span-1">
+                        <div class="profile-card p-6 text-center">
+                            <div class="profile-avatar-large mx-auto mb-4">
+                                ${avatarText}
+                            </div>
+                            <h2 id="profileName" class="text-2xl font-bold text-white mb-1">${user.name}</h2>
+                            <p class="text-gray-400 text-sm mb-4">Member since ${memberSince}</p>
+                            <div class="flex justify-center gap-3">
+                                <button id="editProfileBtn" class="px-4 py-2 bg-blue-600/20 hover:bg-blue-600/40 rounded-lg text-blue-300 text-sm font-medium transition flex items-center gap-2">
+                                    <i class="bi bi-pencil-square"></i> Edit Profile
+                                </button>
+                                <button id="changePasswordBtn" class="px-4 py-2 bg-gray-700/50 hover:bg-gray-700 rounded-lg text-gray-300 text-sm font-medium transition flex items-center gap-2">
+                                    <i class="bi bi-key"></i> Change Password
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column - Account Details -->
+                    <div class="lg:col-span-2">
+                        <div class="profile-card p-6">
+                            <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                                <i class="bi bi-info-circle text-blue-400"></i> Account Information
+                            </h3>
+                            <div id="accountInfo">
+                                <div class="info-row flex flex-wrap justify-between items-center">
+                                    <span class="text-gray-400 w-32">Full Name</span>
+                                    <span class="text-white font-medium" id="displayName">${user.name}</span>
+                                    <span class="text-gray-500 text-sm">-</span>
+                                </div>
+                                <div class="info-row flex flex-wrap justify-between items-center">
+                                    <span class="text-gray-400 w-32">Email Address</span>
+                                    <span class="text-white font-medium" id="displayEmail">${user.email}</span>
+                                    <span class="text-gray-500 text-sm">Verified</span>
+                                </div>
+                                <div class="info-row flex flex-wrap justify-between items-center">
+                                    <span class="text-gray-400 w-32">Account Status</span>
+                                    <span class="text-green-400 font-medium">Active</span>
+                                    <span class="text-gray-500 text-sm">-</span>
+                                </div>
+                                <div class="info-row flex flex-wrap justify-between items-center">
+                                    <span class="text-gray-400 w-32">Member Since</span>
+                                    <span class="text-white font-medium">${memberSince}</span>
+                                    <span class="text-gray-500 text-sm">-</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Stats Cards -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+                            <div class="stat-card p-4 text-center">
+                                <i class="bi bi-journal-bookmark-fill text-3xl text-blue-400 mb-2"></i>
+                                <p class="text-2xl font-bold text-white">${libraryCount}</p>
+                                <p class="text-xs text-gray-400">Games in Library</p>
+                            </div>
+                            <div class="stat-card p-4 text-center">
+                                <i class="bi bi-cart-fill text-3xl text-orange-400 mb-2"></i>
+                                <p class="text-2xl font-bold text-white">${purchaseCount}</p>
+                                <p class="text-xs text-gray-400">Total Purchases</p>
+                            </div>
+                            <div class="stat-card p-4 text-center">
+                                <i class="bi bi-trophy-fill text-3xl text-yellow-400 mb-2"></i>
+                                <p class="text-2xl font-bold text-white">0</p>
+                                <p class="text-xs text-gray-400">Achievements</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Recent Activity -->
+                        <div class="profile-card p-6 mt-6">
+                            <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                                <i class="bi bi-clock-history text-blue-400"></i> Recent Activity
+                            </h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-3 text-sm">
+                                    <i class="bi bi-check-circle-fill text-green-400"></i>
+                                    <span class="text-gray-300">Logged in successfully</span>
+                                    <span class="text-gray-500 text-xs ml-auto">Today</span>
+                                </div>
+                                <div class="flex items-center gap-3 text-sm">
+                                    <i class="bi bi-controller text-blue-400"></i>
+                                    <span class="text-gray-300">Last game played: Valorant</span>
+                                    <span class="text-gray-500 text-xs ml-auto">2 days ago</span>
+                                </div>
+                                <div class="flex items-center gap-3 text-sm">
+                                    <i class="bi bi-download text-purple-400"></i>
+                                    <span class="text-gray-300">Added ${libraryCount} game(s) to library</span>
+                                    <span class="text-gray-500 text-xs ml-auto">Recently</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Edit Profile Modal Handler
+            const editBtn = document.getElementById('editProfileBtn');
+            if (editBtn) {
+                editBtn.addEventListener('click', () => showEditProfileModal(user));
+            }
+            
+            // Change Password Handler
+            const changePwdBtn = document.getElementById('changePasswordBtn');
+            if (changePwdBtn) {
+                changePwdBtn.addEventListener('click', () => showChangePasswordModal(user));
+            }
+        }
+        
+        function showEditProfileModal(user) {
+            const modalHtml = `
+                <div id="editProfileModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[1000] flex items-center justify-center p-4" style="animation: fadeIn 0.3s ease;">
+                    <div class="bg-gradient-to-b from-gray-900 to-gray-950 rounded-2xl border border-gray-800 max-w-md w-full p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-bold text-white">Edit Profile</h3>
+                            <button id="closeModalBtn" class="text-gray-400 hover:text-white text-2xl">&times;</button>
+                        </div>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-gray-300 text-sm mb-1">Full Name</label>
+                                <input type="text" id="editFullName" value="${user.name}" class="edit-input">
+                            </div>
+                            <div>
+                                <label class="block text-gray-300 text-sm mb-1">Email Address</label>
+                                <input type="email" id="editEmail" value="${user.email}" class="edit-input" disabled>
+                                <p class="text-xs text-gray-500 mt-1">Email cannot be changed</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 mt-6">
+                            <button id="saveProfileBtn" class="flex-1 bg-blue-600 hover:bg-blue-500 py-2 rounded-xl text-white font-semibold transition">Save Changes</button>
+                            <button id="cancelModalBtn" class="flex-1 bg-gray-700 hover:bg-gray-600 py-2 rounded-xl text-white font-semibold transition">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            document.body.style.overflow = 'hidden';
+            
+            const modal = document.getElementById('editProfileModal');
+            const closeBtn = document.getElementById('closeModalBtn');
+            const cancelBtn = document.getElementById('cancelModalBtn');
+            const saveBtn = document.getElementById('saveProfileBtn');
+            const newNameInput = document.getElementById('editFullName');
+            
+            const closeModal = () => {
+                modal.remove();
+                document.body.style.overflow = '';
+            };
+            
+            closeBtn?.addEventListener('click', closeModal);
+            cancelBtn?.addEventListener('click', closeModal);
+            modal?.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+            
+            saveBtn?.addEventListener('click', () => {
+                const newName = newNameInput.value.trim();
+                if (newName && newName !== user.name) {
+                    // Update user in localStorage
+                    const sessionUser = window.getCurrentUser();
+                    if (sessionUser) {
+                        sessionUser.name = newName;
+                        sessionUser.avatar = newName.charAt(0).toUpperCase();
+                        localStorage.setItem('dgames_auth', JSON.stringify(sessionUser));
+                        
+                        // Also update in users list
+                        const users = JSON.parse(localStorage.getItem('dgames_users') || '[]');
+                        const userIndex = users.findIndex(u => u.email === user.email);
+                        if (userIndex !== -1) {
+                            users[userIndex].name = newName;
+                            localStorage.setItem('dgames_users', JSON.stringify(users));
+                        }
+                        
+                        showToast('Profile updated successfully!', 'success');
+                        if (typeof window.updateAllAuthUI === 'function') {
+                            window.updateAllAuthUI();
+                        }
+                        renderProfile();
+                        closeModal();
+                    }
+                } else if (newName === user.name) {
+                    showToast('No changes made', 'info');
+                    closeModal();
+                } else {
+                    showToast('Please enter a valid name', 'warning');
+                }
+            });
+        }
+        
+        function showChangePasswordModal(user) {
+            const modalHtml = `
+                <div id="changePwdModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[1000] flex items-center justify-center p-4" style="animation: fadeIn 0.3s ease;">
+                    <div class="bg-gradient-to-b from-gray-900 to-gray-950 rounded-2xl border border-gray-800 max-w-md w-full p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-bold text-white">Change Password</h3>
+                            <button id="closeModalBtn" class="text-gray-400 hover:text-white text-2xl">&times;</button>
+                        </div>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-gray-300 text-sm mb-1">Current Password</label>
+                                <input type="password" id="currentPassword" class="edit-input" placeholder="Enter current password">
+                            </div>
+                            <div>
+                                <label class="block text-gray-300 text-sm mb-1">New Password</label>
+                                <input type="password" id="newPassword" class="edit-input" placeholder="Min 4 characters">
+                            </div>
+                            <div>
+                                <label class="block text-gray-300 text-sm mb-1">Confirm New Password</label>
+                                <input type="password" id="confirmPassword" class="edit-input" placeholder="Re-enter new password">
+                            </div>
+                        </div>
+                        <div class="flex gap-3 mt-6">
+                            <button id="savePasswordBtn" class="flex-1 bg-blue-600 hover:bg-blue-500 py-2 rounded-xl text-white font-semibold transition">Update Password</button>
+                            <button id="cancelModalBtn" class="flex-1 bg-gray-700 hover:bg-gray-600 py-2 rounded-xl text-white font-semibold transition">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            document.body.style.overflow = 'hidden';
+            
+            const modal = document.getElementById('changePwdModal');
+            const closeBtn = document.getElementById('closeModalBtn');
+            const cancelBtn = document.getElementById('cancelModalBtn');
+            const saveBtn = document.getElementById('savePasswordBtn');
+            
+            const closeModal = () => {
+                modal.remove();
+                document.body.style.overflow = '';
+            };
+            
+            closeBtn?.addEventListener('click', closeModal);
+            cancelBtn?.addEventListener('click', closeModal);
+            modal?.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+            
+            saveBtn?.addEventListener('click', () => {
+                const currentPwd = document.getElementById('currentPassword')?.value;
+                const newPwd = document.getElementById('newPassword')?.value;
+                const confirmPwd = document.getElementById('confirmPassword')?.value;
+                
+                // Verify current password
+                const users = JSON.parse(localStorage.getItem('dgames_users') || '[]');
+                const userRecord = users.find(u => u.email === user.email);
+                
+                if (!userRecord || userRecord.password !== currentPwd) {
+                    showToast('Current password is incorrect!', 'error');
+                    return;
+                }
+                
+                if (!newPwd || newPwd.length < 4) {
+                    showToast('New password must be at least 4 characters', 'error');
+                    return;
+                }
+                
+                if (newPwd !== confirmPwd) {
+                    showToast('New passwords do not match!', 'error');
+                    return;
+                }
+                
+                // Update password
+                userRecord.password = newPwd;
+                localStorage.setItem('dgames_users', JSON.stringify(users));
+                showToast('Password changed successfully!', 'success');
+                closeModal();
+            });
+        }
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProfile();
+            updateCartBadgeFromStorage();
+            
+            // Mobile menu toggle
+            const menuBtn = document.getElementById('mobile-menu-button');
+            const mobileNav = document.getElementById('mobile-nav-links');
+            if (menuBtn && mobileNav) {
+                menuBtn.addEventListener('click', () => mobileNav.classList.toggle('hidden'));
+            }
+            
+            // Search Modal
+            const searchBtn = document.getElementById('searchBtn');
+            const searchModal = document.getElementById('searchModal');
+            const closeSearch = document.getElementById('closeSearch');
+            
+            searchBtn?.addEventListener('click', () => searchModal.classList.remove('hidden'));
+            closeSearch?.addEventListener('click', () => searchModal.classList.add('hidden'));
+            searchModal?.addEventListener('click', (e) => { if (e.target === searchModal) searchModal.classList.add('hidden'); });
+            
+            // Notification Dropdown
+            const notifBtn = document.getElementById('notifBtn');
+            const notifDropdown = document.getElementById('notifDropdown');
+            notifBtn?.addEventListener('click', (e) => { e.stopPropagation(); notifDropdown.classList.toggle('hidden'); });
+            document.addEventListener('click', (e) => { if (notifDropdown && !notifDropdown.contains(e.target) && e.target !== notifBtn) notifDropdown.classList.add('hidden'); });
+            
+            const markAllRead = document.getElementById('markAllRead');
+            markAllRead?.addEventListener('click', () => {
+                document.getElementById('notifDot')?.classList.add('hidden');
+                showToast('All notifications marked as read', 'info');
+            });
+        });
+        
+        // Re-render when auth state changes
+        window.addEventListener('auth-state-changed', () => renderProfile());
+        window.addEventListener('storage', () => {
+            renderProfile();
+            updateCartBadgeFromStorage();
+        });
+    </script>
+    <script src="cart.js"></script>
+</body>
+</html>

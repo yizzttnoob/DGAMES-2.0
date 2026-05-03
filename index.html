@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>D'GAMES | Kelompok 5</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        body {
+            background-color: #0a0c10;
+            scroll-behavior: smooth;
+        }
+        /* SLIDESHOW */
+        .slide {
+            width: 100%;
+            height: 100%;
+        }
+        .slidesatu, .slidedua, .slidetiga, .slideempat {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+        }
+        .slidesatu { background: url('image/1.jpeg') no-repeat center / cover; animation: fade 16s infinite 0s; }
+        .slidedua { background: url('image/2.jpeg') no-repeat center / cover; animation: fade 16s infinite 4s; }
+        .slidetiga { background: url('image/3.jpeg') no-repeat center / cover; animation: fade 16s infinite 8s; }
+        .slideempat { background: url('image/4.jpeg') no-repeat center / cover; animation: fade 16s infinite 12s; }
+        @keyframes fade {
+            0% { opacity: 0; }
+            5% { opacity: 1; }
+            25% { opacity: 1; }
+            30% { opacity: 0; }
+            100% { opacity: 0; }
+        }
+        .btn-epic {
+            background: linear-gradient(95deg, #0078f0 0%, #00b2ff 100%);
+            transition: all 0.2s;
+        }
+        .btn-epic:hover {
+            filter: brightness(1.08);
+            transform: scale(0.98);
+            box-shadow: 0 8px 20px rgba(0, 120, 240, 0.4);
+        }
+        .btn-outline-epic {
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(20, 20, 30, 0.6);
+            backdrop-filter: blur(4px);
+        }
+        .btn-outline-epic:hover {
+            background: rgba(0, 120, 240, 0.25);
+            border-color: #0078f0;
+        }
+        .cart-button { transition: all 0.2s ease; }
+        .cart-button:hover { transform: scale(1.05); }
+        .cart-badge { transition: all 0.2s ease; }
+        @keyframes badgePop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        .cart-badge.pop { animation: badgePop 0.3s ease; }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        #searchModal > div { animation: slideDown 0.2s ease; }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        #notifDropdown:not(.hidden) { animation: fadeInDown 0.2s ease; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #1a1c23; }
+        ::-webkit-scrollbar-thumb { background: #2f3e4e; border-radius: 8px; }
+        ::-webkit-scrollbar-thumb:hover { background: #0078f0; }
+        .badge-free { background: #00d26a; box-shadow: 0 0 6px rgba(0,210,106,0.5); }
+
+        .game-card {
+            cursor: pointer;
+        }
+        
+        .profile-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .profile-avatar-large {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body class="bg-[#121417] text-gray-300">
+    <nav class="sticky top-0 z-50 bg-black/95 backdrop-blur-md border-b border-white/10 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Left section: Logo + Navigation Menu -->
+                <div class="flex items-center gap-6">
+                    <a href="index.html" class="shrink-0">
+                        <img src="image/LOGO.png" alt="D'GAMES" class="h-8 w-auto">
+                    </a>
+                    <!-- Navigation Menu (Desktop) -->
+                    <div class="hidden md:flex items-center space-x-1">
+                        <a href="index.html" class="px-4 py-2 text-sm font-semibold rounded-lg bg-white/5 text-white">Home</a>
+                        <a href="games.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Games</a>
+                        <a href="promo.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Promo</a>
+                        <a href="library.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Library</a>
+                        <a href="community.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Community</a>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button id="searchBtn" class="p-2 rounded-full text-gray-300 hover:bg-white/10 transition" aria-label="Search">
+                        <i class="bi bi-search text-xl"></i>
+                    </button>
+                    <button id="notifBtn" class="p-2 rounded-full text-gray-300 hover:bg-white/10 transition relative" aria-label="Notifications">
+                        <i class="bi bi-bell text-xl"></i>
+                        <span id="notifDot" class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full ring-2 ring-black"></span>
+                    </button>
+                    <button class="p-2 rounded-full text-gray-300 hover:bg-white/10 transition relative cart-button" aria-label="Cart">
+                        <i class="bi bi-cart text-xl"></i>
+                        <span class="cart-badge absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold ring-2 ring-black">0</span>
+                    </button>
+                    <div id="loginButton" class="hidden md:block text-xs px-3 py-1.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 cursor-pointer transition hover:bg-blue-500/30">
+                        <i class="bi bi-person-check-fill mr-1"></i> Login
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="md:hidden px-4 pb-2">
+            <button id="mobile-menu-button" class="text-gray-300 hover:text-white focus:outline-none">
+                <i class="bi bi-list text-2xl"></i>
+            </button>
+            <div id="mobile-nav-links" class="hidden mt-2 pb-3 space-y-1 border-t border-white/10 pt-3">
+                <a href="index.html" class="block px-3 py-2 rounded-lg bg-white/5 text-white font-medium">Home</a>
+                <a href="games.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Games</a>
+                <a href="promo.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Promo</a>
+                <a href="library.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Library</a>
+                <a href="community.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Community</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- SEARCH MODAL -->
+    <div id="searchModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[999] flex items-start justify-center pt-24 px-4">
+        <div class="w-full max-w-2xl bg-gray-900 rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
+            <div class="flex items-center gap-3 px-4 py-4 border-b border-white/10">
+                <i class="bi bi-search text-gray-400 text-xl"></i>
+                <input id="searchInput" type="text" placeholder="search game, genre, publisher..." class="flex-1 bg-transparent text-white placeholder-gray-500 text-lg outline-none">
+                <button id="closeSearch" class="text-gray-400 hover:text-white transition"><i class="bi bi-x-lg text-xl"></i></button>
+            </div>
+            <div class="px-4 py-4">
+                <p class="text-gray-500 text-xs mb-3">Popular Searches</p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">Valorant</span>
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">GTA V</span>
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">Minecraft</span>
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">Fortnite</span>
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">Free Games</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIF DROPDOWN -->
+    <div id="notifDropdown" class="hidden fixed right-6 top-20 z-50 w-80 bg-gray-900 border border-gray-700 rounded-xl shadow-2xl backdrop-blur-sm">
+        <div class="flex justify-between items-center px-4 py-3 border-b border-gray-800">
+            <span class="font-bold text-white">Notifications</span>
+            <button id="markAllRead" class="text-xs text-blue-400 hover:underline">Mark all as read</button>
+        </div>
+        <div class="max-h-80 overflow-y-auto">
+            <div class="notif-item px-4 py-3 hover:bg-white/5 border-b border-gray-800/60 flex items-start gap-3">
+                <i class="bi bi-gift-fill text-purple-400 mt-0.5"></i>
+                <div><p class="text-sm text-gray-200">Free game this week: <span class="font-semibold">Valorant</span> available!</p><p class="text-[10px] text-gray-500">2 hours ago</p></div>
+            </div>
+            <div class="notif-item px-4 py-3 hover:bg-white/5 border-b border-gray-800/60 flex items-start gap-3">
+                <i class="bi bi-tag-fill text-green-400 mt-0.5"></i>
+                <div><p class="text-sm text-gray-200">Summer Sale 2026: up to 80% off</p><p class="text-[10px] text-gray-500">Yesterday</p></div>
+            </div>
+            <div class="notif-item px-4 py-3 hover:bg-white/5 flex items-start gap-3">
+                <i class="bi bi-controller text-cyan-400 mt-0.5"></i>
+                <div><p class="text-sm text-gray-200">Your library has a new update!</p><p class="text-[10px] text-gray-500">2 days ago</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HERO SECTION -->
+    <div class="relative min-h-[calc(100vh-64px)] flex flex-col justify-center overflow-hidden">
+        <div class="slide absolute inset-0">
+            <div class="slidesatu"></div>
+            <div class="slidedua"></div>
+            <div class="slidetiga"></div>
+            <div class="slideempat"></div>
+        </div>
+        <div class="absolute inset-0 bg-black/60"></div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="max-w-2xl">
+                <div class="inline-flex items-center gap-2 bg-white/5 backdrop-blur-sm rounded-full px-4 py-1.5 border border-white/10 mb-3">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                    </span>
+                    <span class="text-xs font-semibold tracking-wide text-gray-300">FREE GAME OF THE WEEK</span>
+                </div>
+                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight bg-gradient-to-r from-white via-blue-100 to-cyan-300 bg-clip-text text-transparent leading-[1.2]">
+                    FIND YOUR <br>
+                    FAVORITE GAMES <br>
+                    NOW!
+                </h1>
+                <p class="text-gray-300 text-lg md:text-xl mt-3 max-w-xl leading-relaxed text-left">
+                    Discover your favorite games with the best collection at unbeatable prices. Explore exciting genres, enjoy special deals, and start your unlimited gaming adventure today!
+                </p>
+                <br>
+                <div class="flex flex-wrap gap-4 mt-5">
+                    <a href="login.html" class="btn-epic px-7 py-3 rounded-xl font-bold text-white shadow-xl flex items-center gap-1 no-underline">
+                        <i class="bi bi-gift-fill"></i> CLAIM FREE GAME
+                    </a>
+                    <a href="games.html" class="btn-outline-epic px-7 py-3 rounded-xl font-semibold text-white flex items-center gap-1 no-underline">
+                        <i class="bi bi-controller"></i> EXPLORE STORE
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION GAME POPULER -->
+    <section class="py-16 px-4 max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-3">POPULAR GAMES</h2>
+            <p class="text-gray-400">Most played games this week</p>
+            <div class="w-20 h-1 bg-blue-500 mx-auto mt-4 rounded-full"></div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Card 1 - Valorant -->
+            <div class="group bg-gradient-to-b from-gray-900 to-gray-950 rounded-xl overflow-hidden border border-gray-800 hover:border-blue-500/50 transition-all duration-300 hover:transform hover:-translate-y-2">
+                <div class="relative overflow-hidden">
+                    <img src="image/valorant.jpg" alt="Valorant" class="w-full h-48 object-cover group-hover:scale-110 transition duration-300">
+                    <div class="absolute top-3 right-3 bg-black/70 backdrop-blur-sm px-2 py-1 rounded-lg text-xs font-semibold text-yellow-400">
+                        <i class="bi bi-star-fill text-yellow-400 text-xs"></i> 4.8
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-white text-lg mb-1">Valorant</h3>
+                    <p class="text-gray-400 text-sm mb-3">Tactical shooter, 5v5</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-green-400 text-sm font-semibold">Free</span>
+                        <button class="game-btn px-4 py-1.5 bg-blue-600 hover:bg-blue-500 rounded-lg text-white text-sm font-medium transition">
+                            <i class="bi bi-download mr-1"></i> Get
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 - GTA V -->
+            <div class="group bg-gradient-to-b from-gray-900 to-gray-950 rounded-xl overflow-hidden border border-gray-800 hover:border-blue-500/50 transition-all duration-300 hover:transform hover:-translate-y-2">
+                <div class="relative overflow-hidden">
+                    <img src="image/gtav.jpg" alt="GTA V" class="w-full h-48 object-cover group-hover:scale-110 transition duration-300">
+                    <div class="absolute top-3 right-3 bg-black/70 backdrop-blur-sm px-2 py-1 rounded-lg text-xs font-semibold text-yellow-400">
+                        <i class="bi bi-star-fill text-yellow-400 text-xs"></i> 4.9
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-white text-lg mb-1">GTA V</h3>
+                    <p class="text-gray-400 text-sm mb-3">Open world, Action</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-orange-400 text-sm font-semibold">$29.99</span>
+                        <button class="game-btn px-4 py-1.5 bg-blue-600 hover:bg-blue-500 rounded-lg text-white text-sm font-medium transition">
+                            <i class="bi bi-cart-plus mr-1"></i> Buy
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 - Minecraft -->
+            <div class="group bg-gradient-to-b from-gray-900 to-gray-950 rounded-xl overflow-hidden border border-gray-800 hover:border-blue-500/50 transition-all duration-300 hover:transform hover:-translate-y-2">
+                <div class="relative overflow-hidden">
+                    <img src="image/minecraft.jpg" alt="Minecraft" class="w-full h-48 object-cover group-hover:scale-110 transition duration-300">
+                    <div class="absolute top-3 right-3 bg-black/70 backdrop-blur-sm px-2 py-1 rounded-lg text-xs font-semibold text-yellow-400">
+                        <i class="bi bi-star-fill text-yellow-400 text-xs"></i> 4.7
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-white text-lg mb-1">Minecraft</h3>
+                    <p class="text-gray-400 text-sm mb-3">Sandbox, Survival</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-orange-400 text-sm font-semibold">$26.99</span>
+                        <button class="game-btn px-4 py-1.5 bg-blue-600 hover:bg-blue-500 rounded-lg text-white text-sm font-medium transition">
+                            <i class="bi bi-cart-plus mr-1"></i> Buy
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4 - Fortnite -->
+            <div class="group bg-gradient-to-b from-gray-900 to-gray-950 rounded-xl overflow-hidden border border-gray-800 hover:border-blue-500/50 transition-all duration-300 hover:transform hover:-translate-y-2">
+                <div class="relative overflow-hidden">
+                    <img src="image/fortnite.jpg" alt="Fortnite" class="w-full h-48 object-cover group-hover:scale-110 transition duration-300">
+                    <div class="absolute top-3 right-3 bg-black/70 backdrop-blur-sm px-2 py-1 rounded-lg text-xs font-semibold text-yellow-400">
+                        <i class="bi bi-star-fill text-yellow-400 text-xs"></i> 4.6
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-white text-lg mb-1">Fortnite</h3>
+                    <p class="text-gray-400 text-sm mb-3">Battle Royale</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-green-400 text-sm font-semibold">Free</span>
+                        <button class="game-btn px-4 py-1.5 bg-blue-600 hover:bg-blue-500 rounded-lg text-white text-sm font-medium transition">
+                            <i class="bi bi-download mr-1"></i> Get
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-12">
+            <a href="games.html" class="px-8 py-3 bg-transparent border border-blue-500 text-blue-400 rounded-xl font-semibold hover:bg-blue-500/10 transition-all duration-300 inline-block">
+                VIEW ALL GAMES <i class="bi bi-arrow-right ml-2"></i>
+            </a>
+        </div>
+        
+        <!-- Banner Summer Sale -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20 mb-12">
+            <div class="relative rounded-3xl overflow-hidden shadow-2xl group">
+                <img src="image/summer.jpeg" class="w-full h-64 md:h-80 object-cover brightness-75" alt="Summer Sale">
+                <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent flex items-center">
+                    <div class="p-6 md:p-10 max-w-xl">
+                        <span class="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full">Limited Time</span>
+                        <a href="promo.html"><h3 class="text-3xl md:text-4xl font-black mt-3">Summer Sale 2026</h3></a>
+                        <a href="promo.html"><p class="text-gray-200 mt-2">The heat of summer, the chill of discounts! Get your favorite games at the best prices.</p></a>
+                        <a href="promo.html" class="mt-5 bg-white text-black font-bold px-6 py-2 rounded-xl hover:bg-gray-200 transition inline-block no-underline">Claim Deal</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-white/10 mt-12 bg-black/40 pt-12 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
+                <div class="col-span-2">
+                    <div class="flex items-center gap-2">
+                        <img src="image/LOGO.png" alt="Your Company" class="h-8 w-auto"/>
+                    </div>
+                    <p class="text-gray-400 text-sm mt-3">The ultimate destination for PC & console gamers. Next-level entertainment.</p>
+                    <div class="flex gap-4 mt-5">
+                        <a href="https://www.x.com"><i class="bi bi-twitter-x text-gray-400 hover:text-white text-xl cursor-pointer"></i></a>
+                        <a href="https://www.facebook.com"><i class="bi bi-facebook text-gray-400 hover:text-white text-xl cursor-pointer"></i></a>
+                        <a href="https://www.discord.com"><i class="bi bi-discord text-gray-400 hover:text-white text-xl cursor-pointer"></i></a>
+                        <a href="https://www.instagram.com"><i class="bi bi-instagram text-gray-400 hover:text-white text-xl cursor-pointer"></i></a>
+                        <a href="https://www.youtube.com"><i class="bi bi-youtube text-gray-400 hover:text-white text-xl cursor-pointer"></i></a>
+                    </div>
+                </div>
+                <div><h4 class="font-bold text-white">Discover</h4><ul class="mt-3 space-y-2 text-gray-400 text-sm"><li>Browse Store</li><li>Free Games</li><li>DENZ Originals</li><li>Coming Soon</li></ul></div>
+                <div><h4 class="font-bold text-white">Support</h4><ul class="mt-3 space-y-2 text-gray-400 text-sm"><li>Help Center</li><li>Refund Policy</li><li>Account</li><li>Parental Guide</li></ul></div>
+                <div><h4 class="font-bold text-white">Legal</h4><ul class="mt-3 space-y-2 text-gray-400 text-sm"><li>Terms of Service</li><li>Privacy Policy</li><li>Store Agreement</li><li>Cookies Settings</li></ul></div>
+            </div>
+            <div class="border-t border-white/5 mt-10 pt-6 text-center text-gray-500 text-xs">
+                © 2026 D'GAMES — Built for gamers, supported by Denis Ganteng.
+            </div>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script>
+        // MOBILE MENU TOGGLE
+        const menuBtn = document.getElementById('mobile-menu-button');
+        const mobileNav = document.getElementById('mobile-nav-links');
+        function toggleMob() {
+            if (mobileNav.classList.contains('hidden')) {
+                mobileNav.classList.remove('hidden');
+                const icon = menuBtn?.querySelector('i');
+                if (icon) { icon.classList.remove('bi-list'); icon.classList.add('bi-x-lg'); }
+            } else {
+                mobileNav.classList.add('hidden');
+                const icon = menuBtn?.querySelector('i');
+                if (icon) { icon.classList.remove('bi-x-lg'); icon.classList.add('bi-list'); }
+            }
+        }
+        if (menuBtn) menuBtn.addEventListener('click', toggleMob);
+        window.addEventListener('resize', () => { if (window.innerWidth >= 768 && mobileNav && !mobileNav.classList.contains('hidden')) { mobileNav.classList.add('hidden'); const icon = menuBtn?.querySelector('i'); if (icon) { icon.classList.remove('bi-x-lg'); icon.classList.add('bi-list'); } } });
+        document.addEventListener('click', (e) => { if (mobileNav && !mobileNav.classList.contains('hidden') && !mobileNav.contains(e.target) && menuBtn && !menuBtn.contains(e.target)) { mobileNav.classList.add('hidden'); const icon = menuBtn?.querySelector('i'); if (icon) { icon.classList.remove('bi-x-lg'); icon.classList.add('bi-list'); } } });
+
+        // SEARCH MODAL
+        const searchBtn = document.getElementById('searchBtn');
+        const searchModal = document.getElementById('searchModal');
+        const closeSearch = document.getElementById('closeSearch');
+        const searchInputElem = document.getElementById('searchInput');
+        searchBtn?.addEventListener('click', () => { searchModal.classList.remove('hidden'); setTimeout(() => searchInputElem?.focus(), 100); });
+        closeSearch?.addEventListener('click', () => { searchModal.classList.add('hidden'); if(searchInputElem) searchInputElem.value = ''; });
+        searchModal?.addEventListener('click', (e) => { if(e.target === searchModal) { searchModal.classList.add('hidden'); if(searchInputElem) searchInputElem.value = ''; } });
+        document.addEventListener('keydown', (e) => { if(e.key === 'Escape') { searchModal.classList.add('hidden'); if(searchInputElem) searchInputElem.value = ''; } });
+        document.querySelectorAll('.search-tag').forEach(tag => { tag.addEventListener('click', () => { if(searchInputElem) { searchInputElem.value = tag.textContent.trim(); searchInputElem.focus(); } }); });
+
+        // NOTIF DROPDOWN
+        const notifBtn = document.getElementById('notifBtn');
+        const notifDropdown = document.getElementById('notifDropdown');
+        const notifDot = document.getElementById('notifDot');
+        const markAllReadBtn = document.getElementById('markAllRead');
+        notifBtn?.addEventListener('click', (e) => { e.stopPropagation(); notifDropdown.classList.toggle('hidden'); });
+        document.addEventListener('click', (e) => { if(notifDropdown && !notifDropdown.contains(e.target) && e.target !== notifBtn) notifDropdown.classList.add('hidden'); });
+        markAllReadBtn?.addEventListener('click', () => { if(notifDot) notifDot.classList.add('hidden'); document.querySelectorAll('.notif-item').forEach(item => item.style.opacity = '0.5'); markAllReadBtn.textContent = 'All read'; markAllReadBtn.classList.remove('text-blue-400'); markAllReadBtn.classList.add('text-gray-500'); markAllReadBtn.style.cursor = 'default'; });
+
+        // KERANJANG
+        let cartCount = 0;
+        const cartBadge = document.querySelector('.cart-badge');
+        const cartBtn = document.querySelector('.cart-button');
+        function updateCartBadge() { if(cartBadge) { cartBadge.textContent = cartCount; cartBadge.classList.add('pop'); setTimeout(() => cartBadge.classList.remove('pop'), 300); } }
+        if(cartBtn) cartBtn.addEventListener('click', () => window.location.href = "cart.html");
+        function addToCart(gameTitle) { 
+            cartCount++; 
+            updateCartBadge(); 
+            const toast = document.createElement('div'); 
+            toast.textContent = `✅ ${gameTitle} ditambahkan ke keranjang!`; 
+            toast.style.cssText = `position:fixed; bottom:20px; right:20px; background:#1f2937; color:white; padding:10px 20px; border-radius:8px; border-left:3px solid #3b82f6; z-index:9999; animation:slideIn 0.3s ease; font-size:14px; font-family:Inter, sans-serif;`; 
+            document.body.appendChild(toast); 
+            setTimeout(() => toast.remove(), 2000); 
+        }
+        document.querySelectorAll('.game-btn').forEach(btn => { 
+            btn.addEventListener('click', function(e) { 
+                e.stopPropagation(); 
+                const card = this.closest('.group'); 
+                const title = card?.querySelector('h3')?.textContent || 'Game'; 
+                addToCart(title); 
+            }); 
+        });
+
+        // DATA GAME DETAIL PAGES
+        const gameDetailPages = {
+            'Valorant': 'game-valorant.html',
+            'GTA V': 'game-gtav.html',
+            'Minecraft': 'game-minecraft.html',
+            'Fortnite': 'game-fortnite.html'
+        };
+
+        function handleGameCardClick(event) {
+            if (event.target.closest('.game-btn')) {
+                return;
+            }
+            const gameTitleElement = this.querySelector('h3');
+            if (!gameTitleElement) return;
+            let gameTitle = gameTitleElement.textContent.trim();
+            let targetPage = gameDetailPages[gameTitle];
+            if (!targetPage) {
+                targetPage = `promo.html?game=${encodeURIComponent(gameTitle)}`;
+            }
+            window.location.href = targetPage;
+        }
+
+        function initGameCardClick() {
+            const gameCards = document.querySelectorAll('.group');
+            gameCards.forEach(card => {
+                card.classList.add('game-card');
+                card.addEventListener('click', handleGameCardClick);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initGameCardClick();
+            // Auth system sudah diinisialisasi di auth.js
+            if (typeof isLoggedIn === 'function') {
+                console.log('Auth system ready, logged in:', isLoggedIn());
+            }
+        });
+    </script>
+    <script src="cart.js"></script>
+</body>
+</html>

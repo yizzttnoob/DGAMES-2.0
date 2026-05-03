@@ -1,0 +1,683 @@
+<!-- register.html - DIPERBAIKI DENGAN AVATAR BULAT DAN MENU LENGKAP -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>D'GAMES | Create Account - Kelompok 5</title>
+    <!-- tailwind css-->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- bootstrap icons & css -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+<style>
+    body {
+        background-color: #0a0c10;
+        scroll-behavior: smooth;
+    }
+    * {
+        font-family: 'Inter', system-ui, sans-serif;
+    }
+    .slide {
+        width: 100%;
+        height: 100%;
+    }
+    .slidesatu,
+    .slidedua,
+    .slidetiga,
+    .slideempat {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+    }
+    .slidesatu {
+        background: url(image/1.jpeg) no-repeat center / cover;
+        animation: fade 25s infinite 0s;
+    }
+    .slidedua {
+        background: url(image/2.jpeg) no-repeat center / cover;
+        animation: fade 25s infinite 5s;
+    }
+    .slidetiga {
+        background: url(image/3.jpeg) no-repeat center / cover;
+        animation: fade 25s infinite 10s;
+    }
+    .slideempat {
+        background: url(image/4.jpeg) no-repeat center / cover;
+        animation: fade 25s infinite 15s;
+    }
+    .slidelima {
+        background: url(image/2.png) no-repeat center / cover;
+        animation: fade 25s infinite 20s;
+    }
+    @keyframes fade {
+        0%   { opacity: 0; }
+        5%   { opacity: 1; }
+        25%  { opacity: 1; }
+        30%  { opacity: 0; }
+        100% { opacity: 0; }
+    }
+
+    .register-hero-card {
+        background: rgba(15, 18, 25, 0.75);
+        backdrop-filter: blur(12px);
+        border-radius: 2rem;
+        border: 1px solid rgba(255,255,255,0.12);
+        box-shadow: 0 25px 40px -12px rgba(0,0,0,0.5);
+    }
+    .register-input-field {
+        background-color: #0c0f15;
+        border: 1px solid #2a2e3a;
+        border-radius: 14px;
+        padding: 12px 18px;
+        color: white;
+        width: 100%;
+        transition: all 0.2s ease;
+    }
+    .register-input-field:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59,130,246,0.25);
+    }
+    .register-gradient-btn {
+        background: linear-gradient(105deg, #3b82f6, #2563eb);
+        border: none;
+        font-weight: 600;
+        padding: 12px;
+        border-radius: 40px;
+        transition: 0.2s;
+        color: white;
+        width: 100%;
+        font-size: 1rem;
+    }
+    .register-gradient-btn:hover {
+        transform: translateY(-2px);
+        background: linear-gradient(105deg, #2563eb, #1d4ed8);
+        box-shadow: 0 12px 24px -8px #1e3a8a;
+    }
+    .social-icon-btn {
+        background: #1e1f2c;
+        transition: all 0.2s;
+        border-radius: 40px;
+        padding: 10px;
+        text-align: center;
+        flex: 1;
+        color: #cbd5e1;
+    }
+    .social-icon-btn:hover {
+        background: #2d2f3c;
+        color: white;
+        transform: scale(0.98);
+    }
+    .toast-custom {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background: #1e293b;
+        border-left: 4px solid #10b981;
+        padding: 12px 20px;
+        border-radius: 14px;
+        color: white;
+        font-size: 14px;
+        z-index: 200;
+        backdrop-filter: blur(12px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        display: none;
+        align-items: center;
+        gap: 10px;
+        font-weight: 500;
+    }
+    .strength-bar {
+        height: 4px;
+        background: #2a2e3a;
+        border-radius: 4px;
+        margin-top: 8px;
+        transition: all 0.2s;
+        width: 100%;
+    }
+    .strength-fill {
+        height: 4px;
+        border-radius: 4px;
+        width: 0%;
+        transition: width 0.3s ease;
+    }
+    .term-check {
+        accent-color: #3b82f6;
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        margin-top: 2px;
+    }
+    .password-checklist {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 8px;
+        font-size: 0.7rem;
+    }
+    .checklist-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.7rem;
+    }
+    @media (max-width: 640px) {
+        .register-hero-card {
+            padding: 1.25rem;
+        }
+        .password-checklist {
+            gap: 8px;
+        }
+    }
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #1a1c23;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #2f3e4e;
+        border-radius: 8px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #0078f0;
+    }
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    .cart-badge {
+        transition: all 0.2s ease;
+    }
+    .cart-badge.pop {
+        animation: badgePop 0.3s ease;
+    }
+    @keyframes badgePop {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.3); }
+        100% { transform: scale(1); }
+    }
+    /* Avatar Profile Bulat */
+    .avatar-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 18px;
+        background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+        color: white;
+    }
+    .avatar-circle-small {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 14px;
+        background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+        color: white;
+    }
+</style>
+</head>
+<body class="bg-[#121417] text-gray-200 font-inter">
+    <!-- NAVBAR - Menu lengkap seperti semula -->
+    <nav class="sticky top-0 z-50 bg-black/95 backdrop-blur-md border-b border-white/10 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-6">
+                    <a href="index.html" class="shrink-0">
+                        <img src="image/LOGO.png" alt="D'GAMES" class="h-8 w-auto">
+                    </a>
+                    <div class="hidden md:flex items-center space-x-1">
+                        <a href="index.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Home</a>
+                        <a href="games.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Games</a>
+                        <a href="promo.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Promo</a>
+                        <a href="library.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Library</a>
+                        <a href="community.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Community</a>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button id="searchBtn" class="p-2 rounded-full text-gray-300 hover:bg-white/10 transition" aria-label="Search">
+                        <i class="bi bi-search text-xl"></i>
+                    </button>
+                    <button id="notifBtn" class="p-2 rounded-full text-gray-300 hover:bg-white/10 transition relative" aria-label="Notifications">
+                        <i class="bi bi-bell text-xl"></i>
+                        <span id="notifDot" class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full ring-2 ring-black"></span>
+                    </button>
+                    <button class="p-2 rounded-full text-gray-300 hover:bg-white/10 transition relative cart-button" aria-label="Cart">
+                        <i class="bi bi-cart text-xl"></i>
+                        <span class="cart-badge absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold ring-2 ring-black">0</span>
+                    </button>
+                    <div id="loginButton" class="hidden md:block text-xs px-3 py-1.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 cursor-pointer transition hover:bg-blue-500/30">
+                        <i class="bi bi-person-check-fill mr-1"></i> Login
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden px-4 pb-2">
+            <button id="mobile-menu-button" class="text-gray-300 hover:text-white focus:outline-none">
+                <i class="bi bi-list text-2xl"></i>
+            </button>
+            <div id="mobile-nav-links" class="hidden mt-2 pb-3 space-y-1 border-t border-white/10 pt-3">
+                <a href="index.html" class="block px-3 py-2 rounded-lg bg-white/5 text-white font-medium">Home</a>
+                <a href="games.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Games</a>
+                <a href="promo.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Promo</a>
+                <a href="library.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Library</a>
+                <a href="community.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Community</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Slideshow + Register Content -->
+    <div class="relative min-h-[calc(100vh-64px)] flex items-center justify-center overflow-hidden">
+        <div class="slide absolute inset-0">
+            <div class="slidesatu"></div>
+            <div class="slidedua"></div>
+            <div class="slidetiga"></div>
+            <div class="slideempat"></div>
+            <div class="slidelima"></div>
+        </div>
+        <div class="absolute inset-0 bg-black/70"></div>
+        
+        <div class="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="flex flex-col lg:flex-row gap-12 items-center">
+                <div class="flex-1 text-left space-y-5">
+                    <div class="inline-block bg-white/10 backdrop-blur-sm rounded-full px-4 py-1.5 text-sm font-medium text-blue-200 border border-white/20">
+                        <i class="bi bi-emoji-sunglasses me-1"></i> Join the community
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-extrabold leading-tight bg-gradient-to-r from-white via-sky-200 to-blue-300 bg-clip-text text-transparent">
+                        CREATE <br>YOUR ACCOUNT
+                    </h1>
+                    <p class="text-gray-200 text-lg max-w-md leading-relaxed">
+                        Sign up now to access thousands of games, exclusive deals, and connect with millions of gamers worldwide.
+                    </p>
+                    <div class="flex gap-3 pt-4">
+                        <div class="h-12 w-12 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400"><i class="bi bi-joystick text-xl"></i></div>
+                        <div class="h-12 w-12 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400"><i class="bi bi-award text-xl"></i></div>
+                        <div class="h-12 w-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400"><i class="bi bi-chat-dots text-xl"></i></div>
+                    </div>
+                </div>
+
+                <!-- Register Card -->
+                <div class="flex-1 max-w-md w-full mx-auto lg:mx-0">
+                    <div class="register-hero-card p-6 md:p-8">
+                        <div class="text-center mb-6">
+                            <div class="flex justify-center mb-3">
+                                <img src="image/LOGO.png" alt="D'GAMES" class="h-12 w-auto">
+                            </div>
+                            <h2 class="text-2xl font-bold text-white">Create New Account</h2>
+                            <p class="text-gray-400 text-sm mt-1">Fill in your details to start your adventure</p>
+                        </div>
+
+                        <form id="registerForm">
+                            <!-- Full Name -->
+                            <div>
+                                <label class="block text-gray-300 text-sm font-medium mb-1.5">Full Name</label>
+                                <div class="relative">
+                                    <i class="bi bi-person absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
+                                    <input type="text" id="fullName" name="fullName" class="register-input-field pl-11" placeholder="Budi Santoso" autocomplete="name" required>
+                                </div>
+                                <div id="nameError" class="text-red-400 text-xs mt-1 hidden"></div>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="mt-4">
+                                <label class="block text-gray-300 text-sm font-medium mb-1.5">Email Address</label>
+                                <div class="relative">
+                                    <i class="bi bi-envelope absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
+                                    <input type="email" id="regEmail" name="regEmail" class="register-input-field pl-11" placeholder="gamer@dgames.com" autocomplete="email" required>
+                                </div>
+                                <div id="emailError" class="text-red-400 text-xs mt-1 hidden"></div>
+                            </div>
+
+                            <!-- Password -->
+                            <div class="mt-4">
+                                <label class="block text-gray-300 text-sm font-medium mb-1.5">Password</label>
+                                <div class="relative">
+                                    <i class="bi bi-lock absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
+                                    <input type="password" id="regPassword" name="regPassword" class="register-input-field pl-11" placeholder="Min 4 characters" required>
+                                    <button type="button" id="toggleRegPassword" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white focus:outline-none">
+                                        <i class="bi bi-eye-slash" id="toggleRegIcon"></i>
+                                    </button>
+                                </div>
+                                <div class="strength-bar mt-2">
+                                    <div class="strength-fill" id="passwordStrengthFill"></div>
+                                </div>
+                                <div class="password-checklist" id="passwordChecklist">
+                                    <span id="minLengthCheck" class="checklist-item text-gray-400"><i class="bi bi-circle text-[10px]"></i> Min 4 characters</span>
+                                    <span id="letterCheck" class="checklist-item text-gray-400"><i class="bi bi-circle text-[10px]"></i> Letters</span>
+                                    <span id="numberCheck" class="checklist-item text-gray-400"><i class="bi bi-circle text-[10px]"></i> Numbers</span>
+                                </div>
+                            </div>
+
+                            <!-- Confirm Password -->
+                            <div class="mt-4">
+                                <label class="block text-gray-300 text-sm font-medium mb-1.5">Confirm Password</label>
+                                <div class="relative">
+                                    <i class="bi bi-shield-lock absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
+                                    <input type="password" id="confirmPassword" name="confirmPassword" class="register-input-field pl-11" placeholder="Re-enter your password" required>
+                                    <button type="button" id="toggleConfirmPassword" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white focus:outline-none">
+                                        <i class="bi bi-eye-slash"></i>
+                                    </button>
+                                </div>
+                                <div id="matchError" class="text-red-400 text-xs mt-1 hidden"></div>
+                            </div>
+
+                            <!-- Terms and checkbox -->
+                            <div class="flex items-start gap-2 my-4">
+                                <input type="checkbox" id="termsCheckbox" class="term-check">
+                                <label for="termsCheckbox" class="text-sm text-gray-300 leading-tight">
+                                    I agree to the <a href="#" class="text-blue-400 hover:underline">Terms & Conditions</a> and 
+                                    <a href="#" class="text-blue-400 hover:underline">Privacy Policy</a> of D'GAMES
+                                </label>
+                            </div>
+
+                            <button type="submit" class="register-gradient-btn mt-2 flex items-center justify-center gap-2">
+                                <i class="bi bi-person-plus-fill"></i> Sign Up Now
+                            </button>
+                        </form>
+
+                        <div class="relative my-5">
+                            <div class="absolute inset-0 flex items-center">
+                                <div class="w-full border-t border-white/10"></div>
+                            </div>
+                            <div class="relative flex justify-center text-xs">
+                                <span class="bg-[#0f1219] px-3 text-gray-400">Or sign up with</span>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3 mb-6">
+                            <button type="button" class="social-icon-btn" id="googleRegBtn"><i class="bi bi-google me-1"></i> Google</button>
+                            <button type="button" class="social-icon-btn" id="discordRegBtn"><i class="bi bi-discord me-1"></i> Discord</button>
+                        </div>
+
+                        <div class="text-center text-sm text-gray-400">
+                            Already have an account? 
+                            <a href="login.html" id="loginRedirectBtn" class="text-blue-400 font-semibold hover:underline">Sign In</a>
+                        </div>
+                        <div class="mt-4 text-xs text-center text-gray-500">
+                            By signing up, you agree to receive promotional emails and gaming updates.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-white/10 mt-12 bg-black/40 pt-12 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
+                <div class="col-span-2">
+                    <div class="flex items-center gap-2">
+                        <img src="image/LOGO.png" alt="Your Company" class="h-8 w-auto"/>
+                    </div>
+                    <p class="text-gray-400 text-sm mt-3">The ultimate destination for PC & console gamers. Next-level entertainment.</p>
+                    <div class="flex gap-4 mt-5">
+                        <i class="bi bi-twitter-x text-gray-400 hover:text-white text-xl cursor-pointer"></i>
+                        <i class="bi bi-discord text-gray-400 hover:text-white text-xl cursor-pointer"></i>
+                        <i class="bi bi-instagram text-gray-400 hover:text-white text-xl cursor-pointer"></i>
+                        <i class="bi bi-youtube text-gray-400 hover:text-white text-xl cursor-pointer"></i>
+                    </div>
+                </div>
+                <div><h4 class="font-bold text-white">Discover</h4><ul class="mt-3 space-y-2 text-gray-400 text-sm"><li>Browse Store</li><li>Free Games</li><li>DENZ Originals</li><li>Coming Soon</li></ul></div>
+                <div><h4 class="font-bold text-white">Support</h4><ul class="mt-3 space-y-2 text-gray-400 text-sm"><li>Help Center</li><li>Refund Policy</li><li>Account</li><li>Parental Guide</li></ul></div>
+                <div><h4 class="font-bold text-white">Legal</h4><ul class="mt-3 space-y-2 text-gray-400 text-sm"><li>Terms of Service</li><li>Privacy Policy</li><li>Store Agreement</li><li>Cookies Settings</li></ul></div>
+            </div>
+            <div class="border-t border-white/5 mt-10 pt-6 text-center text-gray-500 text-xs">
+                © 2026 D'GAMES — Built for gamers, supported by Denis Ganteng.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast notification -->
+    <div id="toastMsg" class="toast-custom">
+        <i class="bi bi-check-circle-fill text-emerald-400"></i>
+        <span id="toastText">Registration successful!</span>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        // Toast notification
+        const toastBox = document.getElementById('toastMsg');
+        const toastTextSpan = document.getElementById('toastText');
+        
+        function showToast(message, isError = false) {
+            toastTextSpan.innerText = message;
+            toastBox.style.display = 'flex';
+            if(isError) {
+                toastBox.style.borderLeftColor = '#ef4444';
+                toastBox.querySelector('i').className = 'bi bi-exclamation-triangle-fill text-red-400';
+            } else {
+                toastBox.style.borderLeftColor = '#10b981';
+                toastBox.querySelector('i').className = 'bi bi-check-circle-fill text-emerald-400';
+            }
+            setTimeout(() => {
+                toastBox.style.display = 'none';
+            }, 3500);
+        }
+        
+        // DOM Elements
+        const fullNameInput = document.getElementById('fullName');
+        const regEmailInput = document.getElementById('regEmail');
+        const regPasswordInput = document.getElementById('regPassword');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const termsCheckbox = document.getElementById('termsCheckbox');
+        const nameErrorDiv = document.getElementById('nameError');
+        const emailErrorDiv = document.getElementById('emailError');
+        const matchErrorDiv = document.getElementById('matchError');
+        
+        // password checklist elements
+        const minLengthSpan = document.getElementById('minLengthCheck');
+        const letterSpan = document.getElementById('letterCheck');
+        const numberSpan = document.getElementById('numberCheck');
+        const strengthFill = document.getElementById('passwordStrengthFill');
+        
+        // toggle buttons
+        const toggleRegPass = document.getElementById('toggleRegPassword');
+        const toggleRegIcon = document.getElementById('toggleRegIcon');
+        const toggleConfirmBtn = document.getElementById('toggleConfirmPassword');
+        
+        // Update password strength & checklist
+        function updatePasswordFeedback() {
+            const pwd = regPasswordInput.value;
+            const hasMinLength = pwd.length >= 4;
+            const hasLetter = /[A-Za-z]/.test(pwd);
+            const hasNumber = /[0-9]/.test(pwd);
+            
+            minLengthSpan.innerHTML = hasMinLength ? '<i class="bi bi-check-circle-fill text-green-400 text-[10px]"></i> Min 4 characters' : '<i class="bi bi-circle text-gray-500 text-[10px]"></i> Min 4 characters';
+            minLengthSpan.className = `checklist-item ${hasMinLength ? 'text-green-400' : 'text-gray-400'}`;
+            
+            letterSpan.innerHTML = hasLetter ? '<i class="bi bi-check-circle-fill text-green-400 text-[10px]"></i> Letters' : '<i class="bi bi-circle text-gray-500 text-[10px]"></i> Letters';
+            letterSpan.className = `checklist-item ${hasLetter ? 'text-green-400' : 'text-gray-400'}`;
+            
+            numberSpan.innerHTML = hasNumber ? '<i class="bi bi-check-circle-fill text-green-400 text-[10px]"></i> Numbers' : '<i class="bi bi-circle text-gray-500 text-[10px]"></i> Numbers';
+            numberSpan.className = `checklist-item ${hasNumber ? 'text-green-400' : 'text-gray-400'}`;
+            
+            let score = 0;
+            if(hasMinLength) score++;
+            if(hasLetter) score++;
+            if(hasNumber) score++;
+            let percent = (score / 3) * 100;
+            strengthFill.style.width = percent + '%';
+            if(score === 0) strengthFill.style.backgroundColor = '#4b5563';
+            else if(score === 1) strengthFill.style.backgroundColor = '#ef4444';
+            else if(score === 2) strengthFill.style.backgroundColor = '#f59e0b';
+            else strengthFill.style.backgroundColor = '#10b981';
+        }
+        
+        function validateConfirm() {
+            const pwd = regPasswordInput.value;
+            const confirm = confirmPasswordInput.value;
+            if(confirm.length > 0 && pwd !== confirm) {
+                matchErrorDiv.classList.remove('hidden');
+                matchErrorDiv.textContent = 'Passwords do not match!';
+                return false;
+            } else {
+                matchErrorDiv.classList.add('hidden');
+                return true;
+            }
+        }
+        
+        function validateName() {
+            const name = fullNameInput.value.trim();
+            if(name.length > 0 && name.length < 3) {
+                nameErrorDiv.classList.remove('hidden');
+                nameErrorDiv.textContent = 'Name must be at least 3 characters';
+                return false;
+            } else {
+                nameErrorDiv.classList.add('hidden');
+                return true;
+            }
+        }
+        
+        function validateEmailFormat() {
+            const email = regEmailInput.value.trim();
+            const emailPattern = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
+            if(email.length > 0 && !emailPattern.test(email)) {
+                emailErrorDiv.classList.remove('hidden');
+                emailErrorDiv.textContent = 'Invalid email address (e.g., name@domain.com)';
+                return false;
+            } else {
+                emailErrorDiv.classList.add('hidden');
+                return true;
+            }
+        }
+        
+        // event listeners
+        fullNameInput.addEventListener('input', () => validateName());
+        regEmailInput.addEventListener('input', () => validateEmailFormat());
+        regPasswordInput.addEventListener('input', () => {
+            updatePasswordFeedback();
+            validateConfirm();
+        });
+        confirmPasswordInput.addEventListener('input', validateConfirm);
+        
+        // toggle visibility
+        if(toggleRegPass && regPasswordInput) {
+            toggleRegPass.addEventListener('click', () => {
+                const type = regPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                regPasswordInput.setAttribute('type', type);
+                toggleRegIcon.classList.toggle('bi-eye');
+                toggleRegIcon.classList.toggle('bi-eye-slash');
+            });
+        }
+        if(toggleConfirmBtn && confirmPasswordInput) {
+            const confirmIcon = toggleConfirmBtn.querySelector('i');
+            toggleConfirmBtn.addEventListener('click', () => {
+                const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                confirmPasswordInput.setAttribute('type', type);
+                confirmIcon.classList.toggle('bi-eye');
+                confirmIcon.classList.toggle('bi-eye-slash');
+            });
+        }
+        
+        // handle registration submit
+        const registerForm = document.getElementById('registerForm');
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const fullName = fullNameInput.value.trim();
+            const email = regEmailInput.value.trim();
+            const password = regPasswordInput.value;
+            const confirmPwd = confirmPasswordInput.value;
+            const isTermsChecked = termsCheckbox.checked;
+            
+            let isValid = true;
+            if(fullName.length < 3) {
+                showToast('Full name must be at least 3 characters', true);
+                isValid = false;
+            } else if(!validateEmailFormat()) {
+                showToast('Please enter a valid email address', true);
+                isValid = false;
+            } else if(password.length < 4) {
+                showToast('Password must be at least 4 characters', true);
+                isValid = false;
+            } else if(!/[A-Za-z]/.test(password)) {
+                showToast('Password must contain letters', true);
+                isValid = false;
+            } else if(!/[0-9]/.test(password)) {
+                showToast('Password must contain numbers', true);
+                isValid = false;
+            } else if(password !== confirmPwd) {
+                showToast('Passwords do not match', true);
+                isValid = false;
+            } else if(!isTermsChecked) {
+                showToast('You must agree to the Terms & Conditions', true);
+                isValid = false;
+            }
+            
+            if(isValid) {
+                if (typeof registerUser === 'function') {
+                    const result = registerUser(fullName, email, password);
+                    if (result.success) {
+                        showToast(`Registration successful! Welcome, ${fullName.split(' ')[0]}!`, false);
+                        registerForm.reset();
+                        strengthFill.style.width = '0%';
+                        matchErrorDiv.classList.add('hidden');
+                        nameErrorDiv.classList.add('hidden');
+                        emailErrorDiv.classList.add('hidden');
+                        termsCheckbox.checked = false;
+                        updatePasswordFeedback();
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1500);
+                    } else {
+                        showToast(result.message, true);
+                    }
+                } else {
+                    showToast('Authentication system not loaded. Please refresh the page.', true);
+                }
+            }
+        });
+        
+        // Social signup demo
+        document.getElementById('googleRegBtn')?.addEventListener('click', () => showToast('Google sign up coming soon', false));
+        document.getElementById('discordRegBtn')?.addEventListener('click', () => showToast('Discord sign up coming soon', false));
+        
+        // Login redirect
+        const loginRedirect = document.getElementById('loginRedirectBtn');
+        if(loginRedirect) loginRedirect.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.href = 'login.html';
+        });
+        
+        // Mobile menu
+        const mobileMenuBtn = document.getElementById('mobile-menu-button');
+        const mobileNavLinks = document.getElementById('mobile-nav-links');
+        if(mobileMenuBtn && mobileNavLinks) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileNavLinks.classList.toggle('hidden');
+                const icon = mobileMenuBtn.querySelector('i');
+                if(icon) icon.classList.toggle('bi-list', mobileNavLinks.classList.contains('hidden'));
+                if(icon) icon.classList.toggle('bi-x-lg', !mobileNavLinks.classList.contains('hidden'));
+            });
+        }
+        window.addEventListener('resize', () => {
+            if(window.innerWidth >= 768 && mobileNavLinks && !mobileNavLinks.classList.contains('hidden')) {
+                mobileNavLinks.classList.add('hidden');
+                const icon = mobileMenuBtn?.querySelector('i');
+                if(icon) icon.classList.add('bi-list');
+                if(icon) icon.classList.remove('bi-x-lg');
+            }
+        });
+        
+        // Initialize auth system
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof initAuthSystem === 'function') {
+                initAuthSystem();
+            }
+        });
+    </script>
+    <script src="cart.js"></script>
+</body>
+</html>

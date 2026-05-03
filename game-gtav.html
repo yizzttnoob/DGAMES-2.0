@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Game Detail | GTA V - D'GAMES</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        body {
+            background-color: #0a0c10;
+            scroll-behavior: smooth;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1c23;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2f3e4e;
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f5a623;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .cart-badge {
+            transition: all 0.2s ease;
+        }
+        .cart-badge.pop {
+            animation: badgePop 0.3s ease;
+        }
+        @keyframes badgePop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        .game-badge {
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+        }
+        .platform-icon {
+            transition: all 0.2s ease;
+        }
+        .platform-icon:hover {
+            transform: translateY(-2px);
+            filter: drop-shadow(0 0 6px rgba(245,166,35,0.5));
+        }
+        .spec-card {
+            background: linear-gradient(135deg, rgba(15,25,35,0.8) 0%, rgba(10,15,25,0.9) 100%);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .game-cover-small {
+            max-width: 320px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        @media (max-width: 768px) {
+            .game-cover-small {
+                max-width: 260px;
+            }
+        }
+    </style>
+    <!-- Tambahkan ini di dalam tag <head> untuk style avatar -->
+<style>
+    /* Style untuk avatar profile bulat */
+    .profile-avatar {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 12px;
+    }
+    
+    /* Animasi untuk badge cart */
+    @keyframes badgePop {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.3); }
+        100% { transform: scale(1); }
+    }
+    .cart-badge.pop { animation: badgePop 0.3s ease; }
+    
+    @keyframes slideInRight {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    .auth-toast { animation: slideInRight 0.3s ease; }
+</style>
+</head>
+<body class="bg-[#0a0c10] text-gray-200">
+
+    <!-- NAVBAR (Identik dengan kode asli) -->
+    <nav class="sticky top-0 z-50 bg-black/95 backdrop-blur-md border-b border-white/10 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-6">
+                    <a href="index.html" class="shrink-0">
+                        <img src="image/LOGO.png" alt="D'GAMES" class="h-8 w-auto">
+                    </a>
+                    <div class="hidden md:flex items-center space-x-1">
+                        <a href="index.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Home</a>
+                        <a href="games.html" class="px-4 py-2 text-sm font-semibold rounded-lg bg-white/5 text-white">Games</a>
+                        <a href="promo.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Promo</a>
+                        <a href="library.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Library</a>
+                        <a href="community.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Community</a>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button id="searchBtn" class="p-2 rounded-full text-gray-300 hover:bg-white/10 transition" aria-label="Search">
+                        <i class="bi bi-search text-xl"></i>
+                    </button>
+                    <button id="notifBtn" class="p-2 rounded-full text-gray-300 hover:bg-white/10 transition relative" aria-label="Notifications">
+                        <i class="bi bi-bell text-xl"></i>
+                        <span id="notifDot" class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full ring-2 ring-black"></span>
+                    </button>
+                    <button class="p-2 rounded-full text-gray-300 hover:bg-white/10 transition relative cart-button" aria-label="Cart">
+                        <i class="bi bi-cart text-xl"></i>
+                        <span class="cart-badge absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold ring-2 ring-black">0</span>
+                    </button>
+                    <div id="loginButton" class="hidden md:block text-xs px-3 py-1.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 cursor-pointer transition hover:bg-blue-500/30">
+                        <i class="bi bi-person-check-fill mr-1"></i> Login
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden px-4 pb-2">
+            <button id="mobile-menu-button" class="text-gray-300 hover:text-white focus:outline-none">
+                <i class="bi bi-list text-2xl"></i>
+            </button>
+            <div id="mobile-nav-links" class="hidden mt-2 pb-3 space-y-1 border-t border-white/10 pt-3">
+                <a href="denis.html" class="block px-3 py-2 rounded-lg bg-white/5 text-white font-medium">Home</a>
+                <a href="games.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Games</a>
+                <a href="promo.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Promo</a>
+                <a href="library.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Library</a>
+                <a href="community.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Community</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- SEARCH MODAL -->
+    <div id="searchModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[999] flex items-start justify-center pt-24 px-4">
+        <div class="w-full max-w-2xl bg-gray-900 rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
+            <div class="flex items-center gap-3 px-4 py-4 border-b border-white/10">
+                <i class="bi bi-search text-gray-400 text-xl"></i>
+                <input id="searchInput" type="text" placeholder="Search game, genre, publisher..." class="flex-1 bg-transparent text-white placeholder-gray-500 text-lg outline-none">
+                <button id="closeSearch" class="text-gray-400 hover:text-white transition"><i class="bi bi-x-lg text-xl"></i></button>
+            </div>
+            <div class="px-4 py-4">
+                <p class="text-gray-500 text-xs mb-3">Popular Searches</p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">GTA V</span>
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">Open World</span>
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">Action Adventure</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIF DROPDOWN -->
+    <div id="notifDropdown" class="hidden fixed right-6 top-20 z-50 w-80 bg-gray-900 border border-gray-700 rounded-xl shadow-2xl backdrop-blur-sm">
+        <div class="flex justify-between items-center px-4 py-3 border-b border-gray-800">
+            <span class="font-bold text-white">Notifications</span>
+            <button id="markAllRead" class="text-xs text-blue-400 hover:underline">Mark all as read</button>
+        </div>
+        <div class="max-h-80 overflow-y-auto">
+            <div class="notif-item px-4 py-3 hover:bg-white/5 border-b border-gray-800/60 flex items-start gap-3">
+                <i class="bi bi-gift-fill text-purple-400 mt-0.5"></i>
+                <div><p class="text-sm text-gray-200">GTA V Enhanced Edition now available with ray tracing!</p><p class="text-[10px] text-gray-500">2 hours ago</p></div>
+            </div>
+            <div class="notif-item px-4 py-3 hover:bg-white/5 border-b border-gray-800/60 flex items-start gap-3">
+                <i class="bi bi-tag-fill text-green-400 mt-0.5"></i>
+                <div><p class="text-sm text-gray-200">GTA Online Summer Update 2026 - New heists!</p><p class="text-[10px] text-gray-500">Yesterday</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT: GAME DETAIL PAGE - GTA V -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        <!-- Breadcrumb -->
+        <div class="flex items-center gap-2 text-sm text-gray-400 mb-6">
+            <a href="games.html" class="hover:text-white transition">Games</a>
+            <i class="bi bi-chevron-right text-xs"></i>
+            <span class="text-white font-medium">Grand Theft Auto V</span>
+        </div>
+
+        <!-- Hero Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+            <!-- Kiri: Cover Gambar -->
+            <div class="flex justify-center md:justify-start">
+                <div class="game-cover-small relative rounded-2xl overflow-hidden border border-gray-800 shadow-2xl group">
+                    <img src="image/gtav2.jpg" alt="GTA V Cover Art" class="w-full h-auto object-cover transition duration-500 group-hover:scale-105">
+                    <div class="absolute top-4 left-4 flex gap-2">
+                        <span class="bg-black/70 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-yellow-400"><i class="bi bi-star-fill text-yellow-400 mr-1"></i> 4.9</span>
+                        <span class="bg-black/70 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-orange-400"><i class="bi bi-trophy-fill mr-1"></i> Best Selling Game</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kanan: Info & Purchase Section -->
+            <div class="bg-gradient-to-br from-gray-900/80 to-gray-950/80 rounded-2xl border border-gray-800 p-6 backdrop-blur-sm">
+                <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">Grand Theft Auto V</h1>
+                <div class="flex flex-wrap items-center gap-3 mb-4">
+                    <span class="bg-orange-500/20 text-orange-300 text-xs px-3 py-1 rounded-full border border-orange-500/30">Rockstar Games</span>
+                    <span class="bg-purple-500/20 text-purple-300 text-xs px-3 py-1 rounded-full">Open World Action</span>
+                    <span class="bg-green-500/20 text-green-300 text-xs px-3 py-1 rounded-full"><i class="bi bi-people-fill"></i> Single Player + Online</span>
+                </div>
+                <p class="text-gray-300 text-sm leading-relaxed mb-5">
+                    Grand Theft Auto V is an action-adventure open-world game set in the sprawling city of Los Santos and the surrounding hills, beaches, and deserts of Southern San Andreas. 
+                    Experience the intertwined lives of three very different criminals: Michael, Franklin, and Trevor, as they execute daring heists and navigate the criminal underworld.
+                </p>
+                <div class="border-t border-gray-800 my-5 pt-4">
+                    <div class="flex items-baseline justify-between mb-4">
+                        <span class="text-gray-400 text-sm">Price</span>
+                        <div class="flex items-center gap-2">
+                            <span class="text-3xl font-bold text-green-400">$29.99</span>
+                            <span class="text-gray-500 line-through text-sm">$39.99</span>
+                            <span class="bg-red-500/80 text-white text-xs px-2 py-0.5 rounded-full">-25%</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-3">
+                        <button id="detailAddToCartBtn" class="w-full bg-orange-600 hover:bg-orange-500 transition py-3 rounded-xl font-bold text-white flex items-center justify-center gap-2"><i class="bi bi-cart-plus text-xl"></i> Add to Cart</button>
+                        <button class="w-full bg-white/5 hover:bg-white/10 border border-white/10 transition py-3 rounded-xl font-medium text-gray-200 flex items-center justify-center gap-2"><i class="bi bi-heart"></i> Wishlist</button>
+                    </div>
+                </div>
+                <div class="flex gap-3 justify-center mt-4">
+                    <i class="bi bi-windows platform-icon text-2xl text-blue-400"></i>
+                    <i class="bi bi-playstation platform-icon text-2xl text-gray-300"></i>
+                    <i class="bi bi-xbox platform-icon text-2xl text-green-400"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detail Tabs / Sections (Gameplay, Screenshots, System Requirements) -->
+        <div class="space-y-12">
+            <!-- About This Game -->
+            <div class="bg-gray-900/40 rounded-2xl border border-white/5 p-6 md:p-8">
+                <h2 class="text-2xl font-bold mb-5 flex items-center gap-2"><i class="bi bi-info-circle-fill text-orange-400"></i> About This Game</h2>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <p class="text-gray-300 leading-relaxed mb-4">Grand Theft Auto V is the largest and most ambitious open-world game ever created. When a young street hustler, a retired bank robber, and a terrifying psychopath find themselves entangled with some of the most frightening and deranged elements of the criminal underworld, the U.S. government, and the entertainment industry, they must pull off a series of dangerous heists to survive in a ruthless city where nobody can be trusted.</p>
+                        <p class="text-gray-300 leading-relaxed">Los Santos is a city of sun, sand, and supercars, but beneath the glossy surface lies a dark world of crime, corruption, and greed. GTA V features a massive open world, three playable protagonists, and an all-new online experience - GTA Online, which continues to evolve with regular updates.</p>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3"><i class="bi bi-check2-circle text-orange-400 text-xl"></i><span class="text-gray-200">Three playable protagonists with interwoven stories</span></div>
+                        <div class="flex items-center gap-3"><i class="bi bi-check2-circle text-orange-400 text-xl"></i><span class="text-gray-200">Massive open world covering over 75 km²</span></div>
+                        <div class="flex items-center gap-3"><i class="bi bi-check2-circle text-orange-400 text-xl"></i><span class="text-gray-200">GTA Online - endless multiplayer heists and activities</span></div>
+                        <div class="flex items-center gap-3"><i class="bi bi-check2-circle text-orange-400 text-xl"></i><span class="text-gray-200">Over 70+ hours of single-player campaign content</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Requirements -->
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="spec-card rounded-2xl p-6">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="bi bi-pc-display text-cyan-400"></i> Minimum Requirements</h3>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><span class="text-gray-400 w-28 inline-block">OS:</span> Windows 10 64-bit</li>
+                        <li><span class="text-gray-400 w-28 inline-block">Processor:</span> Intel Core i5-3470 / AMD FX-8350</li>
+                        <li><span class="text-gray-400 w-28 inline-block">Memory:</span> 8 GB RAM</li>
+                        <li><span class="text-gray-400 w-28 inline-block">Graphics:</span> NVIDIA GTX 660 2GB / AMD HD 7870 2GB</li>
+                        <li><span class="text-gray-400 w-28 inline-block">Storage:</span> 110 GB available space</li>
+                    </ul>
+                </div>
+                <div class="spec-card rounded-2xl p-6">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="bi bi-cpu text-cyan-400"></i> Recommended Requirements</h3>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><span class="text-gray-400 w-28 inline-block">OS:</span> Windows 11 64-bit</li>
+                        <li><span class="text-gray-400 w-28 inline-block">Processor:</span> Intel Core i7-10700K / AMD Ryzen 7 5800X</li>
+                        <li><span class="text-gray-400 w-28 inline-block">Memory:</span> 16 GB RAM</li>
+                        <li><span class="text-gray-400 w-28 inline-block">Graphics:</span> NVIDIA RTX 3060 / AMD RX 6700 XT</li>
+                        <li><span class="text-gray-400 w-28 inline-block">Storage:</span> 110 GB SSD</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Additional Info + Tags -->
+            <div class="bg-gray-900/30 rounded-2xl p-6 border border-white/5">
+                <h3 class="font-bold text-lg mb-3">Tags & Genres</h3>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1.5 bg-white/5 rounded-full text-xs">Open World</span>
+                    <span class="px-3 py-1.5 bg-white/5 rounded-full text-xs">Action Adventure</span>
+                    <span class="px-3 py-1.5 bg-white/5 rounded-full text-xs">Crime</span>
+                    <span class="px-3 py-1.5 bg-white/5 rounded-full text-xs">Sandbox</span>
+                    <span class="px-3 py-1.5 bg-white/5 rounded-full text-xs">Multiplayer</span>
+                    <span class="px-3 py-1.5 bg-white/5 rounded-full text-xs">Heist</span>
+                </div>
+                <div class="mt-5 pt-4 border-t border-gray-800 flex flex-wrap justify-between items-center text-xs text-gray-500 gap-3">
+                    <span><i class="bi bi-calendar3"></i> Release Date: September 17, 2013</span>
+                    <span><i class="bi bi-globe2"></i> Developer: Rockstar North</span>
+                    <span><i class="bi bi-translate"></i> Multi Language: EN/ID/FR/DE/ES/JA/KR</span>
+                </div>
+            </div>
+        </div>
+
+    </footer>
+
+    <script>
+        // Mobile menu logic from original code
+        const menuBtn = document.getElementById('mobile-menu-button');
+        const mobileNav = document.getElementById('mobile-nav-links');
+        if(menuBtn) menuBtn.addEventListener('click', () => { mobileNav.classList.toggle('hidden'); const icon = menuBtn.querySelector('i'); if(icon) { if(mobileNav.classList.contains('hidden')) { icon.classList.remove('bi-x-lg'); icon.classList.add('bi-list'); } else { icon.classList.remove('bi-list'); icon.classList.add('bi-x-lg'); } } });
+        window.addEventListener('resize', () => { if(window.innerWidth >= 768 && mobileNav && !mobileNav.classList.contains('hidden')) { mobileNav.classList.add('hidden'); const icon = menuBtn?.querySelector('i'); if(icon) { icon.classList.remove('bi-x-lg'); icon.classList.add('bi-list'); } } });
+        document.getElementById('loginButton')?.addEventListener('click', () => window.location.href = "login.html");
+
+        // Search Modal
+        const searchBtn = document.getElementById('searchBtn'), searchModal = document.getElementById('searchModal'), closeSearch = document.getElementById('closeSearch'), searchInputElem = document.getElementById('searchInput');
+        searchBtn?.addEventListener('click', () => searchModal.classList.remove('hidden'));
+        closeSearch?.addEventListener('click', () => searchModal.classList.add('hidden'));
+        searchModal?.addEventListener('click', (e) => { if(e.target === searchModal) searchModal.classList.add('hidden'); });
+        document.querySelectorAll('.search-tag').forEach(tag => tag.addEventListener('click', () => { if(searchInputElem) { searchInputElem.value = tag.textContent; } }));
+
+        // Notif dropdown
+        const notifBtn = document.getElementById('notifBtn'), notifDropdown = document.getElementById('notifDropdown'), notifDot = document.getElementById('notifDot'), markAllReadBtn = document.getElementById('markAllRead');
+        notifBtn?.addEventListener('click', (e) => { e.stopPropagation(); notifDropdown.classList.toggle('hidden'); });
+        document.addEventListener('click', (e) => { if(notifDropdown && !notifDropdown.contains(e.target) && e.target !== notifBtn) notifDropdown.classList.add('hidden'); });
+        markAllReadBtn?.addEventListener('click', () => { if(notifDot) notifDot.classList.add('hidden'); markAllReadBtn.textContent = 'all read'; markAllReadBtn.classList.remove('text-blue-400'); });
+
+        // Cart logic
+        let cartCount = 0;
+        const cartBadge = document.querySelector('.cart-badge');
+        const cartBtn = document.querySelector('.cart-button');
+        function updateCartBadge() { if(cartBadge) { cartBadge.textContent = cartCount; cartBadge.classList.add('pop'); setTimeout(() => cartBadge.classList.remove('pop'), 300); } }
+        if(cartBtn) cartBtn.addEventListener('click', () => window.location.href = "cart.html");
+        function addToCart(gameTitle) { 
+            cartCount++; updateCartBadge(); 
+            const toast = document.createElement('div'); toast.textContent = `✅ ${gameTitle} added to cart!`; 
+            toast.style.cssText = `position:fixed; bottom:20px; right:20px; background:#1f2937; color:white; padding:10px 20px; border-radius:8px; border-left:3px solid #f5a623; z-index:9999; animation:slideIn 0.3s ease; font-size:14px; font-family:Inter, sans-serif;`; 
+            document.body.appendChild(toast); setTimeout(() => toast.remove(), 2000); 
+        }
+        document.getElementById('detailAddToCartBtn')?.addEventListener('click', () => addToCart('Grand Theft Auto V'));
+        document.querySelectorAll('.related-buy')?.forEach(btn => btn.addEventListener('click', function(e) { e.stopPropagation(); const title = this.closest('.group')?.querySelector('h4')?.textContent || 'Game'; addToCart(title); }));
+    </script>
+    <!-- Auth System - Letakkan di paling bawah sebelum </body> -->
+<script src="auth.js"></script>
+<script>
+    // Inisialisasi auth system saat halaman dimuat
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof initAuthSystem === 'function') {
+            initAuthSystem();
+        }
+        
+        // Update cart badge dari localStorage
+        function updateCartBadgeFromLocal() {
+            let cartCount = 0;
+            try {
+                const savedCart = localStorage.getItem('shopping_cart') || localStorage.getItem('keranjang');
+                if (savedCart) {
+                    let cart = JSON.parse(savedCart);
+                    if (Array.isArray(cart)) {
+                        cartCount = cart.reduce((total, item) => total + (item.quantity || item.jumlah || 1), 0);
+                    }
+                }
+            } catch(e) { cartCount = 0; }
+            const badges = document.querySelectorAll('.cart-badge');
+            badges.forEach(badge => {
+                if (cartCount > 0) {
+                    badge.textContent = cartCount;
+                    badge.style.display = 'flex';
+                } else {
+                    badge.style.display = 'none';
+                }
+            });
+        }
+        updateCartBadgeFromLocal();
+        
+        // Login button handler
+        const loginBtn = document.getElementById('loginButton');
+        if (loginBtn && !window.isLoggedIn()) {
+            loginBtn.onclick = function() {
+                window.location.href = 'login.html';
+            };
+        }
+    });
+    
+    // Event listener untuk storage changes
+    window.addEventListener('storage', function(e) {
+        if (e.key === 'shopping_cart' || e.key === 'keranjang') {
+            const badges = document.querySelectorAll('.cart-badge');
+            if (e.newValue) {
+                try {
+                    let cart = JSON.parse(e.newValue);
+                    let count = cart.reduce((total, item) => total + (item.quantity || item.jumlah || 1), 0);
+                    badges.forEach(badge => {
+                        badge.textContent = count;
+                        badge.style.display = count > 0 ? 'flex' : 'none';
+                    });
+                } catch(e) {}
+            } else {
+                badges.forEach(badge => {
+                    badge.textContent = '0';
+                    badge.style.display = 'none';
+                });
+            }
+        }
+    });
+</script>
+<script src="cart.js"></script>
+</body>
+</html>

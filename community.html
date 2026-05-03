@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>D'GAMES | Community</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            color-scheme: dark;
+        }
+        * {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        body {
+            background-color: #0a0c10;
+            scroll-behavior: smooth;
+        }
+        .hero-bg {
+            background:
+                linear-gradient(90deg, rgba(10, 12, 16, 0.98) 0%, rgba(10, 12, 16, 0.84) 44%, rgba(10, 12, 16, 0.54) 100%),
+                linear-gradient(180deg, rgba(10, 12, 16, 0.18) 0%, rgba(10, 12, 16, 0.94) 100%),
+                url("https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1800&q=80") center / cover;
+        }
+        .panel {
+            background: rgba(255, 255, 255, 0.055);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 8px;
+        }
+        .panel-soft {
+            background: rgba(255, 255, 255, 0.035);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+        }
+        .social-btn {
+            width: 48px;
+            height: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            font-size: 21px;
+            transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+        }
+        .social-btn:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.28);
+        }
+        .social-btn.instagram:hover { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366); }
+        .social-btn.tiktok:hover, .social-btn.x:hover { background: #000000; }
+        .social-btn.discord:hover { background: #5865F2; }
+        .social-btn.facebook:hover { background: #1877F2; }
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.05);
+            color: #d1d5db;
+            border-color: rgba(255, 255, 255, 0.15);
+            transition: all 0.2s ease;
+        }
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        .filter-btn.is-active {
+            background: #ffffff;
+            color: #0a0c10;
+            border-color: #ffffff;
+        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #1a1c23; }
+        ::-webkit-scrollbar-thumb { background: #2f3e4e; border-radius: 8px; }
+        ::-webkit-scrollbar-thumb:hover { background: #0078f0; }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes badgePop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        .cart-badge.pop { animation: badgePop 0.3s ease; }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes popupFadeIn {
+            from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+        @keyframes popupFadeOut {
+            from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            to { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+        }
+        @keyframes confetti {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: popupFadeIn 0.3s ease;
+        }
+        .popup-overlay.hide { animation: popupFadeOut 0.3s ease forwards; }
+        .popup-container {
+            background: linear-gradient(135deg, #1a1c23 0%, #0f1117 100%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            padding: 0;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: popupFadeIn 0.3s ease;
+            overflow: hidden;
+        }
+        .popup-header {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            padding: 24px;
+            text-align: center;
+            position: relative;
+        }
+        .popup-header i { font-size: 64px; color: white; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2)); animation: badgePop 0.5s ease; }
+        .popup-content { padding: 32px 28px; text-align: center; }
+        .popup-content h3 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .reward-amount {
+            display: inline-block;
+            background: rgba(245, 158, 11, 0.2);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 40px;
+            padding: 8px 20px;
+            margin: 16px 0;
+            font-size: 24px;
+            font-weight: 800;
+            color: #fbbf24;
+        }
+        .popup-footer { padding: 20px 28px 28px; display: flex; gap: 12px; }
+        .popup-btn {
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+        }
+        .popup-btn-primary {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+        .popup-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+        }
+        .popup-btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: #9ca3af;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .popup-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+        .confetti-piece {
+            position: fixed;
+            pointer-events: none;
+            z-index: 10001;
+        }
+        #searchModal > div { animation: slideDown 0.2s ease; }
+        #notifDropdown:not(.hidden) { animation: fadeInDown 0.2s ease; }
+        
+        /* Style untuk avatar profile */
+        .profile-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body class="font-inter text-white">
+    <!-- NAVBAR -->
+    <nav class="sticky top-0 z-50 bg-black/95 backdrop-blur-md border-b border-white/10 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-6">
+                    <a href="index.html" class="shrink-0">
+                        <img src="image/LOGO.png" alt="D'GAMES" class="h-8 w-auto">
+                    </a>
+                    <div class="hidden md:flex items-center space-x-1">
+                        <a href="index.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Home</a>
+                        <a href="games.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Games</a>
+                        <a href="promo.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Promo</a>
+                        <a href="library.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Library</a>
+                        <a href="community.html" class="px-4 py-2 text-sm font-semibold rounded-lg bg-white/5 text-white">Community</a>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button id="searchBtn" class="p-2 rounded-full text-gray-300 hover:bg-white/10 transition" aria-label="Search">
+                        <i class="bi bi-search text-xl"></i>
+                    </button>
+                    <button id="notifBtn" class="p-2 rounded-full text-gray-300 hover:bg-white/10 transition relative" aria-label="Notifications">
+                        <i class="bi bi-bell text-xl"></i>
+                        <span id="notifDot" class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full ring-2 ring-black"></span>
+                    </button>
+                    <button class="p-2 rounded-full text-gray-300 hover:bg-white/10 transition relative cart-button" aria-label="Cart">
+                        <i class="bi bi-cart text-xl"></i>
+                        <span class="cart-badge absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold ring-2 ring-black">0</span>
+                    </button>
+                    <div id="loginButton" class="hidden md:block text-xs px-3 py-1.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 cursor-pointer transition hover:bg-blue-500/30">
+                        <i class="bi bi-person-check-fill mr-1"></i> Login
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden px-4 pb-2">
+            <button id="mobile-menu-button" class="text-gray-300 hover:text-white focus:outline-none">
+                <i class="bi bi-list text-2xl"></i>
+            </button>
+            <div id="mobile-nav-links" class="hidden mt-2 pb-3 space-y-1 border-t border-white/10 pt-3">
+                <a href="index.html" class="block px-3 py-2 rounded-lg bg-white/5 text-white font-medium">Home</a>
+                <a href="games.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Games</a>
+                <a href="promo.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Promo</a>
+                <a href="library.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Library</a>
+                <a href="community.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Community</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- SEARCH MODAL (content sama seperti sebelumnya, disingkat untuk efisiensi) -->
+    <div id="searchModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[999] flex items-start justify-center pt-24 px-4">
+        <div class="w-full max-w-2xl bg-gray-900 rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
+            <div class="flex items-center gap-3 px-4 py-4 border-b border-white/10">
+                <i class="bi bi-search text-gray-400 text-xl"></i>
+                <input id="searchInput" type="text" placeholder="Search games, genres, publishers, community posts..." class="flex-1 bg-transparent text-white placeholder-gray-500 text-lg outline-none">
+                <button id="closeSearch" class="text-gray-400 hover:text-white transition"><i class="bi bi-x-lg text-xl"></i></button>
+            </div>
+            <div class="px-4 py-4">
+                <p class="text-gray-500 text-xs mb-3">Popular Searches</p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">Valorant</span>
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">GTA V</span>
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">Minecraft</span>
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">Fortnite</span>
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">Tournament</span>
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">LFG</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION DROPDOWN -->
+    <div id="notifDropdown" class="hidden fixed right-6 top-20 z-50 w-80 bg-gray-900 border border-gray-700 rounded-xl shadow-2xl backdrop-blur-sm">
+        <div class="flex justify-between items-center px-4 py-3 border-b border-gray-800">
+            <span class="font-bold text-white">Notifications</span>
+            <button id="markAllRead" class="text-xs text-blue-400 hover:underline">Mark all as read</button>
+        </div>
+        <div class="max-h-80 overflow-y-auto">
+            <div class="notif-item px-4 py-3 hover:bg-white/5 border-b border-gray-800/60 flex items-start gap-3">
+                <i class="bi bi-gift-fill text-purple-400 mt-0.5"></i>
+                <div><p class="text-sm text-gray-200">Free game of the week: <span class="font-semibold">Valorant</span> is available!</p><p class="text-[10px] text-gray-500">2 hours ago</p></div>
+            </div>
+            <div class="notif-item px-4 py-3 hover:bg-white/5 border-b border-gray-800/60 flex items-start gap-3">
+                <i class="bi bi-tag-fill text-green-400 mt-0.5"></i>
+                <div><p class="text-sm text-gray-200">Summer Sale 2026: up to 75% off</p><p class="text-[10px] text-gray-500">Yesterday</p></div>
+            </div>
+            <div class="notif-item px-4 py-3 hover:bg-white/5 flex items-start gap-3">
+                <i class="bi bi-controller text-cyan-400 mt-0.5"></i>
+                <div><p class="text-sm text-gray-200">Your library has a new update!</p><p class="text-[10px] text-gray-500">2 days ago</p></div>
+            </div>
+            <div class="notif-item px-4 py-3 hover:bg-white/5 border-t border-gray-800/60 flex items-start gap-3">
+                <i class="bi bi-people-fill text-emerald-400 mt-0.5"></i>
+                <div><p class="text-sm text-gray-200">New community event: <span class="font-semibold">Night Cup 5v5</span> starts Saturday!</p><p class="text-[10px] text-gray-500">3 days ago</p></div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <!-- HERO SECTION (sama seperti sebelumnya) -->
+        <section class="hero-bg min-h-[calc(88svh-64px)] flex items-center">
+            <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
+                <div class="max-w-3xl">
+                    <div class="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-200">
+                        <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
+                        Online community hub
+                    </div>
+                    <h1 class="mt-5 text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-normal">
+                        Play together, chat, and grow with the D'GAMES community.
+                    </h1>
+                    <p class="mt-5 max-w-2xl text-base sm:text-lg text-gray-300 leading-8">
+                        Join our community space to find squads, join weekly tournaments, share gameplay highlights, and get event updates from fellow gamers.
+                    </p>
+                    <div class="mt-8 flex flex-col sm:flex-row gap-3">
+                        <a href="#channels" class="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-bold text-[#0a0c10] hover:bg-gray-200 transition no-underline">
+                            <i class="bi bi-discord"></i> Join Community
+                        </a>
+                        <a href="#events" class="inline-flex items-center justify-center gap-2 rounded-lg border border-white/10 px-5 py-3 text-sm font-bold text-white hover:bg-white/10 transition no-underline">
+                            <i class="bi bi-calendar-event"></i> View Events
+                        </a>
+                    </div>
+                    <div class="mt-8 flex flex-wrap items-center gap-3">
+                        <a href="#" class="social-btn instagram" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="social-btn tiktok" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+                        <a href="#" class="social-btn discord" aria-label="Discord"><i class="bi bi-discord"></i></a>
+                        <a href="#" class="social-btn facebook" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="social-btn x" aria-label="X"><i class="bi bi-twitter-x"></i></a>
+                    </div>
+                </div>
+                <div class="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-4xl">
+                    <div class="panel px-5 py-4"><p class="text-3xl font-extrabold">12.8K</p><p class="text-sm text-gray-400">Active members</p></div>
+                    <div class="panel px-5 py-4"><p class="text-3xl font-extrabold">42</p><p class="text-sm text-gray-400">Open squads</p></div>
+                    <div class="panel px-5 py-4"><p class="text-3xl font-extrabold">18</p><p class="text-sm text-gray-400">Events per month</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- COMMUNITY SPACES / CHANNELS (sama seperti sebelumnya, disingkat) -->
+        <section id="channels" class="border-t border-white/5 py-14 sm:py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+                    <div><p class="text-sm font-bold uppercase tracking-[0.18em] text-cyan-300">Community Spaces</p><h2 class="mt-2 text-3xl sm:text-4xl font-extrabold tracking-normal">Choose your hangout spot</h2></div>
+                    <p class="max-w-2xl text-gray-400 leading-7">Each channel is designed for different needs: quick party search, casual chat, or showing off your cleanest clutch.</p>
+                </div>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                    <article class="panel p-5 min-h-[220px] flex flex-col justify-between hover:border-cyan-300/40 transition">
+                        <div><div class="h-11 w-11 rounded-lg bg-cyan-400/10 text-cyan-200 flex items-center justify-center text-2xl"><i class="bi bi-headset"></i></div><h3 class="mt-5 text-xl font-bold">LFG Voice Room</h3><p class="mt-2 text-sm text-gray-400 leading-6">Find teammates for ranked, casual, or co-op without long waits.</p></div>
+                        <span class="mt-5 text-xs font-bold text-cyan-200">326 online</span>
+                    </article>
+                    <article class="panel p-5 min-h-[220px] flex flex-col justify-between hover:border-emerald-300/40 transition">
+                        <div><div class="h-11 w-11 rounded-lg bg-emerald-400/10 text-emerald-200 flex items-center justify-center text-2xl"><i class="bi bi-trophy"></i></div><h3 class="mt-5 text-xl font-bold">Tournament Desk</h3><p class="mt-2 text-sm text-gray-400 leading-6">Bracket info, match schedule, rules, and event winner announcements.</p></div>
+                        <span class="mt-5 text-xs font-bold text-emerald-200">8 active brackets</span>
+                    </article>
+                    <article class="panel p-5 min-h-[220px] flex flex-col justify-between hover:border-amber-300/40 transition">
+                        <div><div class="h-11 w-11 rounded-lg bg-amber-400/10 text-amber-200 flex items-center justify-center text-2xl"><i class="bi bi-camera-video"></i></div><h3 class="mt-5 text-xl font-bold">Clip Showcase</h3><p class="mt-2 text-sm text-gray-400 leading-6">Upload gameplay highlights, vote for favorite clips, and get into the weekly recap.</p></div>
+                        <span class="mt-5 text-xs font-bold text-amber-200">149 clips this week</span>
+                    </article>
+                    <article class="panel p-5 min-h-[220px] flex flex-col justify-between hover:border-rose-300/40 transition">
+                        <div><div class="h-11 w-11 rounded-lg bg-rose-400/10 text-rose-200 flex items-center justify-center text-2xl"><i class="bi bi-chat-dots"></i></div><h3 class="mt-5 text-xl font-bold">General Lobby</h3><p class="mt-2 text-sm text-gray-400 leading-6">Discuss new games, patch updates, build recommendations, and random topics.</p></div>
+                        <span class="mt-5 text-xs font-bold text-rose-200">2.1K messages today</span>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- LIVE FEED & WEEKLY QUEST SECTION (disingkat) -->
+        <section class="py-14 sm:py-16 bg-white/[0.02] border-y border-white/5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-[1.4fr_0.9fr] gap-6">
+                    <div>
+                        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+                            <div><p class="text-sm font-bold uppercase tracking-[0.18em] text-emerald-300">Live Feed</p><h2 class="mt-2 text-3xl sm:text-4xl font-extrabold tracking-normal">Activity</h2></div>
+                            <div class="flex flex-wrap gap-2">
+                                <button class="filter-btn is-active rounded-full border px-4 py-2 text-xs font-bold transition" data-filter="all">All</button>
+                                <button class="filter-btn rounded-full border px-4 py-2 text-xs font-bold transition" data-filter="match">Looking for Game</button>
+                                <button class="filter-btn rounded-full border px-4 py-2 text-xs font-bold transition" data-filter="clip">Clip</button>
+                                <button class="filter-btn rounded-full border px-4 py-2 text-xs font-bold transition" data-filter="tips">Tips</button>
+                            </div>
+                        </div>
+                        <div class="mt-6 space-y-3" id="communityPostsContainer">
+                            <article class="community-post panel-soft p-4 sm:p-5" data-category="match" data-title="LFG Need 2 players" data-author="DenisGanteng69">
+                                <div class="flex gap-4"><div class="h-11 w-11 shrink-0 rounded-full bg-cyan-400/10 text-cyan-200 flex items-center justify-center font-bold">DG</div><div class="min-w-0 flex-1"><div class="flex flex-wrap items-center gap-x-2 gap-y-1"><h3 class="font-bold text-white">DenisGanteng69</h3><span class="text-xs text-gray-400">just now</span><span class="rounded-full bg-cyan-400/15 px-2 py-0.5 text-xs font-bold text-cyan-300">Looking for Game</span></div><p class="mt-2 text-sm text-gray-300 leading-6">Need 2 players for ranked tonight. Support and entry roles still open.</p></div></div>
+                            </article>
+                            <article class="community-post panel-soft p-4 sm:p-5" data-category="clip" data-title="Uploaded an ace 1v4" data-author="Budi01Gaming">
+                                <div class="flex gap-4"><div class="h-11 w-11 shrink-0 rounded-full bg-amber-400/10 text-amber-200 flex items-center justify-center font-bold">BG</div><div class="min-w-0 flex-1"><div class="flex flex-wrap items-center gap-x-2 gap-y-1"><h3 class="font-bold text-white">Budi01Gaming</h3><span class="text-xs text-gray-400">12 minutes ago</span><span class="rounded-full bg-amber-400/15 px-2 py-0.5 text-xs font-bold text-amber-300">Clip</span></div><p class="mt-2 text-sm text-gray-300 leading-6">Uploaded an ace 1v4 in Clip Showcase. Open voting for the weekly highlight.</p></div></div>
+                            </article>
+                            <article class="community-post panel-soft p-4 sm:p-5" data-category="tips" data-title="How to read mini-map" data-author="Ilhamtampan">
+                                <div class="flex gap-4"><div class="h-11 w-11 shrink-0 rounded-full bg-emerald-400/10 text-emerald-200 flex items-center justify-center font-bold">IT</div><div class="min-w-0 flex-1"><div class="flex flex-wrap items-center gap-x-2 gap-y-1"><h3 class="font-bold text-white">Ilhamtampan</h3><span class="text-xs text-gray-400">34 minutes ago</span><span class="rounded-full bg-emerald-400/15 px-2 py-0.5 text-xs font-bold text-emerald-300">Tips</span></div><p class="mt-2 text-sm text-gray-300 leading-6">New thread: how to read the mini-map and rotate objectives for beginners.</p></div></div>
+                            </article>
+                            <article class="community-post panel-soft p-4 sm:p-5" data-category="match" data-title="Open trial weekend squad" data-author="KaisyarHirohito">
+                                <div class="flex gap-4"><div class="h-11 w-11 shrink-0 rounded-full bg-rose-400/10 text-rose-200 flex items-center justify-center font-bold">KH</div><div class="min-w-0 flex-1"><div class="flex flex-wrap items-center gap-x-2 gap-y-1"><h3 class="font-bold text-white">KaisyarHirohito</h3><span class="text-xs text-gray-400">1 hour ago</span><span class="rounded-full bg-rose-400/15 px-2 py-0.5 text-xs font-bold text-rose-300">Squad</span></div><p class="mt-2 text-sm text-gray-300 leading-6">Open trial weekend squad. Must be active on voice and ready to practice twice a week.</p></div></div>
+                            </article>
+                        </div>
+                    </div>
+                    <aside class="panel p-5 sm:p-6">
+                        <p class="text-sm font-bold uppercase tracking-[0.18em] text-amber-300">Weekly Quest</p>
+                        <h2 class="mt-2 text-2xl font-extrabold text-white">Level up with the community</h2>
+                        <p class="mt-3 text-sm text-gray-400 leading-6">Complete community activities to get into the weekly spotlight.</p>
+                        <div class="mt-6 space-y-4">
+                            <div><div class="flex justify-between text-sm"><span class="text-gray-300">Share 3 clips</span><span class="font-bold text-white">2/3</span></div><div class="mt-2 h-2 rounded-full bg-white/10"><div class="h-2 w-2/3 rounded-full bg-amber-400"></div></div></div>
+                            <div><div class="flex justify-between text-sm"><span class="text-gray-300">Join weekly event</span><span class="font-bold text-white">1/1</span></div><div class="mt-2 h-2 rounded-full bg-white/10"><div class="h-2 w-full rounded-full bg-emerald-400"></div></div></div>
+                            <div><div class="flex justify-between text-sm"><span class="text-gray-300">Help new members</span><span class="font-bold text-white">4/5</span></div><div class="mt-2 h-2 rounded-full bg-white/10"><div class="h-2 w-4/5 rounded-full bg-cyan-400"></div></div></div>
+                        </div>
+                        <button id="claimRewardBtn" class="mt-7 w-full rounded-lg bg-white px-4 py-3 text-sm font-bold text-[#0a0c10] hover:bg-gray-200 transition">Claim Reward</button>
+                    </aside>
+                </div>
+            </div>
+        </section>
+
+        <!-- EVENTS SECTION (disingkat) -->
+        <section id="events" class="py-14 sm:py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+                    <div><p class="text-sm font-bold uppercase tracking-[0.18em] text-rose-300">Events</p><h2 class="mt-2 text-3xl sm:text-4xl font-extrabold tracking-normal">Community calendar</h2></div>
+                    <a href="#" class="inline-flex items-center gap-2 text-sm font-bold text-gray-300 hover:text-white no-underline">View all events <i class="bi bi-arrow-right"></i></a>
+                </div>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <article class="panel overflow-hidden"><div class="h-36 bg-[url('https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80')] bg-cover bg-center"></div><div class="p-5"><div class="flex items-center justify-between gap-3"><span class="rounded-full bg-rose-400/10 px-3 py-1 text-xs font-bold text-rose-200">Saturday, 8:00 PM</span><span class="text-xs text-gray-500">64 slots</span></div><h3 class="mt-4 text-xl font-bold text-white">Night Cup 5v5</h3><p class="mt-2 text-sm text-gray-400 leading-6">Quick tournament for new and veteran squads. Single elimination system.</p><button class="event-register-btn mt-5 w-full rounded-lg border border-white/10 px-4 py-2 text-sm font-bold text-white hover:bg-white/10 transition" data-event="Night Cup 5v5">Register</button></div></article>
+                    <article class="panel overflow-hidden"><div class="h-36 bg-[url('https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?auto=format&fit=crop&w=900&q=80')] bg-cover bg-center"></div><div class="p-5"><div class="flex items-center justify-between gap-3"><span class="rounded-full bg-cyan-400/10 px-3 py-1 text-xs font-bold text-cyan-200">Sunday, 3:00 PM</span><span class="text-xs text-gray-500">Open room</span></div><h3 class="mt-4 text-xl font-bold text-white">Casual Gaming Day</h3><p class="mt-2 text-sm text-gray-400 leading-6">Casual session to get to know each other, find parties, and try new games together.</p><button class="event-register-btn mt-5 w-full rounded-lg border border-white/10 px-4 py-2 text-sm font-bold text-white hover:bg-white/10 transition" data-event="Casual Gaming Day">Join</button></div></article>
+                    <article class="panel overflow-hidden"><div class="h-36 bg-[url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=900&q=80')] bg-cover bg-center"></div><div class="p-5"><div class="flex items-center justify-between gap-3"><span class="rounded-full bg-emerald-400/10 px-3 py-1 text-xs font-bold text-emerald-200">Wednesday, 7:30 PM</span><span class="text-xs text-gray-500">Live</span></div><h3 class="mt-4 text-xl font-bold text-white">Patch Talk</h3><p class="mt-2 text-sm text-gray-400 leading-6">Discuss the latest updates, meta, balance changes, and build recommendations from mentors.</p><button class="event-register-btn mt-5 w-full rounded-lg border border-white/10 px-4 py-2 text-sm font-bold text-white hover:bg-white/10 transition" data-event="Patch Talk">Remind Me</button></div></article>
+                </div>
+            </div>
+        </section>
+
+        <!-- LEADERBOARD SECTION (disingkat) -->
+        <section class="py-14 sm:py-16 bg-white/[0.02] border-y border-white/5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-6 items-start">
+                    <div><p class="text-sm font-bold uppercase tracking-[0.18em] text-cyan-300">Leaderboard</p><h2 class="mt-2 text-3xl sm:text-4xl font-extrabold tracking-normal text-white">Most active squads</h2><p class="mt-4 text-gray-400 leading-7">Ranking is based on event participation, voice room activity, and contributions to new members.</p></div>
+                    <div class="space-y-3">
+                        <div class="panel-soft p-4 flex items-center gap-4"><span class="h-10 w-10 rounded-lg bg-amber-300 text-[#0a0c10] flex items-center justify-center font-extrabold">1</span><div class="min-w-0 flex-1"><h3 class="font-bold text-white">KFK Community</h3><p class="text-sm text-gray-400">1,842 activity points</p></div><i class="bi bi-arrow-up-right text-emerald-300"></i></div>
+                        <div class="panel-soft p-4 flex items-center gap-4"><span class="h-10 w-10 rounded-lg bg-white/10 text-white flex items-center justify-center font-extrabold">2</span><div class="min-w-0 flex-1"><h3 class="font-bold text-white">Night Owls</h3><p class="text-sm text-gray-400">1,605 activity points</p></div><i class="bi bi-dash-lg text-gray-500"></i></div>
+                        <div class="panel-soft p-4 flex items-center gap-4"><span class="h-10 w-10 rounded-lg bg-white/10 text-white flex items-center justify-center font-extrabold">3</span><div class="min-w-0 flex-1"><h3 class="font-bold text-white">Pixel Rush</h3><p class="text-sm text-gray-400">1,477 activity points</p></div><i class="bi bi-arrow-up-right text-emerald-300"></i></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-[#0a0c10] bg-black/40 pt-12 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
+                <div class="col-span-2"><img src="image/LOGO.png" alt="D'GAMES" class="h-8 w-auto"><p class="text-gray-400 text-sm mt-3">The ultimate destination for PC & console gamers. Next-level entertainment.</p><div class="flex gap-4 mt-5"><i class="bi bi-twitter-x text-gray-400 hover:text-white text-xl cursor-pointer"></i><i class="bi bi-discord text-gray-400 hover:text-white text-xl cursor-pointer"></i><i class="bi bi-instagram text-gray-400 hover:text-white text-xl cursor-pointer"></i><i class="bi bi-youtube text-gray-400 hover:text-white text-xl cursor-pointer"></i></div></div>
+                <div><h4 class="font-bold text-white">Discover</h4><ul class="mt-3 space-y-2 text-gray-400 text-sm list-none p-0"><li>Browse Store</li><li>Free Games</li><li>DENZ Originals</li><li>Coming Soon</li></ul></div>
+                <div><h4 class="font-bold text-white">Support</h4><ul class="mt-3 space-y-2 text-gray-400 text-sm list-none p-0"><li>Help Center</li><li>Refund Policy</li><li>Account</li><li>Parental Guide</li></ul></div>
+                <div><h4 class="font-bold text-white">Legal</h4><ul class="mt-3 space-y-2 text-gray-400 text-sm list-none p-0"><li>Terms of Service</li><li>Privacy Policy</li><li>Store Agreement</li><li>Cookies Settings</li></ul></div>
+            </div>
+            <div class="mt-10 pt-6 text-center text-gray-500 text-xs">&copy; 2026 D'GAMES &mdash; Built for gamers, supported by Denis Ganteng.</div>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script>
+        // Popup functions
+        function showRewardPopup() {
+            const overlay = document.createElement('div');
+            overlay.className = 'popup-overlay';
+            const popupContainer = document.createElement('div');
+            popupContainer.className = 'popup-container';
+            popupContainer.innerHTML = `<div class="popup-header"><i class="bi bi-gift-fill"></i></div><div class="popup-content"><h3>🎉 Congratulations! 🎉</h3><p class="text-gray-300 mb-4">You've successfully claimed your weekly reward!</p><div class="reward-amount"><i class="bi bi-star-fill text-yellow-400 mr-2"></i>+100 XP</div><p class="text-sm text-gray-400 mt-4">Keep completing quests to earn more rewards!</p></div><div class="popup-footer"><button class="popup-btn popup-btn-secondary" id="closePopupBtn">Close</button><button class="popup-btn popup-btn-primary" id="continueBtn">Continue</button></div>`;
+            overlay.appendChild(popupContainer);
+            document.body.appendChild(overlay);
+            document.body.style.overflow = 'hidden';
+            createConfetti();
+            function closePopup() { overlay.classList.add('hide'); setTimeout(() => { overlay.remove(); document.body.style.overflow = ''; }, 300); }
+            popupContainer.querySelector('#closePopupBtn').addEventListener('click', closePopup);
+            popupContainer.querySelector('#continueBtn').addEventListener('click', closePopup);
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) closePopup(); });
+            document.addEventListener('keydown', function escHandler(e) { if (e.key === 'Escape') { closePopup(); document.removeEventListener('keydown', escHandler); } });
+        }
+        
+        function createConfetti() {
+            const colors = ['#fbbf24', '#f59e0b', '#ef4444', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899'];
+            for (let i = 0; i < 150; i++) {
+                const confetti = document.createElement('div');
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const size = Math.random() * 10 + 5;
+                const leftPos = Math.random() * 100;
+                const animationDuration = Math.random() * 2 + 2;
+                const delay = Math.random() * 0.5;
+                confetti.style.cssText = `position: fixed; top: -20px; left: ${leftPos}%; width: ${size}px; height: ${size}px; background: ${color}; transform: rotate(${Math.random() * 360}deg); pointer-events: none; z-index: 10001; animation: confetti ${animationDuration}s linear ${delay}s forwards; clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);`;
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), animationDuration * 1000 + delay * 1000);
+            }
+        }
+        
+        function showEventRegistrationPopup(eventName) {
+            const overlay = document.createElement('div');
+            overlay.className = 'popup-overlay';
+            const popupContainer = document.createElement('div');
+            popupContainer.className = 'popup-container';
+            popupContainer.innerHTML = `<div class="popup-header" style="background: linear-gradient(135deg, #3b82f6, #2563eb);"><i class="bi bi-check-circle-fill"></i></div><div class="popup-content"><h3 style="background: linear-gradient(135deg, #60a5fa, #3b82f6); -webkit-background-clip: text; background-clip: text;">✅ Registration Successful!</h3><p class="text-gray-300 mb-4">You've been registered for</p><div class="reward-amount" style="border-color: rgba(59,130,246,0.3); background: rgba(59,130,246,0.1); color: #60a5fa;"><i class="bi bi-calendar-check mr-2"></i>${eventName}</div><p class="text-sm text-gray-400 mt-4">Check your email for confirmation and event details!</p></div><div class="popup-footer"><button class="popup-btn popup-btn-primary" id="closeEventPopup" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">Great!</button></div>`;
+            overlay.appendChild(popupContainer);
+            document.body.appendChild(overlay);
+            document.body.style.overflow = 'hidden';
+            function closePopup() { overlay.classList.add('hide'); setTimeout(() => { overlay.remove(); document.body.style.overflow = ''; }, 300); }
+            popupContainer.querySelector('#closeEventPopup').addEventListener('click', closePopup);
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) closePopup(); });
+        }
+        
+        document.getElementById('claimRewardBtn')?.addEventListener('click', showRewardPopup);
+        document.querySelectorAll('.event-register-btn').forEach(btn => { btn.addEventListener('click', () => showEventRegistrationPopup(btn.getAttribute('data-event') || 'this event')); });
+        
+        // Mobile menu
+        const menuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-nav-links');
+        function toggleMobileMenu() { if (!mobileMenu || !menuButton) return; mobileMenu.classList.toggle('hidden'); const icon = menuButton.querySelector('i'); if (icon) { icon.classList.toggle('bi-list'); icon.classList.toggle('bi-x-lg'); } }
+        if (menuButton) menuButton.addEventListener('click', toggleMobileMenu);
+        window.addEventListener('resize', () => { if (window.innerWidth >= 768 && mobileMenu && !mobileMenu.classList.contains('hidden')) { mobileMenu.classList.add('hidden'); const icon = menuButton?.querySelector('i'); if (icon) { icon.classList.add('bi-list'); icon.classList.remove('bi-x-lg'); } } });
+        document.addEventListener('click', function(event) { if (!mobileMenu || mobileMenu.classList.contains('hidden')) return; const isClickInsideMenu = mobileMenu.contains(event.target); const isClickOnButton = menuButton && menuButton.contains(event.target); if (!isClickInsideMenu && !isClickOnButton) { mobileMenu.classList.add('hidden'); const icon = menuButton?.querySelector('i'); if (icon) { icon.classList.add('bi-list'); icon.classList.remove('bi-x-lg'); } } });
+        
+        // Login button
+        document.getElementById('loginButton')?.addEventListener('click', () => window.location.href = 'login.html');
+        
+        // Search Modal
+        const searchBtn = document.getElementById('searchBtn');
+        const searchModal = document.getElementById('searchModal');
+        const closeSearch = document.getElementById('closeSearch');
+        const searchInput = document.getElementById('searchInput');
+        searchBtn?.addEventListener('click', () => { searchModal.classList.remove('hidden'); setTimeout(() => searchInput?.focus(), 100); });
+        closeSearch?.addEventListener('click', () => { searchModal.classList.add('hidden'); if (searchInput) searchInput.value = ''; });
+        searchModal?.addEventListener('click', (e) => { if (e.target === searchModal) { searchModal.classList.add('hidden'); if (searchInput) searchInput.value = ''; } });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { searchModal.classList.add('hidden'); if (searchInput) searchInput.value = ''; } });
+        if (searchInput) { searchInput.addEventListener('input', function() { const keyword = this.value.toLowerCase().trim(); document.querySelectorAll('.community-post').forEach(post => { const title = post.getAttribute('data-title') || ''; const author = post.getAttribute('data-author') || ''; const content = post.querySelector('p')?.textContent.toLowerCase() || ''; post.style.display = (keyword === '' || title.toLowerCase().includes(keyword) || author.toLowerCase().includes(keyword) || content.includes(keyword)) ? '' : 'none'; }); }); }
+        document.querySelectorAll('.search-tag').forEach(tag => { tag.addEventListener('click', () => { if (searchInput) { searchInput.value = tag.textContent.trim(); searchInput.dispatchEvent(new Event('input')); searchInput.focus(); } }); });
+        
+        // Notification Dropdown
+        const notifBtn = document.getElementById('notifBtn');
+        const notifDropdown = document.getElementById('notifDropdown');
+        const notifDot = document.getElementById('notifDot');
+        const markAllRead = document.getElementById('markAllRead');
+        notifBtn?.addEventListener('click', (e) => { e.stopPropagation(); notifDropdown.classList.toggle('hidden'); });
+        document.addEventListener('click', (e) => { if (notifDropdown && !notifDropdown.contains(e.target) && e.target !== notifBtn) notifDropdown.classList.add('hidden'); });
+        markAllRead?.addEventListener('click', () => { if (notifDot) notifDot.classList.add('hidden'); document.querySelectorAll('.notif-item').forEach(item => item.style.opacity = '0.5'); markAllRead.textContent = 'All read'; markAllRead.classList.remove('text-blue-400'); markAllRead.classList.add('text-gray-500'); markAllRead.style.cursor = 'default'; });
+        
+        // Filter Buttons
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const posts = document.querySelectorAll('.community-post');
+        filterBtns.forEach(btn => { btn.addEventListener('click', function() { const filter = this.dataset.filter; filterBtns.forEach(item => item.classList.remove('is-active')); this.classList.add('is-active'); posts.forEach(post => { if (filter === 'all' || post.dataset.category === filter) { post.classList.remove('hidden'); post.style.display = ''; } else { post.classList.add('hidden'); } }); }); });
+        
+        // Cart Functionality
+        let cartCount = 0;
+        const cartBadge = document.querySelector('.cart-badge');
+        const cartButton = document.querySelector('.cart-button');
+        function loadCartCount() { try { const savedCart = localStorage.getItem('shopping_cart') || localStorage.getItem('keranjang') || localStorage.getItem('simple_cart'); if (savedCart) { let cart = JSON.parse(savedCart); if (Array.isArray(cart)) { cartCount = cart.reduce((total, item) => total + (item.quantity || item.jumlah || 1), 0); } else { cartCount = 0; } } else { cartCount = 0; } } catch(e) { cartCount = 0; } updateCartBadge(); }
+        function updateCartBadge() { if (cartBadge) { cartBadge.textContent = cartCount; cartBadge.classList.add('pop'); setTimeout(() => cartBadge.classList.remove('pop'), 300); } }
+        if (cartButton) cartButton.addEventListener('click', () => window.location.href = "cart.html");
+        loadCartCount();
+        window.addEventListener('storage', function(e) { if (e.key === 'shopping_cart' || e.key === 'keranjang' || e.key === 'simple_cart') loadCartCount(); });
+    </script>
+    <script src="cart.js"></script>
+</body>
+</html>

@@ -1,0 +1,724 @@
+<!-- promo.html - DIPERBARUI DENGAN SISTEM LOGIN -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>D'GAMES | Summer Sale - Promo Codes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #FFB347, #FF6B35, #F97316);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .summer-badge {
+            background: linear-gradient(135deg, #FF6B35, #F97316);
+            box-shadow: 0 0 20px rgba(249,115,22,0.3);
+        }
+        .countdown-card {
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,107,53,0.3);
+        }
+        .sale-tag {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        .hover-glow:hover {
+            box-shadow: 0 0 25px rgba(249,115,22,0.4);
+            border-color: #F97316 !important;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1c23;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2f3e4e;
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0078f0;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes badgePop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .cart-badge {
+            transition: all 0.2s ease;
+        }
+        .cart-badge.pop {
+            animation: badgePop 0.3s ease;
+        }
+        .promo-toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #1f2937, #111827);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 12px;
+            border-left: 4px solid #F97316;
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+            font-size: 14px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .promo-toast i {
+            font-size: 20px;
+            color: #F97316;
+        }
+        .promo-card {
+            transition: all 0.3s ease;
+        }
+        .promo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(249,115,22,0.2);
+        }
+        .copy-btn {
+            transition: all 0.2s ease;
+        }
+        .copy-btn.copied {
+            background: #10b981 !important;
+        }
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        #searchModal > div { animation: slideDown 0.2s ease; }
+        #notifDropdown:not(.hidden) { animation: fadeInDown 0.2s ease; }
+        
+        /* Style untuk avatar profile */
+        .profile-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body class="bg-[#0a0c10] text-gray-200">
+
+    <!-- SEARCH MODAL -->
+    <div id="searchModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[999] flex items-start justify-center pt-24 px-4">
+        <div class="w-full max-w-2xl bg-gray-900 rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
+            <div class="flex items-center gap-3 px-4 py-4 border-b border-white/10">
+                <i class="bi bi-search text-gray-400 text-xl"></i>
+                <input id="searchInput" type="text" placeholder="Search games, genre, publisher..." class="flex-1 bg-transparent text-white placeholder-gray-500 text-lg outline-none">
+                <button id="closeSearch" class="text-gray-400 hover:text-white transition"><i class="bi bi-x-lg text-xl"></i></button>
+            </div>
+            <div class="px-4 py-4">
+                <p class="text-gray-500 text-xs mb-3">Popular Searches</p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">CyberPunk</span>
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">GTA V</span>
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">Minecraft</span>
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">Valorant</span>
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">Summer Sale</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION DROPDOWN -->
+    <div id="notifDropdown" class="hidden fixed right-6 top-20 z-50 w-80 bg-gray-900 border border-gray-700 rounded-xl shadow-2xl backdrop-blur-sm">
+        <div class="flex justify-between items-center px-4 py-3 border-b border-gray-800">
+            <span class="font-bold text-white">Notifications</span>
+            <button id="markAllRead" class="text-xs text-blue-400 hover:underline">Mark all as read</button>
+        </div>
+        <div class="max-h-80 overflow-y-auto">
+            <div class="notif-item px-4 py-3 hover:bg-white/5 border-b border-gray-800/60 flex items-start gap-3">
+                <i class="bi bi-gift-fill text-purple-400 mt-0.5"></i>
+                <div><p class="text-sm text-gray-200">Free game of the week: <span class="font-semibold">Valorant</span> available!</p><p class="text-[10px] text-gray-500">2 hours ago</p></div>
+            </div>
+            <div class="notif-item px-4 py-3 hover:bg-white/5 border-b border-gray-800/60 flex items-start gap-3">
+                <i class="bi bi-tag-fill text-green-400 mt-0.5"></i>
+                <div><p class="text-sm text-gray-200">Summer Sale 2026: up to 75% off!</p><p class="text-[10px] text-gray-500">Yesterday</p></div>
+            </div>
+            <div class="notif-item px-4 py-3 hover:bg-white/5 flex items-start gap-3">
+                <i class="bi bi-controller text-cyan-400 mt-0.5"></i>
+                <div><p class="text-sm text-gray-200">Your library has new updates!</p><p class="text-[10px] text-gray-500">2 days ago</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <nav class="sticky top-0 z-50 bg-black/95 backdrop-blur-md border-b border-white/10 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-6">
+                    <a href="index.html" class="shrink-0">
+                        <img src="image/LOGO.png" alt="D'GAMES" class="h-8 w-auto">
+                    </a>
+                    <div class="hidden md:flex items-center space-x-1">
+                        <a href="index.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Home</a>
+                        <a href="games.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Games</a>
+                        <a href="promo.html" class="px-4 py-2 text-sm font-semibold rounded-lg bg-white/5 text-white">Promo</a>
+                        <a href="library.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Library</a>
+                        <a href="community.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Community</a>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button id="searchBtn" class="p-2 rounded-full text-gray-300 hover:bg-white/10 transition"><i class="bi bi-search text-xl"></i></button>
+                    <button id="notifBtn" class="p-2 rounded-full text-gray-300 hover:bg-white/10 transition relative">
+                        <i class="bi bi-bell text-xl"></i>
+                        <span id="notifDot" class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full ring-2 ring-black"></span>
+                    </button>
+                    <a href="cart.html" class="p-2 rounded-full text-gray-300 hover:bg-white/10 transition relative cart-button">
+                        <i class="bi bi-cart text-xl"></i>
+                        <span class="cart-badge absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold ring-2 ring-black">0</span>
+                    </a>
+                    <div id="loginButton" class="hidden md:block text-xs px-3 py-1.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 cursor-pointer transition hover:bg-blue-500/30">
+                        <i class="bi bi-person-check-fill mr-1"></i> Login
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden px-4 pb-2">
+            <button id="mobile-menu-button" class="text-gray-300 hover:text-white focus:outline-none">
+                <i class="bi bi-list text-2xl"></i>
+            </button>
+            <div id="mobile-nav-links" class="hidden mt-2 pb-3 space-y-1 border-t border-white/10 pt-3">
+                <a href="index.html" class="block px-3 py-2 rounded-lg bg-white/5 text-white font-medium">Home</a>
+                <a href="games.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Games</a>
+                <a href="promo.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Promo</a>
+                <a href="library.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Library</a>
+                <a href="community.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Community</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-orange-600/20 via-amber-500/10 to-yellow-600/20"></div>
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-orange-500/30 rounded-full blur-[100px]"></div>
+        <div class="absolute bottom-0 right-0 w-80 h-80 bg-yellow-500/20 rounded-full blur-[100px]"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 py-16 md:py-24 relative z-10">
+            <div class="text-center">
+                <div class="inline-block mb-4">
+                    <span class="summer-badge text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg inline-flex items-center gap-2">
+                        <i class="bi bi-sun-fill text-yellow-300"></i> SUMMER SALE 2026
+                        <i class="bi bi-tsunami text-cyan-300"></i>
+                    </span>
+                </div>
+                <h1 class="text-5xl md:text-7xl font-extrabold gradient-text mb-4">
+                    UP TO <span class="bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">80% OFF</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-8">
+                    The heat of summer, the chill of discounts! Get your favorite games at the best prices.
+                </p>
+                
+                <div class="flex justify-center gap-4 md:gap-6 mb-10">
+                    <div class="countdown-card rounded-xl px-4 py-3 min-w-[70px] text-center">
+                        <span id="days" class="text-3xl md:text-4xl font-bold text-orange-400">00</span>
+                        <p class="text-xs text-gray-400">Days</p>
+                    </div>
+                    <div class="countdown-card rounded-xl px-4 py-3 min-w-[70px] text-center">
+                        <span id="hours" class="text-3xl md:text-4xl font-bold text-orange-400">00</span>
+                        <p class="text-xs text-gray-400">Hours</p>
+                    </div>
+                    <div class="countdown-card rounded-xl px-4 py-3 min-w-[70px] text-center">
+                        <span id="minutes" class="text-3xl md:text-4xl font-bold text-orange-400">00</span>
+                        <p class="text-xs text-gray-400">Minutes</p>
+                    </div>
+                    <div class="countdown-card rounded-xl px-4 py-3 min-w-[70px] text-center">
+                        <span id="seconds" class="text-3xl md:text-4xl font-bold text-orange-400">00</span>
+                        <p class="text-xs text-gray-400">Seconds</p>
+                    </div>
+                </div>
+                
+                <a href="#sale-games" class="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-3 px-8 rounded-full transition transform hover:scale-105 shadow-lg">
+                    <i class="bi bi-fire"></i> Claim Discounts Now
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0]">
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="relative block w-full h-[50px]">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="fill-[#0a0c10]"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- SALE GAMES SECTION -->
+    <section id="sale-games" class="py-16 px-4 max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold"><span class="gradient-text">Special Summer Deals</span></h2>
+            <p class="text-gray-400 mt-3 max-w-2xl mx-auto">Massive discounts + FREE gift codes for every purchase over $30</p>
+        </div>
+        
+        <!-- Flash Sale Banner -->
+        <div class="bg-gradient-to-r from-red-900/40 to-orange-900/40 border border-orange-500/30 rounded-2xl p-5 mb-12 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <div class="bg-red-600 p-3 rounded-full animate-pulse">
+                    <i class="bi bi-lightning-charge-fill text-2xl text-yellow-300"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-xl text-white">FLASH SALE</h3>
+                    <p class="text-orange-300 text-sm">Hurry! Limited time offer</p>
+                </div>
+            </div>
+            <div class="flex gap-3 text-center">
+                <div class="bg-black/60 px-4 py-2 rounded-lg"><span id="flashHour" class="text-2xl font-bold text-orange-400">00</span><span class="text-xs">Hours</span></div>
+                <div class="bg-black/60 px-4 py-2 rounded-lg"><span id="flashMin" class="text-2xl font-bold text-orange-400">00</span><span class="text-xs">Minutes</span></div>
+                <div class="bg-black/60 px-4 py-2 rounded-lg"><span id="flashSec" class="text-2xl font-bold text-orange-400">00</span><span class="text-xs">Seconds</span></div>
+            </div>
+        </div>
+        
+        <!-- Games Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="games-grid">
+            <!-- Game cards will be populated by JavaScript -->
+        </div>
+        
+        <!-- PROMO CODES SECTION -->
+        <div class="mt-16">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-white mb-2"><i class="bi bi-ticket-perforated text-orange-400"></i> Active Promo Codes</h2>
+                <p class="text-gray-400">Claim these codes and use them at checkout for extra discounts!</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="promo-codes-container">
+                <!-- Promo cards will be populated by JavaScript -->
+            </div>
+            
+            <!-- Active Promo Display -->
+            <div class="mt-8 bg-gradient-to-r from-green-900/20 to-emerald-900/20 border border-green-500/30 rounded-xl p-5">
+                <div class="flex items-center justify-between flex-wrap gap-4">
+                    <div class="flex items-center gap-3">
+                        <i class="bi bi-check-circle-fill text-green-400 text-2xl"></i>
+                        <div>
+                            <h4 class="font-bold text-white">Active Promo on Cart</h4>
+                            <p class="text-sm text-gray-400" id="active-promo-status">No promo code applied yet</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <input type="text" id="promo-input" placeholder="Enter promo code" class="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-orange-500">
+                        <button id="apply-promo-btn" class="px-6 py-2 bg-orange-600 hover:bg-orange-500 rounded-lg font-semibold transition">Apply</button>
+                        <button id="clear-promo-btn" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition">Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-white/10 mt-12 bg-black/40 pt-12 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
+                <div class="col-span-2">
+                    <div class="flex items-center gap-2"><img src="image/LOGO.png" alt="Logo" class="h-8 w-auto"></div>
+                    <p class="text-gray-400 text-sm mt-3">The ultimate destination for PC & console gamers. Next-level entertainment.</p>
+                    <div class="flex gap-4 mt-5">
+                        <i class="bi bi-twitter-x text-gray-400 hover:text-white text-xl cursor-pointer"></i>
+                        <i class="bi bi-discord text-gray-400 hover:text-white text-xl cursor-pointer"></i>
+                        <a href="https://www.instagram.com/denn_2307/"><i class="bi bi-instagram text-gray-400 hover:text-white text-xl cursor-pointer"></i></a>
+                        <i class="bi bi-youtube text-gray-400 hover:text-white text-xl cursor-pointer"></i>
+                    </div>
+                </div>
+                <div><h4 class="font-bold text-white">Discover</h4><ul class="mt-3 space-y-2 text-gray-400 text-sm"><li>Browse Store</li><li>Free Games</li><li>DENZ Originals</li><li>Coming Soon</li></ul></div>
+                <div><h4 class="font-bold text-white">Support</h4><ul class="mt-3 space-y-2 text-gray-400 text-sm"><li>Help Center</li><li>Refund Policy</li><li>Account</li><li>Parental Guide</li></ul></div>
+                <div><h4 class="font-bold text-white">Legal</h4><ul class="mt-3 space-y-2 text-gray-400 text-sm"><li>Terms of Service</li><li>Privacy Policy</li><li>Store Agreement</li><li>Cookies Settings</li></ul></div>
+            </div>
+            <div class="border-t border-white/5 mt-10 pt-6 text-center text-gray-500 text-xs">© 2026 D'GAMES — Built for gamers, supported by Denis Ganteng.</div>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script>
+        // ==================== DATA GAMES ====================
+        const gamesData = [
+            { name: "CyberPunk", originalPrice: 49.99, salePrice: 14.99, discount: 70, image: "image/cyberpunk.jpg", rating: 4.8, isFree: false },
+            { name: "Valorant", originalPrice: 0, salePrice: 0, discount: 0, image: "image/valorant.jpg", rating: 4.8, isFree: true, badge: "Summer Freebie" },
+            { name: "GTA V", originalPrice: 29.99, salePrice: 11.99, discount: 60, image: "image/gtav.jpg", rating: 4.9, isFree: false },
+            { name: "Minecraft", originalPrice: 26.99, salePrice: 16.19, discount: 40, image: "image/minecraft.jpg", rating: 4.7, isFree: false },
+            { name: "Counter-Strike 2", originalPrice: 0, salePrice: 0, discount: 0, image: "image/CS2.jpg", rating: 4.9, isFree: true, badge: "Summer Pass" },
+            { name: "Spider-Man 2", originalPrice: 49.99, salePrice: 24.99, discount: 50, image: "image/spiderman2.jpg", rating: 4.8, isFree: false },
+            { name: "God of War Ragnarök", originalPrice: 39.99, salePrice: 21.99, discount: 45, image: "image/gowr.jpg", rating: 4.9, isFree: false },
+            { name: "Red Dead Redemption 2", originalPrice: 59.99, salePrice: 26.99, discount: 55, image: "image/rdr2.jpg", rating: 4.9, isFree: false, badge: "BUNDLE -55%" }
+        ];
+
+        // ==================== PROMO CODES DATA ====================
+        const promoData = [
+            { code: "SUMMER30", discount: 30, type: "percent", minPurchase: 0, description: "30% off entire purchase", color: "orange" },
+            { code: "FLASH10", discount: 10, type: "percent", minPurchase: 0, description: "10% off flash sale", color: "red" },
+            { code: "WELCOME20", discount: 20, type: "percent", minPurchase: 0, description: "20% off for new users", color: "green" },
+            { code: "FREESHIP", discount: 5, type: "percent", minPurchase: 20, description: "$5 off on orders $20+", color: "blue" },
+            { code: "GAMER15", discount: 15, type: "percent", minPurchase: 0, description: "15% off for loyal gamers", color: "purple" }
+        ];
+
+        // ==================== CART FUNCTIONS ====================
+        let cartCount = 0;
+        const cartBadge = document.querySelector('.cart-badge');
+        
+        function loadCartCount() {
+            try {
+                const savedCart = localStorage.getItem('shopping_cart') || localStorage.getItem('keranjang');
+                if (savedCart) {
+                    let cart = JSON.parse(savedCart);
+                    if (Array.isArray(cart)) {
+                        cartCount = cart.reduce((total, item) => total + (item.quantity || item.jumlah || 1), 0);
+                    } else { cartCount = 0; }
+                } else { cartCount = 0; }
+            } catch(e) { cartCount = 0; }
+            if(cartBadge) { cartBadge.textContent = cartCount; }
+        }
+        
+        function updateCartBadge() { 
+            if(cartBadge) { 
+                cartBadge.textContent = cartCount; 
+                cartBadge.classList.add('pop'); 
+                setTimeout(() => cartBadge.classList.remove('pop'), 300); 
+            } 
+        }
+        
+        function showToast(message, isSuccess = true) {
+            const toast = document.createElement('div');
+            toast.className = 'promo-toast';
+            toast.innerHTML = `<i class="bi ${isSuccess ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'}"></i><div>${message}</div>`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+        
+        function addToCart(gameName, price, gameImage) {
+            let cart = JSON.parse(localStorage.getItem('shopping_cart')) || [];
+            let found = false;
+            for (let i = 0; i < cart.length; i++) {
+                if (cart[i].name === gameName) {
+                    cart[i].quantity = (cart[i].quantity || 1) + 1;
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                cart.push({
+                    id: gameName.toLowerCase().replace(/ /g, '_'),
+                    name: gameName,
+                    price: price,
+                    quantity: 1,
+                    image: gameImage
+                });
+            }
+            localStorage.setItem('shopping_cart', JSON.stringify(cart));
+            cartCount = cart.reduce((total, item) => total + (item.quantity || 1), 0);
+            updateCartBadge();
+            showToast(`✅ ${gameName} added to cart!`, true);
+        }
+        
+        // ==================== PROMO CODE FUNCTIONS ====================
+        let currentPromo = null;
+        
+        function savePromoToStorage(promo) {
+            if (promo) {
+                localStorage.setItem('active_promo', JSON.stringify(promo));
+            } else {
+                localStorage.removeItem('active_promo');
+            }
+        }
+        
+        function loadPromoFromStorage() {
+            const saved = localStorage.getItem('active_promo');
+            if (saved) {
+                currentPromo = JSON.parse(saved);
+                updatePromoStatusDisplay();
+                return true;
+            }
+            return false;
+        }
+        
+        function applyPromoCode(code) {
+            const foundPromo = promoData.find(p => p.code === code.toUpperCase());
+            if (foundPromo) {
+                currentPromo = foundPromo;
+                savePromoToStorage(currentPromo);
+                updatePromoStatusDisplay();
+                showToast(`🎉 Promo code "${code}" applied! ${foundPromo.discount}% discount will be applied at checkout.`, true);
+                return true;
+            } else {
+                showToast(`❌ Invalid promo code "${code}". Please try again.`, false);
+                return false;
+            }
+        }
+        
+        function clearPromoCode() {
+            currentPromo = null;
+            savePromoToStorage(null);
+            updatePromoStatusDisplay();
+            showToast(`Promo code cleared.`, true);
+        }
+        
+        function updatePromoStatusDisplay() {
+            const statusElement = document.getElementById('active-promo-status');
+            if (statusElement) {
+                if (currentPromo) {
+                    statusElement.innerHTML = `<span class="text-green-400">✓ Active: ${currentPromo.code}</span> - ${currentPromo.description}`;
+                } else {
+                    statusElement.innerHTML = 'No promo code applied yet. Use one of the codes above!';
+                }
+            }
+        }
+        
+        function claimPromoCode(code) {
+            applyPromoCode(code);
+        }
+        
+        // ==================== RENDER GAMES ====================
+        function renderGames() {
+            const container = document.getElementById('games-grid');
+            if (!container) return;
+            
+            container.innerHTML = gamesData.map(game => `
+                <div class="group bg-gradient-to-b from-gray-900 to-gray-950 rounded-xl overflow-hidden border border-gray-800 hover:border-orange-500/70 transition-all duration-300 hover:transform hover:-translate-y-2 hover-glow relative">
+                    ${game.discount > 0 ? `<div class="absolute top-0 left-0 sale-tag text-white text-xs font-bold px-3 py-1 rounded-br-xl z-10">-${game.discount}%</div>` : ''}
+                    ${game.badge ? `<div class="absolute top-0 left-0 ${game.badge.includes('BUNDLE') ? 'bg-purple-600' : 'bg-green-600'} text-white text-xs font-bold px-3 py-1 rounded-br-xl z-10">${game.badge}</div>` : ''}
+                    <div class="relative overflow-hidden">
+                        <img src="${game.image}" alt="${game.name}" class="w-full h-48 object-cover group-hover:scale-110 transition duration-300" onerror="this.src='https://placehold.co/400x300?text=Game'">
+                        <div class="absolute top-3 right-3 bg-black/70 backdrop-blur-sm px-2 py-1 rounded-lg text-xs font-semibold text-yellow-400">
+                            <i class="bi bi-star-fill text-yellow-400 text-xs"></i> ${game.rating}
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="game-title font-bold text-white text-lg mb-1">${game.name}</h3>
+                        <p class="text-gray-400 text-sm mb-3">${game.isFree ? 'Free to Play' : 'Premium Game'}</p>
+                        <div class="flex items-center justify-between">
+                            ${game.isFree ? 
+                                `<span class="text-green-400 text-sm font-semibold">Free + Bonus</span>` :
+                                `<div><span class="text-red-400 font-bold text-lg">$${game.salePrice.toFixed(2)}</span><span class="text-gray-500 text-sm line-through ml-2">$${game.originalPrice.toFixed(2)}</span></div>`
+                            }
+                            <button class="add-to-cart-btn px-4 py-1.5 bg-orange-600 hover:bg-orange-500 rounded-lg text-white text-sm font-medium transition" data-name="${game.name}" data-price="${game.salePrice}" data-image="${game.image}">
+                                <i class="bi ${game.isFree ? 'bi-download' : 'bi-cart-plus'} mr-1"></i> ${game.isFree ? 'Get' : 'Buy'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const gameName = btn.getAttribute('data-name');
+                    const price = parseFloat(btn.getAttribute('data-price'));
+                    const gameImage = btn.getAttribute('data-image');
+                    addToCart(gameName, price, gameImage);
+                });
+            });
+        }
+        
+        // ==================== RENDER PROMO CODES ====================
+        function renderPromoCodes() {
+            const container = document.getElementById('promo-codes-container');
+            if (!container) return;
+            
+            const colorClasses = {
+                orange: "from-orange-600/20 to-orange-800/20 border-orange-500/30",
+                red: "from-red-600/20 to-red-800/20 border-red-500/30",
+                green: "from-green-600/20 to-green-800/20 border-green-500/30",
+                blue: "from-blue-600/20 to-blue-800/20 border-blue-500/30",
+                purple: "from-purple-600/20 to-purple-800/20 border-purple-500/30"
+            };
+            
+            container.innerHTML = promoData.map(promo => `
+                <div class="promo-card bg-gradient-to-r ${colorClasses[promo.color]} border rounded-xl p-5 text-center">
+                    <div class="mb-3">
+                        <span class="text-3xl font-bold ${promo.color === 'orange' ? 'text-orange-400' : promo.color === 'red' ? 'text-red-400' : promo.color === 'green' ? 'text-green-400' : promo.color === 'blue' ? 'text-blue-400' : 'text-purple-400'}">${promo.discount}%</span>
+                        <span class="text-gray-400 text-sm">OFF</span>
+                    </div>
+                    <div class="bg-black/40 rounded-lg p-2 mb-3">
+                        <code class="text-white font-mono text-lg">${promo.code}</code>
+                    </div>
+                    <p class="text-gray-400 text-xs mb-3">${promo.description}</p>
+                    <button class="claim-promo-btn w-full py-2 bg-white/10 hover:bg-white/20 rounded-lg text-sm font-semibold transition" data-code="${promo.code}">
+                        <i class="bi bi-ticket-perforated mr-1"></i> Claim & Apply
+                    </button>
+                </div>
+            `).join('');
+            
+            document.querySelectorAll('.claim-promo-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const code = btn.getAttribute('data-code');
+                    claimPromoCode(code);
+                });
+            });
+        }
+        
+        // ==================== COUNTDOWN TIMERS ====================
+        function getSummerDeadline() {
+            let deadline = new Date();
+            deadline.setDate(deadline.getDate() + 30);
+            deadline.setHours(23, 59, 59, 999);
+            return deadline;
+        }
+        
+        let summerCountdown = getSummerDeadline();
+        
+        function updateMainCountdown() {
+            let now = new Date().getTime();
+            let distance = summerCountdown - now;
+            if(distance < 0) { 
+                document.getElementById('days').innerText = "00"; 
+                document.getElementById('hours').innerText="00"; 
+                document.getElementById('minutes').innerText="00"; 
+                document.getElementById('seconds').innerText="00"; 
+                return; 
+            }
+            let days = Math.floor(distance / (1000*60*60*24));
+            let hours = Math.floor((distance % (86400000))/(3600000));
+            let minutes = Math.floor((distance % 3600000)/60000);
+            let seconds = Math.floor((distance % 60000)/1000);
+            document.getElementById('days').innerText = days.toString().padStart(2,'0');
+            document.getElementById('hours').innerText = hours.toString().padStart(2,'0');
+            document.getElementById('minutes').innerText = minutes.toString().padStart(2,'0');
+            document.getElementById('seconds').innerText = seconds.toString().padStart(2,'0');
+        }
+        
+        function updateFlashSale() {
+            let now = new Date();
+            let endOfHour = new Date(now);
+            endOfHour.setMinutes(59, 59, 999);
+            let diff = endOfHour - now;
+            if(diff<0) diff=0;
+            let hours = Math.floor(diff/3600000);
+            let mins = Math.floor((diff%3600000)/60000);
+            let secs = Math.floor((diff%60000)/1000);
+            document.getElementById('flashHour').innerText = hours.toString().padStart(2,'0');
+            document.getElementById('flashMin').innerText = mins.toString().padStart(2,'0');
+            document.getElementById('flashSec').innerText = secs.toString().padStart(2,'0');
+        }
+        
+        // ==================== INITIALIZATION ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            renderGames();
+            renderPromoCodes();
+            loadCartCount();
+            loadPromoFromStorage();
+            
+            setInterval(updateMainCountdown, 1000);
+            setInterval(updateFlashSale, 1000);
+            updateMainCountdown();
+            updateFlashSale();
+            
+            document.getElementById('apply-promo-btn')?.addEventListener('click', () => {
+                const input = document.getElementById('promo-input');
+                const code = input.value.trim();
+                if (code) applyPromoCode(code);
+                else showToast('Please enter a promo code', false);
+            });
+            
+            document.getElementById('clear-promo-btn')?.addEventListener('click', () => {
+                clearPromoCode();
+            });
+            
+            // Mobile menu
+            const menuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-nav-links');
+            if(menuButton) {
+                menuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+            
+            // Search modal
+            const searchBtn = document.getElementById('searchBtn');
+            const searchModal = document.getElementById('searchModal');
+            const closeSearch = document.getElementById('closeSearch');
+            
+            searchBtn?.addEventListener('click', () => searchModal.classList.remove('hidden'));
+            closeSearch?.addEventListener('click', () => searchModal.classList.add('hidden'));
+            searchModal?.addEventListener('click', (e) => { if(e.target === searchModal) searchModal.classList.add('hidden'); });
+            
+            const searchInput = document.getElementById('searchInput');
+            if(searchInput) {
+                searchInput.addEventListener('input', function() {
+                    const keyword = this.value.toLowerCase();
+                    const games = document.querySelectorAll('#games-grid .group');
+                    games.forEach(game => {
+                        const title = game.querySelector('.game-title')?.textContent.toLowerCase() || '';
+                        if(keyword === '' || title.includes(keyword)) {
+                            game.style.display = '';
+                        } else {
+                            game.style.display = 'none';
+                        }
+                    });
+                });
+            }
+            
+            document.querySelectorAll('.search-tag').forEach(tag => {
+                tag.addEventListener('click', () => {
+                    if(searchInput) {
+                        searchInput.value = tag.textContent;
+                        searchInput.dispatchEvent(new Event('input'));
+                    }
+                });
+            });
+            
+            // Notification dropdown
+            const notifBtn = document.getElementById('notifBtn');
+            const notifDropdown = document.getElementById('notifDropdown');
+            notifBtn?.addEventListener('click', (e) => { e.stopPropagation(); notifDropdown.classList.toggle('hidden'); });
+            document.addEventListener('click', (e) => { if(notifDropdown && !notifDropdown.contains(e.target) && e.target !== notifBtn) notifDropdown.classList.add('hidden'); });
+            
+            // Login button - redirect ke login page jika belum login
+            const loginBtn = document.getElementById('loginButton');
+            if(loginBtn) {
+                loginBtn.addEventListener('click', () => {
+                    window.location.href = "login.html";
+                });
+            }
+            
+            // Mark all read
+            const markAllRead = document.getElementById('markAllRead');
+            if(markAllRead) {
+                markAllRead.addEventListener('click', () => {
+                    document.getElementById('notifDot')?.classList.add('hidden');
+                    showToast('All notifications marked as read', true);
+                });
+            }
+            
+            // Sync cart across tabs
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'shopping_cart' || e.key === 'keranjang') {
+                    loadCartCount();
+                }
+                if (e.key === 'active_promo') {
+                    loadPromoFromStorage();
+                }
+            });
+        });
+    </script>
+    <script src="cart.js"></script>
+</body>
+</html>

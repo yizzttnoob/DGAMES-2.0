@@ -1,0 +1,373 @@
+<!-- cart.html - DIPERBARUI DENGAN SISTEM LOGIN -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Keranjang - D'GAMES | Kelompok 5</title>
+    <!-- tailwind css-->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0a0c10;
+            scroll-behavior: smooth;
+        }
+        * {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        .btn-epic {
+            background: linear-gradient(95deg, #0078f0 0%, #00b2ff 100%);
+            transition: all 0.2s;
+        }
+        .btn-epic:hover {
+            filter: brightness(1.08);
+            transform: scale(0.98);
+            box-shadow: 0 8px 20px rgba(0, 120, 240, 0.4);
+        }
+        .btn-outline-epic {
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(20, 20, 30, 0.6);
+            backdrop-filter: blur(4px);
+        }
+        .btn-outline-epic:hover {
+            background: rgba(0, 120, 240, 0.25);
+            border-color: #0078f0;
+        }
+        .cart-item {
+            transition: all 0.3s ease;
+        }
+        .cart-item:hover {
+            background: rgba(255,255,255,0.05);
+            transform: translateX(5px);
+        }
+        .quantity-btn {
+            transition: all 0.2s ease;
+        }
+        .quantity-btn:hover {
+            background: #0078f0;
+            color: white;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .cart-container {
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes slideInRight {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes badgePop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        .cart-badge.pop {
+            animation: badgePop 0.3s ease;
+        }
+        #promo-code-input:focus {
+            border-color: #F97316;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(249,115,22,0.3);
+        }
+        .remove-promo-btn {
+            transition: all 0.2s ease;
+        }
+        .remove-promo-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+        .promo-tag {
+            transition: all 0.2s ease;
+        }
+        .promo-tag:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* Style untuk avatar profile */
+        .profile-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body class="bg-[#121417] text-gray-300">
+     <nav class="sticky top-0 z-50 bg-black/95 backdrop-blur-md border-b border-white/10 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-6">
+                    <a href="index.html" class="shrink-0">
+                        <img src="image/LOGO.png" alt="D'GAMES" class="h-8 w-auto" onerror="this.src='https://placehold.co/120x40?text=D%27GAMES'">
+                    </a>
+                    <div class="hidden md:flex items-center space-x-1">
+                        <a href="index.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Home</a>
+                        <a href="games.html" class="px-4 py-2 text-sm font-semibold rounded-lg bg-white/5 text-white">Games</a>
+                        <a href="promo.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Promo</a>
+                        <a href="library.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Library</a>
+                        <a href="community.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Community</a>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-3">
+                    <button id="searchBtn" class="p-2 rounded-full text-gray-300 hover:bg-white/10 transition" aria-label="Search">
+                        <i class="bi bi-search text-xl"></i>
+                    </button>
+                    <button id="notifBtn" class="p-2 rounded-full text-gray-300 hover:bg-white/10 transition relative" aria-label="Notifications">
+                        <i class="bi bi-bell text-xl"></i>
+                        <span id="notifDot" class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full ring-2 ring-black"></span>
+                    </button>
+                    <a href="cart.html" class="p-2 rounded-full text-gray-300 hover:bg-white/10 transition relative" aria-label="Cart">
+                        <i class="bi bi-cart text-xl"></i>
+                        <span class="cart-badge absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold ring-2 ring-black">0</span>
+                    </a>
+                    <div id="loginButton" class="hidden md:block text-xs px-3 py-1.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 cursor-pointer transition hover:bg-blue-500/30">
+                        <i class="bi bi-person-check-fill mr-1"></i> Login
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="md:hidden px-4 pb-2">
+            <button id="mobile-menu-button" class="text-gray-300 hover:text-white focus:outline-none">
+                <i class="bi bi-list text-2xl"></i>
+            </button>
+            <div id="mobile-nav-links" class="hidden mt-2 pb-3 space-y-1 border-t border-white/10 pt-3">
+                <a href="index.html" class="block px-3 py-2 rounded-lg bg-white/5 text-white font-medium">Home</a>
+                <a href="games.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Games</a>
+                <a href="promo.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Promo</a>
+                <a href="library.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Library</a>
+                <a href="community.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Community</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Cart Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 cart-container">
+        <div class="mb-8">
+            <div class="flex items-center gap-3 mb-2">
+                <i class="bi bi-cart3 text-3xl text-blue-400"></i>
+                <h1 class="text-3xl md:text-4xl font-bold text-white">Shopping Cart</h1>
+            </div>
+            <p class="text-gray-400">Review your items before checkout</p>
+            <div class="w-20 h-1 bg-blue-500 mt-4 rounded-full"></div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 space-y-4" id="cart-items-container"></div>
+            <div class="lg:col-span-1">
+                <div class="bg-gradient-to-b from-gray-900 to-gray-950 rounded-xl border border-gray-800 p-6 sticky top-24">
+                    <h3 class="text-xl font-bold text-white mb-4">Order Summary</h3>
+                    <div class="space-y-3 border-b border-gray-800 pb-4" id="order-summary-items">
+                        <div class="flex justify-between text-gray-400"><span>Subtotal</span><span id="subtotal">$0.00</span></div>
+                        <div class="flex justify-between text-gray-400" id="discount-row"><span>Discount</span><span id="discount-amount" class="text-green-400">$0.00</span></div>
+                        <div class="flex justify-between text-gray-400"><span>Tax (10%)</span><span id="tax">$0.00</span></div>
+                    </div>
+                    <div class="flex justify-between mt-4 pb-4 border-b border-gray-800">
+                        <span class="text-white font-bold text-lg">Total</span>
+                        <span class="text-blue-400 font-bold text-xl" id="total">$0.00</span>
+                    </div>
+                    
+                    <div class="mt-4 pt-3 border-t border-gray-800" id="promo-section">
+                        <div id="promos-list-container" class="mb-3 space-y-2"></div>
+                        <div class="flex gap-2">
+                            <input type="text" id="promo-code-input" placeholder="Enter promo code" class="flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm focus:outline-none focus:border-orange-500">
+                            <button id="apply-promo-btn" class="px-4 py-2 bg-orange-600 hover:bg-orange-500 rounded-lg text-white text-sm font-medium transition">Apply</button>
+                        </div>
+                        <div class="mt-2 text-xs text-gray-500"><i class="bi bi-info-circle"></i> Available codes: SUMMER30 (30%), FLASH10 (10%), WELCOME20 (20%), GAMER15 (15%), DGAMES10 (10%)</div>
+                        <div class="mt-2 text-xs text-blue-400"><i class="bi bi-stars"></i> Multiple promo codes can be combined!</div>
+                    </div>
+                    
+                    <div class="mt-4 space-y-3">
+                        <button id="checkout-btn" class="w-full btn-epic px-6 py-3 rounded-xl font-bold text-white shadow-xl flex items-center justify-center gap-2">
+                            <i class="bi bi-credit-card"></i> Proceed to Checkout
+                        </button>
+                        <button class="w-full btn-outline-epic px-6 py-3 rounded-xl font-semibold text-white flex items-center justify-center gap-2">
+                            <i class="bi bi-arrow-left"></i> <a href="games.html">Continue Shopping</a>
+                        </button>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-gray-800"><p class="text-xs text-gray-500 text-center"><i class="bi bi-shield-check"></i> Secure payment guaranteed</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="py-12 px-4 max-w-7xl mx-auto border-t border-white/10">
+        <div class="text-center mb-8"><h2 class="text-2xl md:text-3xl font-bold text-white mb-2">✨ YOU MAY ALSO LIKE</h2><p class="text-gray-400">Complete your gaming collection</p></div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="recommended-games"></div>
+    </section>
+
+    <footer class="border-t border-white/10 bg-black/40 pt-12 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
+                <div class="col-span-2"><div class="flex items-center gap-2"><img src="image/LOGO.png" alt="D'GAMES" class="h-8 w-auto" onerror="this.src='https://placehold.co/120x40?text=D%27GAMES'"/></div><p class="text-gray-400 text-sm mt-3">The ultimate destination for PC & console gamers. Next-level entertainment.</p><div class="flex gap-4 mt-5"><i class="bi bi-twitter-x text-gray-400 hover:text-white text-xl cursor-pointer"></i><i class="bi bi-discord text-gray-400 hover:text-white text-xl cursor-pointer"></i><a href="https://www.instagram.com/denn_2307/"><i class="bi bi-instagram text-gray-400 hover:text-white text-xl cursor-pointer"></i></a><i class="bi bi-youtube text-gray-400 hover:text-white text-xl cursor-pointer"></i></div></div>
+                <div><h4 class="font-bold text-white">Discover</h4><ul class="mt-3 space-y-2 text-gray-400 text-sm"><li>Browse Store</li><li>Free Games</li><li>DENZ Originals</li><li>Coming Soon</li></ul></div>
+                <div><h4 class="font-bold text-white">Support</h4><ul class="mt-3 space-y-2 text-gray-400 text-sm"><li>Help Center</li><li>Refund Policy</li><li>Account</li><li>Parental Guide</li></ul></div>
+                <div><h4 class="font-bold text-white">Legal</h4><ul class="mt-3 space-y-2 text-gray-400 text-sm"><li>Terms of Service</li><li>Privacy Policy</li><li>Store Agreement</li><li>Cookies Settings</li></ul></div>
+            </div>
+            <div class="border-t border-white/5 mt-10 pt-6 text-center text-gray-500 text-xs">© 2026 D'GAMES — Built for gamers, supported by Denis Ganteng.</div>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script>
+    const CART_STORAGE_KEY = 'shopping_cart';
+    const PROMOS_STORAGE_KEY = 'active_promos';
+    
+    const AVAILABLE_PROMOS = [
+        { code: "SUMMER30", discount: 30, type: "percent", minPurchase: 0, description: "30% off entire purchase" },
+        { code: "FLASH10", discount: 10, type: "percent", minPurchase: 0, description: "10% off flash sale" },
+        { code: "WELCOME20", discount: 20, type: "percent", minPurchase: 0, description: "20% off for new users" },
+        { code: "GAMER15", discount: 15, type: "percent", minPurchase: 0, description: "15% off for loyal gamers" },
+        { code: "DGAMES10", discount: 10, type: "percent", minPurchase: 0, description: "10% off D'GAMES special" }
+    ];
+    
+    const AVAILABLE_GAMES = [
+        { id: 'valorant', name: 'Valorant', price: 0, image: 'image/valorant.jpg', category: 'Free', description: 'Tactical shooter, 5v5' },
+        { id: 'gta5', name: 'GTA V', price: 29.99, image: 'image/gtav.jpg', category: 'Premium', description: 'Open world, Action' },
+        { id: 'minecraft', name: 'Minecraft', price: 26.99, image: 'image/minecraft.jpg', category: 'Premium', description: 'Sandbox, Survival' },
+        { id: 'fortnite', name: 'Fortnite', price: 0, image: 'image/fortnite.jpg', category: 'Free', description: 'Battle Royale' },
+        { id: 'cyberpunk', name: 'Cyberpunk 2077', price: 49.99, image: 'image/cyberpunk.jpg', category: 'Premium', description: 'Open World RPG' },
+        { id: 'spiderman', name: 'Marvel\'s Spider-Man', price: 59.99, image: 'image/spiderman.jpg', category: 'Premium', description: 'Action Adventure' }
+    ];
+
+    let activePromos = [];
+
+    function getCart() { const stored = localStorage.getItem(CART_STORAGE_KEY); return stored ? JSON.parse(stored) : []; }
+    function saveCart(cart) { localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart)); renderCart(); updateCartBadge(); window.dispatchEvent(new Event('cart-updated')); }
+    function updateCartBadge() { const cart = getCart(); const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0); const badge = document.querySelector('.cart-badge'); if(badge) { badge.textContent = totalItems; badge.style.display = totalItems > 0 ? 'flex' : 'none'; badge.classList.add('pop'); setTimeout(() => badge.classList.remove('pop'), 300); } }
+    function showToast(message, type = 'info') { const toast = document.createElement('div'); toast.textContent = message; const bgColor = type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#1f2937'; toast.style.cssText = `position: fixed; bottom: 20px; right: 20px; background: ${bgColor}; color: white; padding: 12px 24px; border-radius: 12px; border-left: 4px solid #3b82f6; z-index: 9999; animation: slideInRight 0.3s ease; font-weight: 500; box-shadow: 0 10px 25px rgba(0,0,0,0.2);`; document.body.appendChild(toast); setTimeout(() => toast.remove(), 3000); }
+    function addToCart(gameId) { const game = AVAILABLE_GAMES.find(g => g.id === gameId); if (!game) return; let cart = getCart(); const existingItem = cart.find(item => item.id === gameId); if (existingItem) { existingItem.quantity++; saveCart(cart); showToast(`✅ ${game.name} quantity updated!`, 'success'); } else { cart.push({ id: game.id, name: game.name, price: game.price, image: game.image, quantity: 1 }); saveCart(cart); showToast(`🎮 ${game.name} added to cart!`, 'success'); } }
+    
+    function loadPromosFromStorage() { const savedPromos = localStorage.getItem(PROMOS_STORAGE_KEY); if (savedPromos) { try { activePromos = JSON.parse(savedPromos); updatePromosUI(); return true; } catch(e) { activePromos = []; } } return false; }
+    function savePromosToStorage() { if (activePromos.length > 0) localStorage.setItem(PROMOS_STORAGE_KEY, JSON.stringify(activePromos)); else localStorage.removeItem(PROMOS_STORAGE_KEY); }
+    function updatePromosUI() { const container = document.getElementById('promos-list-container'); if (!container) return; if (activePromos.length === 0) { container.innerHTML = `<div class="text-gray-500 text-sm p-2 text-center border border-gray-800 rounded-lg"><i class="bi bi-info-circle"></i> No promo codes applied</div>`; } else { container.innerHTML = activePromos.map(promo => `<div class="flex items-center justify-between p-2 bg-green-500/10 border border-green-500/30 rounded-lg promo-tag"><div class="flex items-center gap-2"><i class="bi bi-tag-fill text-green-400 text-sm"></i><span class="font-semibold text-green-400 text-sm">${promo.code}</span><span class="text-gray-400 text-xs">${promo.discount}% off</span></div><button class="remove-promo-btn text-red-400 hover:text-red-300 text-sm px-2 py-1 rounded transition" data-code="${promo.code}"><i class="bi bi-x-circle"></i></button></div>`).join(''); document.querySelectorAll('.remove-promo-btn').forEach(btn => { btn.removeEventListener('click', handleRemovePromo); btn.addEventListener('click', handleRemovePromo); }); } renderCart(); }
+    function handleRemovePromo(e) { const code = e.currentTarget.getAttribute('data-code'); removePromo(code); }
+    function calculateTotalDiscount(subtotal) { if (activePromos.length === 0) return 0; let discountedPrice = subtotal; let totalDiscount = 0; for (const promo of activePromos) { const discountAmount = discountedPrice * (promo.discount / 100); totalDiscount += discountAmount; discountedPrice -= discountAmount; } return totalDiscount; }
+    function getTotalDiscountPercent() { if (activePromos.length === 0) return 0; let effectivePercent = 0; let remainingPercent = 100; for (const promo of activePromos) { effectivePercent += (promo.discount / 100) * remainingPercent; remainingPercent *= (1 - promo.discount / 100); } return effectivePercent; }
+    function applyPromo(code) { const promoCode = code.toUpperCase().trim(); if (activePromos.some(p => p.code === promoCode)) { showToast(`⚠️ Promo code "${promoCode}" already applied!`, 'error'); return false; } const foundPromo = AVAILABLE_PROMOS.find(p => p.code === promoCode); if (!foundPromo) { showToast('❌ Invalid promo code!', 'error'); return false; } const cart = getCart(); const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0); if (foundPromo.minPurchase > 0 && subtotal < foundPromo.minPurchase) { showToast(`⚠️ Minimum purchase $${foundPromo.minPurchase} required for ${foundPromo.code}`, 'error'); return false; } activePromos.push(foundPromo); savePromosToStorage(); updatePromosUI(); showToast(`✅ Promo code "${promoCode}" applied! ${foundPromo.discount}% discount`, 'success'); return true; }
+    function removePromo(code) { const index = activePromos.findIndex(p => p.code === code); if (index !== -1) { activePromos.splice(index, 1); savePromosToStorage(); updatePromosUI(); showToast(`🗑️ Promo code removed`, 'info'); } }
+    function clearAllPromos() { activePromos = []; savePromosToStorage(); updatePromosUI(); showToast('All promo codes removed', 'info'); }
+    
+    function renderCart() {
+        const cart = getCart();
+        const container = document.getElementById('cart-items-container');
+        if (!container) return;
+        if (cart.length === 0) {
+            container.innerHTML = `<div class="text-center py-12 bg-gray-900/30 rounded-xl border border-gray-800"><i class="bi bi-cart-x text-6xl text-gray-600 mb-4"></i><p class="text-gray-400 text-lg">Your cart is empty</p><a href="games.html" class="inline-block mt-4 px-6 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg transition">Browse Games</a></div>`;
+            document.getElementById('subtotal').textContent = '$0.00';
+            document.getElementById('discount-amount').textContent = '$0.00';
+            document.getElementById('tax').textContent = '$0.00';
+            document.getElementById('total').textContent = '$0.00';
+            updateCartBadge(); return;
+        }
+        let subtotal = 0;
+        let html = '';
+        cart.forEach(item => { const totalItemPrice = item.price * item.quantity; subtotal += totalItemPrice; const priceDisplay = item.price === 0 ? 'Free' : '$' + item.price.toFixed(2); const totalDisplay = item.price === 0 ? 'Free' : '$' + totalItemPrice.toFixed(2); html += `<div class="cart-item bg-gradient-to-r from-gray-900/50 to-gray-950/50 rounded-xl border border-gray-800 p-4" data-id="${item.id}"><div class="flex gap-4"><img src="${item.image}" alt="${item.name}" class="w-24 h-24 rounded-lg object-cover" onerror="this.src='https://placehold.co/400x300?text=Game'"><div class="flex-1"><div class="flex justify-between items-start"><div><h3 class="font-bold text-white text-lg">${item.name}</h3><p class="text-gray-400 text-sm">${item.price === 0 ? 'Free to Play' : 'Premium Game'}</p><div class="flex items-center gap-2 mt-2"><span class="${item.price === 0 ? 'text-green-400' : 'text-orange-400'} text-sm font-semibold">${priceDisplay}</span></div></div><button class="remove-item-btn text-red-400 hover:text-red-300 transition" data-id="${item.id}"><i class="bi bi-trash3"></i></button></div><div class="flex justify-between items-center mt-3"><div class="flex items-center gap-2"><button class="qty-minus w-7 h-7 rounded-md bg-gray-800 text-white hover:bg-blue-600 transition" data-id="${item.id}">-</button><span class="item-qty w-8 text-center font-semibold">${item.quantity}</span><button class="qty-plus w-7 h-7 rounded-md bg-gray-800 text-white hover:bg-blue-600 transition" data-id="${item.id}">+</button></div><span class="item-total-price font-bold text-white">${totalDisplay}</span></div></div></div></div>`; });
+        container.innerHTML = html;
+        const totalDiscount = calculateTotalDiscount(subtotal);
+        const afterDiscount = subtotal - totalDiscount;
+        const tax = afterDiscount * 0.1;
+        const total = afterDiscount + tax;
+        document.getElementById('subtotal').textContent = '$' + subtotal.toFixed(2);
+        const discountElement = document.getElementById('discount-amount');
+        const effectivePercent = getTotalDiscountPercent();
+        if (discountElement) {
+            if (totalDiscount > 0) {
+                if (activePromos.length === 1) { discountElement.innerHTML = `<span class="text-green-400">-$${totalDiscount.toFixed(2)} (${activePromos[0].discount}% off)</span>`; }
+                else { discountElement.innerHTML = `<span class="text-green-400">-$${totalDiscount.toFixed(2)} (${effectivePercent.toFixed(1)}% combined)</span><div class="text-xs text-gray-500 mt-1">${activePromos.map(p => `${p.code} (${p.discount}%)`).join(' + ')}</div>`; }
+            } else { discountElement.textContent = '$0.00'; }
+        }
+        document.getElementById('tax').textContent = '$' + tax.toFixed(2);
+        document.getElementById('total').textContent = '$' + total.toFixed(2);
+        attachCartItemEvents();
+    }
+    function attachCartItemEvents() { document.querySelectorAll('.qty-minus').forEach(btn => { btn.removeEventListener('click', handleMinus); btn.addEventListener('click', handleMinus); }); document.querySelectorAll('.qty-plus').forEach(btn => { btn.removeEventListener('click', handlePlus); btn.addEventListener('click', handlePlus); }); document.querySelectorAll('.remove-item-btn').forEach(btn => { btn.removeEventListener('click', handleRemove); btn.addEventListener('click', handleRemove); }); }
+    function handleMinus(e) { const id = e.currentTarget.getAttribute('data-id'); let cart = getCart(); const item = cart.find(i => i.id === id); if (item && item.quantity > 1) { item.quantity--; saveCart(cart); showToast('📦 Quantity updated', 'info'); } else if (item && item.quantity === 1) { const newCart = cart.filter(i => i.id !== id); saveCart(newCart); showToast(`🗑️ ${item.name} removed`, 'info'); } }
+    function handlePlus(e) { const id = e.currentTarget.getAttribute('data-id'); let cart = getCart(); const item = cart.find(i => i.id === id); if (item) { item.quantity++; saveCart(cart); showToast('📦 Quantity updated', 'info'); } }
+    function handleRemove(e) { const id = e.currentTarget.getAttribute('data-id'); let cart = getCart(); const removed = cart.find(i => i.id === id); cart = cart.filter(i => i.id !== id); saveCart(cart); if (removed) showToast(`🗑️ ${removed.name} removed from cart`, 'info'); }
+    
+    function renderRecommended() { const container = document.getElementById('recommended-games'); if (!container) return; const recGames = AVAILABLE_GAMES.slice(0, 4); container.innerHTML = recGames.map(game => `<div class="group bg-gradient-to-b from-gray-900 to-gray-950 rounded-xl overflow-hidden border border-gray-800 hover:border-blue-500/50 transition-all duration-300"><img src="${game.image}" alt="${game.name}" class="w-full h-40 object-cover" onerror="this.src='https://placehold.co/400x300?text=Game'"><div class="p-4"><h3 class="font-bold text-white">${game.name}</h3><p class="${game.price === 0 ? 'text-green-400' : 'text-orange-400'} text-sm font-semibold mt-1">${game.price === 0 ? 'Free' : '$' + game.price.toFixed(2)}</p><button class="add-to-cart-rec w-full mt-3 px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-white text-sm font-medium transition" data-id="${game.id}"><i class="bi bi-cart-plus mr-1"></i> Add to Cart</button></div></div>`).join(''); document.querySelectorAll('.add-to-cart-rec').forEach(btn => { btn.removeEventListener('click', handleRecAdd); btn.addEventListener('click', handleRecAdd); }); }
+    function handleRecAdd(e) { const gameId = e.currentTarget.getAttribute('data-id'); addToCart(gameId); }
+    
+    function proceedToCheckout() {
+        const cart = getCart();
+        if (cart.length === 0) {
+            showToast('⚠️ Your cart is empty! Add some games first.', 'error');
+            return;
+        }
+        
+        const checkoutBtn = document.getElementById('checkout-btn');
+        const originalText = checkoutBtn.innerHTML;
+        checkoutBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Redirecting...';
+        checkoutBtn.disabled = true;
+        
+        setTimeout(() => {
+            window.location.href = 'payment.html';
+        }, 500);
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        renderCart(); 
+        updateCartBadge(); 
+        renderRecommended(); 
+        loadPromosFromStorage();
+        
+        const checkoutBtn = document.getElementById('checkout-btn');
+        if (checkoutBtn) {
+            checkoutBtn.addEventListener('click', proceedToCheckout);
+        }
+        
+        const applyBtn = document.getElementById('apply-promo-btn');
+        const promoInput = document.getElementById('promo-code-input');
+        if (applyBtn) { applyBtn.addEventListener('click', () => { const code = promoInput.value.trim(); if (code) { applyPromo(code); promoInput.value = ''; } else { showToast('Enter a promo code', 'info'); } }); }
+        if (promoInput) { promoInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') { const code = promoInput.value.trim(); if (code) { applyPromo(code); promoInput.value = ''; } } }); }
+        
+        const mobileBtn = document.getElementById('mobile-menu-button'); 
+        const mobileMenu = document.getElementById('mobile-nav-links'); 
+        if (mobileBtn && mobileMenu) { mobileBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden')); }
+        
+        // ======================== SEARCH MODAL ========================
+        const searchBtn = document.getElementById('searchBtn');
+        const searchModal = document.getElementById('searchModal');
+        const searchModalDiv = document.createElement('div');
+        searchModalDiv.id = 'searchModal';
+        searchModalDiv.className = 'hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[999] flex items-start justify-center pt-24 px-4';
+        searchModalDiv.innerHTML = `<div class="w-full max-w-2xl bg-gray-900 rounded-2xl border border-white/10 shadow-2xl overflow-hidden"><div class="flex items-center gap-3 px-4 py-4 border-b border-white/10"><i class="bi bi-search text-gray-400 text-xl"></i><input type="text" placeholder="Search games..." class="flex-1 bg-transparent text-white placeholder-gray-500 text-lg outline-none"><button class="text-gray-400 hover:text-white transition"><i class="bi bi-x-lg text-xl"></i></button></div></div>`;
+        
+        document.getElementById('notifBtn')?.addEventListener('click', () => showToast('🔔 No new notifications', 'info'));
+        searchBtn?.addEventListener('click', () => showToast('🔍 Search feature coming soon', 'info'));
+        
+        // Login button redirect ke login page
+        const loginBtn = document.getElementById('loginButton');
+        if (loginBtn) {
+            loginBtn.addEventListener('click', () => {
+                window.location.href = "login.html";
+            });
+        }
+        
+        window.addEventListener('storage', (e) => { if (e.key === CART_STORAGE_KEY) { renderCart(); updateCartBadge(); } if (e.key === PROMOS_STORAGE_KEY) { loadPromosFromStorage(); } });
+        window.addEventListener('cart-updated', () => { renderCart(); });
+    });
+    </script>
+    <script src="cart.js"></script>
+</body>
+</html>

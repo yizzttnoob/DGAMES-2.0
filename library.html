@@ -1,0 +1,838 @@
+<!-- library.html - DIPERBARUI DENGAN SISTEM LOGIN -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>My Library | D'GAMES · Kelompok 5</title>
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles – seamless with landing page */
+        body {
+            background-color: #0a0c10;
+            scroll-behavior: smooth;
+        }
+        * {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        .btn-epic {
+            background: linear-gradient(95deg, #0078f0 0%, #00b2ff 100%);
+            transition: all 0.2s;
+        }
+        .btn-epic:hover {
+            filter: brightness(1.08);
+            transform: scale(0.98);
+            box-shadow: 0 8px 20px rgba(0, 120, 240, 0.4);
+        }
+        .btn-outline-epic {
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(20, 20, 30, 0.6);
+            backdrop-filter: blur(4px);
+        }
+        .library-card {
+            transition: all 0.2s ease;
+        }
+        .empty-library-icon {
+            opacity: 0.7;
+        }
+        .toast-notify {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #1e293b;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            border-left: 3px solid #3b82f6;
+            z-index: 9999;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px);
+            animation: slideInToast 0.25s ease;
+        }
+        @keyframes slideInToast {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        .btn-remove {
+            transition: all 0.2s;
+        }
+        .btn-remove:hover {
+            background: #dc2626;
+            border-color: #dc2626;
+            color: white;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1c23;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2f3e4e;
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0078f0;
+        }
+        .badge-free {
+            background: #00d26a;
+            box-shadow: 0 0 6px rgba(0,210,106,0.5);
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        #searchModal > div { animation: slideDown 0.2s ease; }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        #notifDropdown:not(.hidden) { animation: fadeInDown 0.2s ease; }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .cart-badge {
+            transition: all 0.2s ease;
+        }
+        .cart-badge.pop {
+            animation: badgePop 0.3s ease;
+        }
+        @keyframes badgePop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        /* Pop Up Game Launching Styles */
+        .launch-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .launch-modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .launch-modal-container {
+            background: linear-gradient(135deg, #1a1f2e 0%, #0f1119 100%);
+            border-radius: 28px;
+            max-width: 440px;
+            width: 90%;
+            padding: 32px 28px;
+            text-align: center;
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(59, 130, 246, 0.2);
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
+        }
+        .launch-modal-overlay.active .launch-modal-container {
+            transform: scale(1);
+        }
+        .launch-icon {
+            font-size: 72px;
+            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 16px;
+            display: inline-block;
+            animation: pulseIcon 0.8s ease-in-out infinite;
+        }
+        @keyframes pulseIcon {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.9; }
+        }
+        .launch-title {
+            font-size: 26px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 12px;
+        }
+        .launch-game-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #60a5fa;
+            margin: 12px 0 8px;
+            letter-spacing: -0.3px;
+        }
+        .launch-progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin: 24px 0 16px;
+            overflow: hidden;
+        }
+        .launch-progress-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #06b6d4);
+            border-radius: 10px;
+            transition: width 0.1s linear;
+        }
+        .launch-message {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-top: 8px;
+        }
+        .launch-close-btn {
+            margin-top: 24px;
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.5);
+            padding: 10px 24px;
+            border-radius: 40px;
+            color: #93c5fd;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .launch-close-btn:hover {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            color: white;
+            transform: scale(0.96);
+        }
+        
+        /* Style untuk avatar profile */
+        .profile-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body class="bg-[#121417] text-gray-300 font-inter">
+
+    <!-- SEARCH MODAL -->
+    <div id="searchModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[999] flex items-start justify-center pt-24 px-4">
+        <div class="w-full max-w-2xl bg-gray-900 rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
+            <div class="flex items-center gap-3 px-4 py-4 border-b border-white/10">
+                <i class="bi bi-search text-gray-400 text-xl"></i>
+                <input id="searchInput" type="text" placeholder="Search your library games..." class="flex-1 bg-transparent text-white placeholder-gray-500 text-lg outline-none">
+                <button id="closeSearch" class="text-gray-400 hover:text-white transition"><i class="bi bi-x-lg text-xl"></i></button>
+            </div>
+            <div class="px-4 py-4">
+                <p class="text-gray-500 text-xs mb-3">Popular Searches</p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">Valorant</span>
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">GTA V</span>
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">Minecraft</span>
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">Fortnite</span>
+                    <span class="search-tag px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-300 text-sm cursor-pointer">Cyberpunk</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION DROPDOWN -->
+    <div id="notifDropdown" class="hidden fixed right-6 top-20 z-50 w-80 bg-gray-900 border border-gray-700 rounded-xl shadow-2xl backdrop-blur-sm">
+        <div class="flex justify-between items-center px-4 py-3 border-b border-gray-800">
+            <span class="font-bold text-white">Notifications</span>
+            <button id="markAllRead" class="text-xs text-blue-400 hover:underline">Mark all as read</button>
+        </div>
+        <div class="max-h-80 overflow-y-auto">
+            <div class="notif-item px-4 py-3 hover:bg-white/5 border-b border-gray-800/60 flex items-start gap-3">
+                <i class="bi bi-gift-fill text-purple-400 mt-0.5"></i>
+                <div><p class="text-sm text-gray-200">Free game of the week: <span class="font-semibold">Valorant</span> available!</p><p class="text-[10px] text-gray-500">2 hours ago</p></div>
+            </div>
+            <div class="notif-item px-4 py-3 hover:bg-white/5 border-b border-gray-800/60 flex items-start gap-3">
+                <i class="bi bi-tag-fill text-green-400 mt-0.5"></i>
+                <div><p class="text-sm text-gray-200">Summer Sale 2026: up to 75% off!</p><p class="text-[10px] text-gray-500">Yesterday</p></div>
+            </div>
+            <div class="notif-item px-4 py-3 hover:bg-white/5 flex items-start gap-3">
+                <i class="bi bi-controller text-cyan-400 mt-0.5"></i>
+                <div><p class="text-sm text-gray-200">Your library has new updates!</p><p class="text-[10px] text-gray-500">2 days ago</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GAME LAUNCH POPUP MODAL -->
+    <div id="launchModal" class="launch-modal-overlay">
+        <div class="launch-modal-container">
+            <div class="launch-icon">
+                <i class="bi bi-controller"></i>
+            </div>
+            <div class="launch-title">LAUNCHING GAME</div>
+            <div id="launchGameName" class="launch-game-name">Game Title</div>
+            <div class="launch-progress-bar">
+                <div id="launchProgressFill" class="launch-progress-fill"></div>
+            </div>
+            <div id="launchMessage" class="launch-message">Initializing game engine...</div>
+            <button id="launchCloseBtn" class="launch-close-btn">
+                <i class="bi bi-x-circle"></i> Close
+            </button>
+        </div>
+    </div>
+
+    <nav class="sticky top-0 z-50 bg-black/95 backdrop-blur-md border-b border-white/10 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-6">
+                    <a href="index.html" class="shrink-0">
+                        <img src="image/LOGO.png" alt="D'GAMES" class="h-8 w-auto">
+                    </a>
+                    <div class="hidden md:flex items-center space-x-1">
+                        <a href="index.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Home</a>
+                        <a href="games.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Games</a>
+                        <a href="promo.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Promo</a>
+                        <a href="library.html" class="px-4 py-2 text-sm font-semibold rounded-lg bg-white/5 text-white">Library</a>
+                        <a href="community.html" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition">Community</a>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-3">
+                    <button id="searchBtn" class="p-2 rounded-full text-gray-300 hover:bg-white/10 transition" aria-label="Search">
+                        <i class="bi bi-search text-xl"></i>
+                    </button>
+                    <button id="notifBtn" class="p-2 rounded-full text-gray-300 hover:bg-white/10 transition relative" aria-label="Notifications">
+                        <i class="bi bi-bell text-xl"></i>
+                        <span id="notifDot" class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full ring-2 ring-black"></span>
+                    </button>
+                    <button class="p-2 rounded-full text-gray-300 hover:bg-white/10 transition relative cart-button" aria-label="Cart">
+                        <i class="bi bi-cart text-xl"></i>
+                        <span class="cart-badge absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold ring-2 ring-black">0</span>
+                    </button>
+                    <div id="loginButton" class="hidden md:block text-xs px-3 py-1.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 cursor-pointer transition hover:bg-blue-500/30">
+                        <i class="bi bi-person-check-fill mr-1"></i> Login
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="md:hidden px-4 pb-2">
+            <button id="mobile-menu-button" class="text-gray-300 hover:text-white focus:outline-none">
+                <i class="bi bi-list text-2xl"></i>
+            </button>
+            <div id="mobile-nav-links" class="hidden mt-2 pb-3 space-y-1 border-t border-white/10 pt-3">
+                <a href="index.html" class="block px-3 py-2 rounded-lg bg-white/5 text-white font-medium">Home</a>
+                <a href="games.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Games</a>
+                <a href="promo.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Promo</a>
+                <a href="library.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Library</a>
+                <a href="community.html" class="block px-3 py-2 rounded-lg text-gray-300 hover:bg-white/10">Community</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT: LIBRARY SECTION -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+        <div class="flex flex-wrap justify-between items-end border-b border-white/10 pb-6 mb-8">
+            <div>
+                <h1 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight flex items-center gap-3">
+                    <i class="bi bi-journal-bookmark-fill text-blue-400 text-4xl"></i> 
+                    My Game Library
+                </h1>
+                <p class="text-gray-400 mt-2">All the games you've purchased—yours to keep forever.</p>
+            </div>
+            <div class="mt-3 md:mt-0">
+                <button id="browseGamesBtn" class="px-5 py-2 rounded-xl bg-blue-600/20 border border-blue-500/40 text-blue-300 text-sm font-semibold hover:bg-blue-600/40 transition flex items-center gap-2">
+                    <i class="bi bi-controller"></i> Browse Store
+                </button>
+            </div>
+        </div>
+
+        <div id="libraryGridContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 transition-all duration-300"></div>
+
+        <div id="emptyLibraryState" class="hidden text-center py-16 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 mt-6">
+            <div class="flex flex-col items-center gap-4">
+                <i class="bi bi-archive text-6xl text-gray-500 empty-library-icon"></i>
+                <h3 class="text-2xl font-semibold text-white">Library still empty</h3>
+                <p class="text-gray-400 max-w-md">No games have been added to your cart yet. Why not buy or claim your favorite game first?</p>
+                <a href="games.html" class="mt-3 btn-epic px-6 py-2.5 rounded-xl font-bold text-white inline-flex items-center gap-2">
+                    <i class="bi bi-cart-check"></i> Browse Games
+                </a>
+            </div>
+        </div>
+
+        <div class="flex justify-end mt-8">
+            <button id="demoAddSampleBtn" class="text-xs text-gray-400 border border-gray-700 rounded-full px-4 py-2 hover:bg-white/5 transition flex items-center gap-1">
+                <i class="bi bi-plus-circle"></i> Demo: Add Game Sample
+            </button>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-white/10 mt-8 bg-black/40 pt-12 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
+                <div class="col-span-2">
+                    <div class="flex items-center gap-2">
+                        <img src="image/LOGO.png" alt="D'GAMES" class="h-8 w-auto"/>
+                    </div>
+                    <p class="text-gray-400 text-sm mt-3">The ultimate destination for PC & console gamers. Next-level entertainment.</p>
+                    <div class="flex gap-4 mt-5">
+                        <i class="bi bi-twitter-x text-gray-400 hover:text-white text-xl cursor-pointer"></i>
+                        <i class="bi bi-discord text-gray-400 hover:text-white text-xl cursor-pointer"></i>
+                        <a href="https://www.instagram.com/denn_2307/" target="_blank"><i class="bi bi-instagram text-gray-400 hover:text-white text-xl cursor-pointer"></i></a>
+                        <i class="bi bi-youtube text-gray-400 hover:text-white text-xl cursor-pointer"></i>
+                    </div>
+                </div>
+                <div><h4 class="font-bold text-white">Discover</h4><ul class="mt-3 space-y-2 text-gray-400 text-sm"><li>Browse Store</li><li>Free Games</li><li>DENZ Originals</li><li>Coming Soon</li></ul></div>
+                <div><h4 class="font-bold text-white">Support</h4><ul class="mt-3 space-y-2 text-gray-400 text-sm"><li>Help Center</li><li>Refund Policy</li><li>Account</li><li>Parental Guide</li></ul></div>
+                <div><h4 class="font-bold text-white">Legal</h4><ul class="mt-3 space-y-2 text-gray-400 text-sm"><li>Terms of Service</li><li>Privacy Policy</li><li>Store Agreement</li><li>Cookies Settings</li></ul></div>
+            </div>
+            <div class="border-t border-white/5 mt-10 pt-6 text-center text-gray-500 text-xs">
+                © 2026 D'GAMES — Built for gamers, supported by Denis Ganteng.
+            </div>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script>
+        // LIBRARY STORAGE & RENDER ENGINE
+        const STORAGE_KEY = 'dgames_user_library';
+        
+        const MASTER_GAMES_CATALOG = [
+            { id: "valo1", title: "Valorant", genre: "Tactical shooter, 5v5", image: "image/valorant.jpg", isFree: true, price: "Free", rating: 4.8, originalPrice: 0 },
+            { id: "gtav2", title: "GTA V", genre: "Open world, Action", image: "image/gtav.jpg", isFree: false, price: "$29.99", rating: 4.9, originalPrice: 29.99 },
+            { id: "mine3", title: "Minecraft", genre: "Sandbox, Survival", image: "image/minecraft.jpg", isFree: false, price: "$26.99", rating: 4.7, originalPrice: 26.99 },
+            { id: "fort4", title: "Fortnite", genre: "Battle Royale", image: "image/fortnite.jpg", isFree: true, price: "Free", rating: 4.6, originalPrice: 0 },
+            { id: "cyber6", title: "CyberPunk 2077", genre: "Open World RPG", image: "image/cyberpunk.jpg", isFree: false, price: "$49.99", rating: 4.8, originalPrice: 49.99 },
+            { id: "rdr7", title: "Red Dead Redemption 2", genre: "Action-Adventure", image: "image/rdr2.jpg", isFree: false, price: "$39.99", rating: 4.9, originalPrice: 39.99 },
+            { id: "fifa24", title: "EA SPORTS FC 24", genre: "Sports", image: "image/fifa24.jpg", isFree: false, price: "$59.99", rating: 4.5, originalPrice: 59.99 },
+            { id: "spiderman2", title: "Marvel's Spider-Man 2", genre: "Action", image: "image/spiderman2.jpg", isFree: false, price: "$69.99", rating: 4.9, originalPrice: 69.99 }
+        ];
+
+        function loadLibrary() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                try {
+                    return JSON.parse(stored);
+                } catch(e) { return []; }
+            }
+            return [];
+        }
+
+        function saveLibrary(library) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(library));
+        }
+
+        function showToast(message, type = "success") {
+            const toast = document.createElement('div');
+            toast.className = "toast-notify";
+            let icon = "🔔";
+            if (type === "success") icon = "✅";
+            if (type === "warning") icon = "⚠️";
+            if (type === "info") icon = "📚";
+            toast.innerHTML = `${icon} ${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2200);
+        }
+
+        function showLaunchPopup(gameTitle) {
+            const modal = document.getElementById('launchModal');
+            const gameNameSpan = document.getElementById('launchGameName');
+            const progressFill = document.getElementById('launchProgressFill');
+            const messageSpan = document.getElementById('launchMessage');
+            
+            if (!modal || !gameNameSpan || !progressFill || !messageSpan) return;
+            
+            gameNameSpan.textContent = gameTitle;
+            progressFill.style.width = '0%';
+            messageSpan.textContent = 'Initializing game engine...';
+            modal.classList.add('active');
+            
+            let stepIndex = 0;
+            const steps = [
+                { value: 15, msg: 'Loading assets...' },
+                { value: 35, msg: 'Connecting to D\'GAMES servers...' },
+                { value: 55, msg: 'Verifying game license...' },
+                { value: 75, msg: 'Launching render engine...' },
+                { value: 90, msg: 'Almost there...' },
+                { value: 100, msg: 'Game started! Have fun :)' }
+            ];
+            
+            const interval = setInterval(() => {
+                if (stepIndex < steps.length) {
+                    progressFill.style.width = steps[stepIndex].value + '%';
+                    messageSpan.textContent = steps[stepIndex].msg;
+                    stepIndex++;
+                } else {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        if (modal.classList.contains('active')) {
+                            modal.classList.remove('active');
+                        }
+                    }, 1200);
+                }
+            }, 400);
+            
+            const closeBtn = document.getElementById('launchCloseBtn');
+            const closeHandler = () => {
+                clearInterval(interval);
+                modal.classList.remove('active');
+                closeBtn.removeEventListener('click', closeHandler);
+            };
+            closeBtn.removeEventListener('click', closeHandler);
+            closeBtn.addEventListener('click', closeHandler);
+        }
+
+        function addGameToLibrary(gameObj) {
+            let currentLib = loadLibrary();
+            const alreadyExists = currentLib.some(g => g.id === gameObj.id);
+            if (alreadyExists) {
+                showToast(`⚠️ ${gameObj.title} already in your library!`, "warning");
+                return false;
+            }
+            const newGameEntry = {
+                id: gameObj.id,
+                title: gameObj.title,
+                genre: gameObj.genre,
+                image: gameObj.image,
+                isFree: gameObj.isFree,
+                price: gameObj.price,
+                rating: gameObj.rating || 4.5,
+                ownedDate: new Date().toISOString().split('T')[0]
+            };
+            currentLib.push(newGameEntry);
+            saveLibrary(currentLib);
+            showToast(`✅ ${gameObj.title} successfully added to library!`, "success");
+            renderLibraryGrid();
+            return true;
+        }
+
+        function addMultipleGamesToLibrary(gamesArray) {
+            if (!gamesArray || gamesArray.length === 0) return false;
+            let currentLib = loadLibrary();
+            let addedCount = 0;
+            for (let game of gamesArray) {
+                const alreadyExists = currentLib.some(g => g.id === game.id);
+                if (!alreadyExists) {
+                    currentLib.push({
+                        id: game.id,
+                        title: game.title,
+                        genre: game.genre,
+                        image: game.image,
+                        isFree: game.isFree,
+                        price: game.price,
+                        rating: game.rating || 4.5,
+                        ownedDate: new Date().toISOString().split('T')[0]
+                    });
+                    addedCount++;
+                }
+            }
+            if (addedCount > 0) {
+                saveLibrary(currentLib);
+                showToast(`🎮 ${addedCount} new game(s) added to your library!`, "success");
+                renderLibraryGrid();
+            } else {
+                showToast("All selected games are already in your library.", "info");
+            }
+            return true;
+        }
+
+        function removeGameFromLibrary(gameId, gameTitle) {
+            let currentLib = loadLibrary();
+            const updated = currentLib.filter(game => game.id !== gameId);
+            if (updated.length === currentLib.length) return false;
+            saveLibrary(updated);
+            showToast(`🗑️ ${gameTitle} removed from library.`, "info");
+            renderLibraryGrid();
+            return true;
+        }
+
+        function renderLibraryGrid(filterText = "") {
+            let library = loadLibrary();
+            
+            if (filterText) {
+                const lowerFilter = filterText.toLowerCase();
+                library = library.filter(game => 
+                    game.title.toLowerCase().includes(lowerFilter) || 
+                    (game.genre && game.genre.toLowerCase().includes(lowerFilter))
+                );
+            }
+            
+            const container = document.getElementById('libraryGridContainer');
+            const emptyStateDiv = document.getElementById('emptyLibraryState');
+            
+            if (!library.length) {
+                container.innerHTML = '';
+                emptyStateDiv.classList.remove('hidden');
+                return;
+            }
+            emptyStateDiv.classList.add('hidden');
+            
+            let cardsHtml = '';
+            library.forEach(game => {
+                const ratingStar = game.rating ? `<i class="bi bi-star-fill text-yellow-400 text-xs"></i> ${game.rating}` : `<i class="bi bi-star-fill text-yellow-400 text-xs"></i> 4.5`;
+                const priceBadge = game.isFree === true ? 
+                    '<span class="text-green-400 text-sm font-semibold bg-green-950/40 px-2 py-0.5 rounded-full">Free</span>' : 
+                    `<span class="text-orange-400 text-sm font-semibold">${game.price || 'Purchased'}</span>`;
+                cardsHtml += `
+                    <div class="library-card group bg-gradient-to-b from-gray-900 to-gray-950 rounded-xl overflow-hidden border border-gray-800 hover:border-blue-500/50 transition-all duration-300 hover:transform hover:-translate-y-2">
+                        <div class="relative overflow-hidden h-48">
+                            <img src="${game.image}" alt="${game.title}" class="w-full h-full object-cover group-hover:scale-110 transition duration-300" onerror="this.src='https://placehold.co/400x200?text=${encodeURIComponent(game.title)}'">
+                            <div class="absolute top-3 right-3 bg-black/70 backdrop-blur-sm px-2 py-1 rounded-lg text-xs font-semibold text-yellow-400">
+                                ${ratingStar}
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3">
+                                <span class="text-white text-xs font-semibold bg-blue-600/70 px-2 py-0.5 rounded-full"><i class="bi bi-check-circle-fill text-green-300"></i> Owned</span>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-white text-lg mb-1 truncate">${game.title}</h3>
+                            <p class="text-gray-400 text-sm mb-3">${game.genre || "Action"}</p>
+                            <div class="flex items-center justify-between mt-2">
+                                ${priceBadge}
+                                <div class="flex gap-2">
+                                    <button class="play-game-btn px-3 py-1.5 bg-blue-600/80 hover:bg-blue-500 rounded-lg text-white text-xs font-medium transition flex items-center gap-1" data-id="${game.id}" data-title="${game.title}">
+                                        <i class="bi bi-play-fill"></i> Play
+                                    </button>
+                                    <button class="remove-game-btn px-3 py-1.5 bg-red-500/20 hover:bg-red-600/70 border border-red-500/30 rounded-lg text-red-300 text-xs font-medium transition btn-remove" data-id="${game.id}" data-title="${game.title}">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = cardsHtml;
+            
+            document.querySelectorAll('.play-game-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const title = btn.getAttribute('data-title');
+                    showLaunchPopup(title);
+                });
+            });
+            document.querySelectorAll('.remove-game-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const id = btn.getAttribute('data-id');
+                    const title = btn.getAttribute('data-title');
+                    if (confirm(`Remove "${title}" from your library?`)) {
+                        removeGameFromLibrary(id, title);
+                    }
+                });
+            });
+        }
+
+        function addSampleGameToLibrary() {
+            const currentLib = loadLibrary();
+            const existingIds = new Set(currentLib.map(g => g.id));
+            const availableSamples = MASTER_GAMES_CATALOG.filter(g => !existingIds.has(g.id));
+            if (availableSamples.length === 0) {
+                showToast("Library already has all sample games! Remove some to add more.", "warning");
+                return;
+            }
+            const sample = availableSamples[0];
+            addGameToLibrary(sample);
+        }
+
+        function updateCartBadgeFromStorage() {
+            let cartCount = 0;
+            try {
+                const cartStorage = localStorage.getItem('shopping_cart');
+                if (cartStorage) {
+                    const cartArr = JSON.parse(cartStorage);
+                    if (Array.isArray(cartArr)) {
+                        cartCount = cartArr.reduce((total, item) => total + (item.quantity || 1), 0);
+                    }
+                }
+            } catch(e) {}
+            const badgeSpan = document.querySelector('.cart-badge');
+            if (badgeSpan) badgeSpan.innerText = cartCount;
+        }
+
+        // SEARCH MODAL
+        const searchBtn = document.getElementById('searchBtn');
+        const searchModal = document.getElementById('searchModal');
+        const closeSearch = document.getElementById('closeSearch');
+        const searchInputElem = document.getElementById('searchInput');
+        
+        searchBtn?.addEventListener('click', () => { 
+            searchModal.classList.remove('hidden'); 
+            setTimeout(() => searchInputElem?.focus(), 100); 
+        });
+        
+        closeSearch?.addEventListener('click', () => { 
+            searchModal.classList.add('hidden'); 
+            if(searchInputElem) searchInputElem.value = ''; 
+            renderLibraryGrid('');
+        });
+        
+        searchModal?.addEventListener('click', (e) => { 
+            if(e.target === searchModal) { 
+                searchModal.classList.add('hidden'); 
+                if(searchInputElem) searchInputElem.value = ''; 
+                renderLibraryGrid('');
+            } 
+        });
+        
+        document.addEventListener('keydown', (e) => { 
+            if(e.key === 'Escape') { 
+                searchModal.classList.add('hidden'); 
+                if(searchInputElem) searchInputElem.value = ''; 
+                renderLibraryGrid('');
+            } 
+        });
+        
+        if(searchInputElem) {
+            searchInputElem.addEventListener('input', function() {
+                const keyword = this.value.toLowerCase().trim();
+                renderLibraryGrid(keyword);
+            });
+        }
+        
+        document.querySelectorAll('.search-tag').forEach(tag => {
+            tag.addEventListener('click', () => {
+                if(searchInputElem) {
+                    searchInputElem.value = tag.textContent.trim();
+                    searchInputElem.dispatchEvent(new Event('input'));
+                    searchInputElem.focus();
+                }
+            });
+        });
+
+        // NOTIFICATION DROPDOWN
+        const notifBtn = document.getElementById('notifBtn');
+        const notifDropdown = document.getElementById('notifDropdown');
+        const notifDot = document.getElementById('notifDot');
+        const markAllReadBtn = document.getElementById('markAllRead');
+        
+        notifBtn?.addEventListener('click', (e) => { 
+            e.stopPropagation(); 
+            notifDropdown.classList.toggle('hidden'); 
+        });
+        
+        document.addEventListener('click', (e) => { 
+            if(notifDropdown && !notifDropdown.contains(e.target) && e.target !== notifBtn) 
+                notifDropdown.classList.add('hidden'); 
+        });
+        
+        markAllReadBtn?.addEventListener('click', () => { 
+            if(notifDot) notifDot.classList.add('hidden'); 
+            document.querySelectorAll('.notif-item').forEach(item => item.style.opacity = '0.5'); 
+            markAllReadBtn.textContent = 'All read'; 
+            markAllReadBtn.classList.remove('text-blue-400'); 
+            markAllReadBtn.classList.add('text-gray-500'); 
+            markAllReadBtn.style.cursor = 'default'; 
+        });
+
+        // OTHER INIT FUNCTIONS
+        function initMobileMenu() {
+            const menuBtn = document.getElementById('mobile-menu-button');
+            const mobileLinks = document.getElementById('mobile-nav-links');
+            if (menuBtn && mobileLinks) {
+                menuBtn.addEventListener('click', () => {
+                    const isHidden = mobileLinks.classList.contains('hidden');
+                    if (isHidden) {
+                        mobileLinks.classList.remove('hidden');
+                        const icon = menuBtn.querySelector('i');
+                        if (icon) { icon.classList.remove('bi-list'); icon.classList.add('bi-x-lg'); }
+                    } else {
+                        mobileLinks.classList.add('hidden');
+                        const icon = menuBtn.querySelector('i');
+                        if (icon) { icon.classList.remove('bi-x-lg'); icon.classList.add('bi-list'); }
+                    }
+                });
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth >= 768) {
+                        mobileLinks.classList.add('hidden');
+                        const icon = menuBtn.querySelector('i');
+                        if (icon) { icon.classList.remove('bi-x-lg'); icon.classList.add('bi-list'); }
+                    }
+                });
+                document.addEventListener('click', (e) => {
+                    if (!mobileLinks.classList.contains('hidden') && !mobileLinks.contains(e.target) && !menuBtn.contains(e.target)) {
+                        mobileLinks.classList.add('hidden');
+                        const icon = menuBtn.querySelector('i');
+                        if (icon) { icon.classList.remove('bi-x-lg'); icon.classList.add('bi-list'); }
+                    }
+                });
+            }
+        }
+
+        function initExtraButtons() {
+            const browseBtn = document.getElementById('browseGamesBtn');
+            if (browseBtn) browseBtn.addEventListener('click', () => window.location.href = "games.html");
+            const demoAddBtn = document.getElementById('demoAddSampleBtn');
+            if (demoAddBtn) demoAddBtn.addEventListener('click', () => addSampleGameToLibrary());
+            const loginBtn = document.getElementById('loginButton');
+            if (loginBtn) loginBtn.addEventListener('click', () => window.location.href = "login.html");
+            const cartBtn = document.querySelector('.cart-button');
+            if (cartBtn) cartBtn.addEventListener('click', () => window.location.href = "cart.html");
+        }
+        
+        function checkForPurchasedGamesFromPayment() {
+            const pendingPurchaseKey = 'pending_purchased_games';
+            const pendingData = localStorage.getItem(pendingPurchaseKey);
+            if (pendingData) {
+                try {
+                    const purchasedGames = JSON.parse(pendingData);
+                    if (Array.isArray(purchasedGames) && purchasedGames.length > 0) {
+                        addMultipleGamesToLibrary(purchasedGames);
+                        localStorage.removeItem(pendingPurchaseKey);
+                    }
+                } catch(e) {}
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderLibraryGrid();
+            initMobileMenu();
+            initExtraButtons();
+            updateCartBadgeFromStorage();
+            checkForPurchasedGamesFromPayment();
+        });
+
+        window.addEventListener('storage', function(e) {
+            if (e.key === STORAGE_KEY) {
+                renderLibraryGrid(searchInputElem?.value || '');
+            } else if (e.key === 'shopping_cart') {
+                updateCartBadgeFromStorage();
+            } else if (e.key === 'pending_purchased_games') {
+                checkForPurchasedGamesFromPayment();
+            }
+        });
+
+        window.DGamesLibrary = {
+            addPurchasedGame: (gameInfo) => addGameToLibrary(gameInfo),
+            addPurchasedGames: (gamesArray) => addMultipleGamesToLibrary(gamesArray),
+            getLibrary: () => loadLibrary(),
+            removeGame: (id, title) => removeGameFromLibrary(id, title),
+            showLaunchPopup: (gameTitle) => showLaunchPopup(gameTitle)
+        };
+    </script>
+    <script src="cart.js"></script>
+</body>
+</html>
